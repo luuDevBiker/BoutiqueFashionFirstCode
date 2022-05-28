@@ -11,7 +11,7 @@ namespace DAL.DBcontext
 {
     public class Context : DbContext
     {
-        public Context(DbContextOptions<Context> options ) : base( options )
+        public Context(DbContextOptions<Context> options) : base(options)
         {
 
         }
@@ -40,8 +40,8 @@ namespace DAL.DBcontext
             {
                 user.ToTable("users");
                 user.HasKey(p => p.userID);
-                user.HasIndex(p => p.rolesID).IsUnique();
-                user.HasIndex(p => p.userName).IsUnique();
+                user.Property(p => p.rolesID).IsRequired();
+                user.Property(p => p.userName).IsRequired();
                 user.Property(p => p.Gender).HasDefaultValue(1);
                 user.Property(p => p.isUserEnabled).HasDefaultValue(true);
                 user.HasOne<RolesUser>(p => p.rolesUsers).WithMany(p => p.users).HasForeignKey(p => p.rolesID);
@@ -50,10 +50,10 @@ namespace DAL.DBcontext
             {
                 cart.ToTable("carts");
                 cart.HasKey(p => p.cartID);
-                cart.HasIndex(p => p.userID).IsUnique();
+                cart.Property(p => p.userID).IsRequired();
                 cart.Property(p => p.orderTime).HasDefaultValue(DateTime.Now.ToString("HH:mm:ss tt"));
-                cart.HasIndex(p => p.payingCustomer).IsUnique();
-                cart.HasIndex(p => p.payments).IsUnique();
+                cart.Property(p => p.payingCustomer).IsRequired();
+                cart.Property(p => p.payments).IsRequired();
                 cart.Property(p => p.statusDelete).HasDefaultValue(true);
                 cart.Property(p => p.isOrderEnabled).HasDefaultValue(true);
                 cart.HasOne<user>(p => p.user).WithMany(p => p.carts).HasForeignKey(p => p.userID);
@@ -62,9 +62,9 @@ namespace DAL.DBcontext
             {
                 productVariants.ToTable("productVariants");
                 productVariants.HasKey(p => p.variantID);
-                productVariants.HasIndex(p => p.importPrice).IsUnique();
-                productVariants.HasIndex(p => p.price).IsUnique();
-                productVariants.HasIndex(p => p.qunatity).IsUnique();
+                productVariants.Property(p => p.importPrice).IsRequired();
+                productVariants.Property(p => p.price).IsRequired();
+                productVariants.Property(p => p.qunatity).IsRequired();
                 productVariants.Property(p => p.isProductVariantEnabled).HasDefaultValue(true);
                 productVariants.HasOne<Products>(p => p.product).WithMany(p => p.productVariants).HasForeignKey(p => p.productID);
             });
@@ -72,7 +72,7 @@ namespace DAL.DBcontext
             {
                 products.ToTable("products");
                 products.HasKey(p => p.productID);
-                products.HasIndex(p => p.productName).IsUnique();
+                products.Property(p => p.productName).IsRequired();
                 products.Property(p => p.isProductEnabled).HasDefaultValue(true);
 
             });
@@ -80,7 +80,7 @@ namespace DAL.DBcontext
             {
                 options.ToTable("options");
                 options.HasKey(p => p.optionID);
-                options.HasIndex(p => p.optionName).IsUnique();
+                options.Property(p => p.optionName).IsRequired();
                 options.Property(p => p.isOptionEnabled).HasDefaultValue(true);
 
             });
@@ -96,7 +96,7 @@ namespace DAL.DBcontext
             {
                 optionValues.ToTable("optionValues");
                 optionValues.HasKey(p => p.valuesID);
-                optionValues.HasIndex(p => p.optionValues).IsUnique();
+                optionValues.Property(p => p.optionValues).IsRequired();
                 optionValues.Property(p => p.isOptionValueEnabled).HasDefaultValue(true);
                 optionValues.HasOne<Options>(p => p.options).WithMany(p => p.optionValues).HasForeignKey(p => p.optionID);
             });
@@ -114,7 +114,7 @@ namespace DAL.DBcontext
                 cartDetails.ToTable("cartDetails");
                 cartDetails.HasKey(p => new { p.orderID, p.variantID });
                 cartDetails.Property(p => p.quantity).HasDefaultValue(1);
-                cartDetails.HasIndex(p => p.unitPrice).IsUnique();
+                cartDetails.Property(p => p.unitPrice).IsRequired();
                 cartDetails.HasOne<cart>(p => p.carts).WithMany(p => p.cartDetails).HasForeignKey(p => p.orderID);
                 cartDetails.HasOne<ProductVariants>(p => p.productVariants).WithMany(p => p.CartDetails).HasForeignKey(p => p.variantID);
             });

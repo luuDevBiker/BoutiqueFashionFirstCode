@@ -4,6 +4,7 @@ using DAL.DBcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220527153555_sua_email_context")]
+    partial class sua_email_context
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("orderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 5, 28, 13, 17, 55, 0, DateTimeKind.Unspecified));
+                        .HasDefaultValue(new DateTime(2022, 5, 27, 22, 35, 54, 0, DateTimeKind.Unspecified));
 
                     b.Property<float>("payingCustomer")
                         .HasColumnType("real");
@@ -239,9 +241,12 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<string>("address")
+                    b.Property<string>("account")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("address")
+                        .HasColumnType("int");
 
                     b.Property<int>("birdDate")
                         .HasColumnType("int");
