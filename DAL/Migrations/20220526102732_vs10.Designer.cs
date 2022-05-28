@@ -4,6 +4,7 @@ using DAL.DBcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220526102732_vs10")]
+    partial class vs10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("orderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 5, 28, 13, 17, 55, 0, DateTimeKind.Unspecified));
+                        .HasDefaultValue(new DateTime(2022, 5, 26, 17, 27, 31, 0, DateTimeKind.Unspecified));
 
                     b.Property<float>("payingCustomer")
                         .HasColumnType("real");
@@ -60,7 +62,14 @@ namespace DAL.Migrations
 
                     b.HasKey("cartID");
 
-                    b.HasIndex("userID");
+                    b.HasIndex("payingCustomer")
+                        .IsUnique();
+
+                    b.HasIndex("payments")
+                        .IsUnique();
+
+                    b.HasIndex("userID")
+                        .IsUnique();
 
                     b.ToTable("carts", (string)null);
                 });
@@ -86,6 +95,9 @@ namespace DAL.Migrations
 
                     b.HasKey("orderID", "variantID");
 
+                    b.HasIndex("unitPrice")
+                        .IsUnique();
+
                     b.HasIndex("variantID");
 
                     b.ToTable("cartDetails", (string)null);
@@ -104,9 +116,12 @@ namespace DAL.Migrations
 
                     b.Property<string>("optionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("optionID");
+
+                    b.HasIndex("optionName")
+                        .IsUnique();
 
                     b.ToTable("options", (string)null);
                 });
@@ -131,6 +146,9 @@ namespace DAL.Migrations
                     b.HasKey("valuesID");
 
                     b.HasIndex("optionID");
+
+                    b.HasIndex("optionValues")
+                        .IsUnique();
 
                     b.ToTable("optionValues", (string)null);
                 });
@@ -168,9 +186,12 @@ namespace DAL.Migrations
 
                     b.Property<string>("productName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("productID");
+
+                    b.HasIndex("productName")
+                        .IsUnique();
 
                     b.ToTable("products", (string)null);
                 });
@@ -203,7 +224,16 @@ namespace DAL.Migrations
 
                     b.HasKey("variantID");
 
+                    b.HasIndex("importPrice")
+                        .IsUnique();
+
+                    b.HasIndex("price")
+                        .IsUnique();
+
                     b.HasIndex("productID");
+
+                    b.HasIndex("qunatity")
+                        .IsUnique();
 
                     b.ToTable("productVariants", (string)null);
                 });
@@ -239,21 +269,23 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<string>("address")
+                    b.Property<string>("account")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("address")
+                        .HasColumnType("int");
 
                     b.Property<int>("birdDate")
                         .HasColumnType("int");
 
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("email")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("isUserEnabled")
+                    b.Property<int>("isUserEnabled")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<int>("numberPhone")
                         .HasColumnType("int");
@@ -267,11 +299,15 @@ namespace DAL.Migrations
 
                     b.Property<string>("userName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("userID");
 
-                    b.HasIndex("rolesID");
+                    b.HasIndex("rolesID")
+                        .IsUnique();
+
+                    b.HasIndex("userName")
+                        .IsUnique();
 
                     b.ToTable("users", (string)null);
                 });

@@ -1,6 +1,7 @@
 ﻿using DAL.DBcontext;
+using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
-
+using System.Linq;
 namespace DAL.Reponsitories.Implements;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -9,26 +10,33 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public GenericRepository(Context context)
     {
-        _context = context?? throw new ArgumentNullException(nameof(context));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public IQueryable<T> GetAllDataQuery()
+
+
+    public List<T> GetAllDataQuery()
     {
-        throw new NotImplementedException();
+        //var data = _context.Set<T>().Where(p => p.GetType() == typeof(T));
+        var data =  _context.Set<T>().ToList();
+        return data;
     }
 
     public void AddDataCommand(T entity)
     {
-        throw new NotImplementedException();
+        _context.Add<T>(entity);
+        _context.SaveChanges();
     }
 
     public void UpdateDataCommand(T entity)
     {
-        throw new NotImplementedException();
+        _context.Update<T>(entity);
+        _context.SaveChanges();
     }
 
     public void DeleteDataCommand(T entity)
     {
-        throw new NotImplementedException();
+        _context.Remove<T>(entity);
+        _context.SaveChanges();
     }
 }
