@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {}
+    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {}
   },
   "projects": {
-    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {
+    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
+        "projectUniqueName": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
         "projectName": "BoutiqueFashionFirstCode",
-        "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\obj\\",
+        "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
+        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
+        "outputPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,7 +27,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj": {
+                "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -59,6 +63,144 @@
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
             },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj",
+        "projectName": "BUS",
+        "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj",
+        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
+        "outputPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj": {
+                "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj",
+        "projectName": "DAL",
+        "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
+        "outputPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
