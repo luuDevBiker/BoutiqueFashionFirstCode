@@ -2,6 +2,7 @@
 using BUS.Reponsitories.Implements;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
+using BoutiqueFashionFirstCode.ViewModels;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoutiqueFashionFirstCode.Controllers
@@ -17,7 +18,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             _loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
         }
         // GET api/<LoginController>/5
-        [HttpGet("CheckLogin")]
+        [HttpGet("CheckLogin/{account}&{password}")]
         public bool CheckLogin(string account, string password)
         {
             return _loginService.Login(account, password);
@@ -25,14 +26,14 @@ namespace BoutiqueFashionFirstCode.Controllers
 
         // POST api/<LoginController>
         [HttpPost("Register")]
-        public bool Register(string username, string email, int sdt, string password)
+        public bool Register([FromBody] RegisterViewModel viewModel)
         {
             user userAccount = new user();
             userAccount.userID = Guid.NewGuid();
-            userAccount.userName = username;
-            userAccount.email = email;
-            userAccount.password = password;
-            userAccount.numberPhone = sdt;
+            userAccount.userName = viewModel.UserName;
+            userAccount.email = viewModel.Email;
+            userAccount.password = viewModel.Password;
+            userAccount.numberPhone = viewModel.PhoneNumber;
             userAccount.address = "";
             userAccount.birdDate = 0;
             userAccount.rolesID = Guid.Parse("9245fe4a-d402-451c-b9ed-9c1a04247482");
@@ -45,7 +46,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             var a = _loginService.lstUser();
             return a;
         }
-        [HttpGet("ForgotPassword")]
+        [HttpGet("ForgotPassword/{mail}")]
         public bool ForgotPassword(string mail)
         {
          return   _loginService.ForgotPassword(mail);

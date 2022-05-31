@@ -6,15 +6,19 @@ using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
 using DAL.Reponsitories.Implements;
 
-using Microsoft.Extensions.DependencyInjection;
-using BUS.BusEntity;
-
 var builder = WebApplication.CreateBuilder(args);
-
+var cross = "myCross";
 // Add services to the container.
-
+builder.Services.AddCors(option =>
+    option.AddPolicy(name: cross,
+        policy =>
+            policy.WithOrigins("https://localhost:3000/")
+            .WithMethods("POST", "PUT", "DELETE", "GET")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+));
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IGenericRepository<user>, GenericRepository<user>>();
@@ -40,7 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(cross);
 app.UseAuthorization();
 
 app.MapControllers();

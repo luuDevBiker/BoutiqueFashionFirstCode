@@ -39,7 +39,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("orderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 5, 28, 13, 17, 55, 0, DateTimeKind.Unspecified));
+                        .HasDefaultValue(new DateTime(2022, 5, 31, 10, 19, 59, 0, DateTimeKind.Unspecified));
 
                     b.Property<float>("payingCustomer")
                         .HasColumnType("real");
@@ -240,10 +240,9 @@ namespace DAL.Migrations
                         .HasDefaultValue(1);
 
                     b.Property<string>("address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("birdDate")
+                    b.Property<int?>("birdDate")
                         .HasColumnType("int");
 
                     b.Property<string>("email")
@@ -255,8 +254,9 @@ namespace DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<int>("numberPhone")
-                        .HasColumnType("int");
+                    b.Property<string>("numberPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("password")
                         .IsRequired()

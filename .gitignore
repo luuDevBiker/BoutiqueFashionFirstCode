@@ -3,3 +3,7 @@
 ################################################################################
 
 /BUS/bin/Debug/net6.0
+/BUS/bin
+/DAL/bin
+/BoutiqueFashionFirstCode/bin
+/.vs/BoutiqueFashionFirstCode/v17
