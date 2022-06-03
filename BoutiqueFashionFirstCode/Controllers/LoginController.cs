@@ -2,6 +2,7 @@
 using BUS.Reponsitories.Implements;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
+using BoutiqueFashionFirstCode.ViewModel;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoutiqueFashionFirstCode.Controllers
@@ -17,25 +18,25 @@ namespace BoutiqueFashionFirstCode.Controllers
             _loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
         }
         // GET api/<LoginController>/5
-        [HttpGet("CheckLogin")]
-        public bool CheckLogin(string account, string password)
+        [HttpGet("CheckLogin/{account}/{password}")]
+        public bool CheckLogin([FromRoute]string account, string password)
         {
             return _loginService.Login(account, password);
         }
 
         // POST api/<LoginController>
         [HttpPost("Register")]
-        public bool Register(string username, string email, int sdt, string password)
+        public bool Register(UserViewModel userView)
         {
             user userAccount = new user();
             userAccount.userID = Guid.NewGuid();
-            userAccount.userName = username;
-            userAccount.email = email;
-            userAccount.password = password;
-            userAccount.numberPhone = sdt;
+            userAccount.userName = userView.UserName;
+            userAccount.email = userView.Email;
+            userAccount.password = userView.Password;
+            userAccount.numberPhone = userView.PhoneNumber;
             userAccount.address = "";
-            userAccount.birdDate = 0;
-            userAccount.rolesID = Guid.Parse("9245fe4a-d402-451c-b9ed-9c1a04247482");
+            userAccount.birdDate = DateTime.Now;
+            userAccount.rolesID = Guid.Parse("808F83E9-29EE-4CA7-9B77-77114A495B51");
             return _loginService.Signup(userAccount);
         }
         
@@ -45,7 +46,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             var a = _loginService.lstUser();
             return a;
         }
-        [HttpGet("ForgotPassword")]
+        [HttpGet("ForgotPassword/{mail}")]
         public bool ForgotPassword(string mail)
         {
          return   _loginService.ForgotPassword(mail);

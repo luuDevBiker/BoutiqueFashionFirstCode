@@ -10,6 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using BUS.BusEntity;
 
 var builder = WebApplication.CreateBuilder(args);
+var cross = "myCross";
+
+builder.Services.AddCors(option =>
+    option.AddPolicy(name: cross,
+    policy =>
+        policy.WithOrigins("*").WithMethods("GET", "PUT", "POST", "DELETE").AllowAnyMethod().AllowAnyHeader()
+));
+
 
 // Add services to the container.
 
@@ -39,6 +47,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(cross);
 
 app.UseHttpsRedirection();
 

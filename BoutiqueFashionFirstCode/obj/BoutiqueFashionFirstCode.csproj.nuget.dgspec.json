@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {}
+    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {}
   },
   "projects": {
-    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {
+    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
+        "projectUniqueName": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
         "projectName": "BoutiqueFashionFirstCode",
-        "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
-        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
-        "outputPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BoutiqueFashionFirstCode\\obj\\",
+        "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BoutiqueFashionFirstCode\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +28,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj": {
-                "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj"
+              "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj": {
+                "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj"
               }
             }
           }
@@ -44,6 +44,12 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.5, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
@@ -71,17 +77,17 @@
         }
       }
     },
-    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj": {
+    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj",
+        "projectUniqueName": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj",
         "projectName": "BUS",
-        "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\BUS.csproj",
-        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
-        "outputPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\BUS\\obj\\",
+        "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -95,8 +101,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj": {
-                "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj"
+              "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj": {
+                "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj"
               }
             }
           }
@@ -139,17 +145,17 @@
         }
       }
     },
-    "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj": {
+    "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj",
+        "projectUniqueName": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
-        "outputPath": "E:\\FPOLY\\C# (Sharp)\\C#5\\New folder (2)\\DAL\\obj\\",
+        "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
