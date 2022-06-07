@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using BUS.Reponsitories.Implements;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
@@ -18,39 +18,41 @@ namespace BoutiqueFashionFirstCode.Controllers
             _loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
         }
         // GET api/<LoginController>/5
-        [HttpGet("CheckLogin/{account}/{password}")]
-        public bool CheckLogin([FromRoute]string account, string password)
+        [HttpGet("CheckLogin")]
+        public bool CheckLogin(string account, string password)
         {
             return _loginService.Login(account, password);
         }
 
         // POST api/<LoginController>
         [HttpPost("Register")]
-        public bool Register(UserViewModel userView)
+        public bool Register(Register register)
         {
+            Guid rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.rolesName == "Nhân viên").Select(p => p.rolesID).FirstOrDefault();
             user userAccount = new user();
             userAccount.userID = Guid.NewGuid();
-            userAccount.userName = userView.UserName;
-            userAccount.email = userView.Email;
-            userAccount.password = userView.Password;
-            userAccount.numberPhone = userView.PhoneNumber;
+            userAccount.userName = register.username;
+            userAccount.email = register.email;
+            userAccount.password = register.password;
+            userAccount.numberPhone = register.sdt;
             userAccount.address = "";
-            userAccount.birdDate = DateTime.Now;
-            userAccount.rolesID = Guid.Parse("808F83E9-29EE-4CA7-9B77-77114A495B51");
+            userAccount.isUserEnabled = true;
+            userAccount.birdDate = DateTime.Parse("2002-01-02");
+            userAccount.rolesID = rolesIDNhanVien;
             return _loginService.Signup(userAccount);
         }
-        
+
         [HttpGet("GetUseCollection")]
         public List<user> GetAcountCollection()
         {
             var a = _loginService.lstUser();
             return a;
         }
-        [HttpGet("ForgotPassword/{mail}")]
+        [HttpGet("ForgotPassword")]
         public bool ForgotPassword(string mail)
         {
-         return   _loginService.ForgotPassword(mail);
-            
+            return _loginService.ForgotPassword(mail);
+
         }
     }
 }
