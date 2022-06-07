@@ -64,7 +64,7 @@ namespace DAL.DBcontext
                 productVariants.HasKey(p => p.variantID);
                 productVariants.Property(p => p.importPrice).IsRequired();
                 productVariants.Property(p => p.price).IsRequired();
-                productVariants.Property(p => p.qunatity).IsRequired();
+                productVariants.Property(p => p.quantity).IsRequired();
                 productVariants.Property(p => p.isProductVariantEnabled).HasDefaultValue(true);
                 productVariants.HasOne<Products>(p => p.product).WithMany(p => p.productVariants).HasForeignKey(p => p.productID);
             });
