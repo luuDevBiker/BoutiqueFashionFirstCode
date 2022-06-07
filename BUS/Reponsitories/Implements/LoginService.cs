@@ -1,4 +1,4 @@
-﻿using BUS.Reponsitories.Interfaces;
+using BUS.Reponsitories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +14,19 @@ namespace BUS.Reponsitories.Implements
     {
 
         private readonly IGenericRepository<user> _userService;
+        private readonly IGenericRepository<RolesUser> _rolesUserService;
         private readonly SendMailService _sendMailService;
         List<user> _users;
-        public LoginService(IGenericRepository<user> userService, SendMailService sendMail)
+        List<RolesUser> _rolesUsers;
+        public LoginService(IGenericRepository<user> userService, SendMailService sendMail, IGenericRepository<RolesUser> rolesUserService)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _rolesUserService = rolesUserService ?? throw new ArgumentNullException(nameof(rolesUserService));
             _sendMailService = sendMail ?? throw new ArgumentNullException(nameof(sendMail));
             _users = new List<user>();
+            _rolesUsers = new List<RolesUser>();
             lstUser();
+
         }
 
         public bool ForgotPassword(string email)
@@ -35,7 +40,7 @@ namespace BUS.Reponsitories.Implements
                     builder.Append(_sendMailService.randomstring(4, true));
                     builder.Append(_sendMailService.randomnumber(1000, 9999));
                     builder.Append(_sendMailService.randomstring(2, false));
-                    _sendMailService.SendMail(email,builder.ToString());
+                    _sendMailService.SendMail(email, builder.ToString());
                     return true;
                 }
             }
@@ -63,6 +68,11 @@ namespace BUS.Reponsitories.Implements
                 return false;
             }
 
+        }
+
+        public List<RolesUser> lstRolesUser()
+        {
+            return _rolesUsers = _rolesUserService.GetAllDataQuery().ToList();
         }
 
         public List<user> lstUser()
