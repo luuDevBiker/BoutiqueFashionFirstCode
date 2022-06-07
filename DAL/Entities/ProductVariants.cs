@@ -11,7 +11,7 @@ namespace DAL.Entities
         public float importPrice { get; set; }
 
         public float price { get; set; }
-        public int qunatity { get; set; }
+        public int quantity { get; set; }
 
         public bool isProductVariantEnabled { get; set; }
         public Products product { get; set; }
