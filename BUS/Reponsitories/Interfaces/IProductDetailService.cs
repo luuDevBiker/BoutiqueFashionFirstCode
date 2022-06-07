@@ -48,5 +48,7 @@ namespace BUS.Reponsitories.Interfaces
         public bool DeleteVariantValue(VariantValues variantValues);
         #endregion
         public List<ProductDetails> GetProductDetails();
+        public bool AddProductDetails(ProductDetails productDetails);
+        public Guid CheckExistProduct(string productName);
     }
 }
