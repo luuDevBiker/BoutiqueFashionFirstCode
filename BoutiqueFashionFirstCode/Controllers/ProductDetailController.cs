@@ -23,7 +23,7 @@ namespace BoutiqueFashionFirstCode.Controllers
         [HttpPost("PostProductDetail")]
         public bool PostProductDetail(ProductDetail productDetail)
         {
-           
+
             var productDetails = new ProductDetails();
             productDetails.productId = Guid.NewGuid();
             productDetails.VariantId = Guid.NewGuid();
@@ -31,9 +31,37 @@ namespace BoutiqueFashionFirstCode.Controllers
             productDetails.price = productDetail.price;
             productDetails.quantity = productDetail.quantity;
             productDetails.skuId = Guid.NewGuid();
-            productDetails.importPrice =productDetail.importPrice;
-            productDetails.option=productDetail.option;
+            productDetails.importPrice = productDetail.importPrice;
+            productDetails.option = productDetail.option;
             return _productDetailService.AddProductDetails(productDetails);
+        }
+        [HttpPut("Updateproduct")]
+        public bool UpdateProduct(UpdateProductDetail productDetail)
+        {
+            var productDetails = new ProductDetails();
+            productDetails.productId = productDetail.productId;
+            productDetails.VariantId = productDetail.VariantId;
+            productDetails.productsName = productDetail.productsName;
+            productDetails.price = productDetail.price;
+            productDetails.quantity = productDetail.quantity;
+            productDetails.skuId = productDetail.skuId;
+            productDetails.importPrice = productDetail.importPrice;
+            productDetails.option = productDetail.option;
+            return _productDetailService.UpdateProductDetails(productDetails);
+        }
+        [HttpDelete("DeteteProduct")]
+        public bool DeteteProduct(UpdateProductDetail productDetail)
+        {
+            var productDetails = new ProductDetails();
+            productDetails.productId = productDetail.productId;
+            productDetails.VariantId = productDetail.VariantId;
+            productDetails.productsName = productDetail.productsName;
+            productDetails.price = productDetail.price;
+            productDetails.quantity = productDetail.quantity;
+            productDetails.skuId = productDetail.skuId;
+            productDetails.importPrice = productDetail.importPrice;
+            productDetails.option = productDetail.option;
+            return _productDetailService.RemoveProductDetails(productDetails);
         }
     }
 }
