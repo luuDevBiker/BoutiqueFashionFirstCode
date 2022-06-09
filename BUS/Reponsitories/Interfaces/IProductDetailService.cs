@@ -50,5 +50,7 @@ namespace BUS.Reponsitories.Interfaces
         public List<ProductDetails> GetProductDetails();
         public bool AddProductDetails(ProductDetails productDetails);
         public Guid CheckExistProduct(string productName);
+ 	public bool UpdateProductDetails(ProductDetails productDetails);
+        public bool RemoveProductDetails(ProductDetails productDetails);
     }
 }
