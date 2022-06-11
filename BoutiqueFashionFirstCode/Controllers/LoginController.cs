@@ -28,17 +28,17 @@ namespace BoutiqueFashionFirstCode.Controllers
         [HttpPost("Register")]
         public bool Register(Register register)
         {
-            Guid rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.rolesName == "Nhân viên").Select(p => p.rolesID).FirstOrDefault();
+            Guid rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.RolesName == "Nhân viên").Select(p => p.RolesID).FirstOrDefault();
             user userAccount = new user();
-            userAccount.userID = Guid.NewGuid();
-            userAccount.userName = register.username;
-            userAccount.email = register.email;
-            userAccount.password = register.password;
-            userAccount.numberPhone = register.sdt;
-            userAccount.address = "";
-            userAccount.isUserEnabled = true;
-            userAccount.birdDate = DateTime.Parse("2002-01-02");
-            userAccount.rolesID = rolesIDNhanVien;
+            userAccount.UserID = Guid.NewGuid();
+            userAccount.UserName = register.username;
+            userAccount.Email = register.email;
+            userAccount.Password = register.password;
+            userAccount.PhoneNumber = register.sdt;
+            userAccount.Address = "";
+            userAccount.IsUserEnabled = true;
+            userAccount.DOB = DateTime.Parse("2002-01-02");
+            userAccount.RolesID = rolesIDNhanVien;
             return _loginService.Signup(userAccount);
         }
 

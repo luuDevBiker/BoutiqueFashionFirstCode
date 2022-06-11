@@ -1,6 +1,7 @@
 ﻿using DAL.DBcontext;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 namespace DAL.Reponsitories.Implements;
 
@@ -18,7 +19,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public List<T> GetAllDataQuery()
     {
         //var data = _context.Set<T>().Where(p => p.GetType() == typeof(T));
-        var data =  _context.Set<T>().ToList();
+        var data =  _context.Set<T>().AsNoTracking().ToList();
         return data;
     }
 

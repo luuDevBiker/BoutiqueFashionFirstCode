@@ -5,9 +5,9 @@ namespace DAL.Entities
     public class RolesUser
     {
        
-        public Guid rolesID { get; set; }
-        public string rolesName { get; set; }
-        public bool isRolesUserEnabled { get; set; }
-        public ICollection<user> users { get; set; }
+        public Guid RolesID { get; set; }
+        public string RolesName { get; set; }
+        public bool IsRolesUserEnabled { get; set; }
+        public ICollection<user> Users { get; set; }
     }
 }

@@ -4,12 +4,12 @@ namespace DAL.Entities
 {
     public class VariantValues
     {
-        public Guid productID { get; set; }
-        public Guid variantID { get; set; }
-        public Guid optionID { get; set; }
-        public Guid valuesID { get; set; }
-        public bool isVariantValueEnabled { get; set; }
-        public ProductVariants productVariant { get; set; }
-        public OptionValues optionValue { get; set; }
+        public Guid ProductID { get; set; }
+        public Guid VariantID { get; set; }
+        public Guid OptionID { get; set; }
+        public Guid ValuesID { get; set; }
+        public bool IsVariantValueEnabled { get; set; }
+        public ProductVariants ProductVariant { get; set; }
+        public OptionValues OptionValue { get; set; }
     }
 }

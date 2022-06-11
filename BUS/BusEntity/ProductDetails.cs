@@ -8,13 +8,13 @@ namespace BUS.BusEntity
 {
     public class ProductDetails
     {
-     public Guid productId { get; set; }
+     public Guid ProductId { get; set; }
         public Guid VariantId { get; set; }
-        public string? productsName { get; set; }
-        public Guid skuId { get; set; }
-        public float importPrice { get; set; }
-        public float price { get; set; }
-        public int quantity { get; set; }
-        public List<Option>? option { get; set; }
+        public string? ProductsName { get; set; }
+        public Guid SkuId { get; set; }
+        public float ImportPrice { get; set; }
+        public float Price { get; set; }
+        public int Quantity { get; set; }
+        public List<Option>? Option { get; set; }
     }
 }
