@@ -34,8 +34,8 @@ namespace BUS.Reponsitories.Implements
             smtp.Port = 587;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.Credentials = new NetworkCredential("kienntp038@gmail.com", "kien2810");
-            var a = _userService.GetAllDataQuery().FirstOrDefault(p => p.email == mail);
-            a.password = pass;
+            var a = _userService.GetAllDataQuery().FirstOrDefault(p => p.Email == mail);
+            a.Password = pass;
             _userService.UpdateDataCommand(a);
             try
             {

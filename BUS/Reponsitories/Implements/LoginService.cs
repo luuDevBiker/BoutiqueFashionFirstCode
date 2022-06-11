@@ -34,7 +34,7 @@ namespace BUS.Reponsitories.Implements
 
             if (email != null)
             {
-                if (_userService.GetAllDataQuery().FirstOrDefault(p => p.email == email) != null)
+                if (_userService.GetAllDataQuery().FirstOrDefault(p => p.Email == email) != null)
                 {
                     StringBuilder builder = new StringBuilder();
                     builder.Append(_sendMailService.randomstring(4, true));
@@ -53,7 +53,7 @@ namespace BUS.Reponsitories.Implements
 
             if (account != null && password != null)
             {
-                user userlogin = _users.FirstOrDefault(c => c.email == account && c.password == password);
+                user userlogin = _users.FirstOrDefault(c => c.Email == account && c.Password == password);
                 if (userlogin != null)
                 {
                     return true;
@@ -85,7 +85,7 @@ namespace BUS.Reponsitories.Implements
         {
             if (user != null)
             {
-                if (_users.FirstOrDefault(p => p.email == user.email) == null)
+                if (_users.FirstOrDefault(p => p.Email == user.Email) == null)
                 {
                     _userService.AddDataCommand(user);
                     return true;

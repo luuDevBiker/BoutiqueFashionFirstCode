@@ -4,10 +4,10 @@ namespace DAL.Entities
 {
     public class ProductOptions
     {
-        public Guid productID { get; set; }
-        public Guid optionID { get; set; }
-        public bool isProductOptionEnabled { get; set; }
-        public Products products { get; set; }
-        public Options options { get; set; }
+        public Guid ProductID { get; set; }
+        public Guid OptionID { get; set; }
+        public bool IsProductOptionEnabled { get; set; }
+        public Products Products { get; set; }
+        public Options Options { get; set; }
     }
 }

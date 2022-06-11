@@ -8,18 +8,18 @@ namespace BUS.BusEntity
 {
     public class Login
     {
-        public user user { get; set; }
-        public RolesUser rolesUser { get; set; }
+        public user User { get; set; }
+        public RolesUser RolesUser { get; set; }
         public Login()
         {
-            rolesUser = new RolesUser();
-            user = new user();
+            RolesUser = new RolesUser();
+            User = new user();
         }
 
         public Login(user user, RolesUser rolesUser)
         {
-            this.user = user;
-            this.rolesUser = rolesUser;
+            this.User = user;
+            this.RolesUser = rolesUser;
         }
     }
 }

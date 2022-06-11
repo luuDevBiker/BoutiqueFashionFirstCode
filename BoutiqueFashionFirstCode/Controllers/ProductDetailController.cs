@@ -25,42 +25,42 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
 
             var productDetails = new ProductDetails();
-            productDetails.productId = Guid.NewGuid();
+            productDetails.ProductId = Guid.NewGuid();
             productDetails.VariantId = Guid.NewGuid();
-            productDetails.productsName = productDetail.productsName;
-            productDetails.price = productDetail.price;
-            productDetails.quantity = productDetail.quantity;
-            productDetails.skuId = Guid.NewGuid();
-            productDetails.importPrice = productDetail.importPrice;
-            productDetails.option = productDetail.option;
+            productDetails.ProductsName = productDetail.productsName;
+            productDetails.Price = productDetail.price;
+            productDetails.Quantity = productDetail.quantity;
+            productDetails.SkuId = Guid.NewGuid();
+            productDetails.ImportPrice = productDetail.importPrice;
+            productDetails.Option = productDetail.option;
             return _productDetailService.AddProductDetails(productDetails);
         }
         [HttpPut("Updateproduct")]
         public bool UpdateProduct(UpdateProductDetail productDetail)
         {
             var productDetails = new ProductDetails();
-            productDetails.productId = productDetail.productId;
+            productDetails.ProductId = productDetail.productId;
             productDetails.VariantId = productDetail.VariantId;
-            productDetails.productsName = productDetail.productsName;
-            productDetails.price = productDetail.price;
-            productDetails.quantity = productDetail.quantity;
-            productDetails.skuId = productDetail.skuId;
-            productDetails.importPrice = productDetail.importPrice;
-            productDetails.option = productDetail.option;
+            productDetails.ProductsName = productDetail.productsName;
+            productDetails.Price = productDetail.price;
+            productDetails.Quantity = productDetail.quantity;
+            productDetails.SkuId = productDetail.skuId;
+            productDetails.ImportPrice = productDetail.importPrice;
+            productDetails.Option = productDetail.option;
             return _productDetailService.UpdateProductDetails(productDetails);
         }
         [HttpDelete("DeteteProduct")]
         public bool DeteteProduct(UpdateProductDetail productDetail)
         {
             var productDetails = new ProductDetails();
-            productDetails.productId = productDetail.productId;
+            productDetails.ProductId = productDetail.productId;
             productDetails.VariantId = productDetail.VariantId;
-            productDetails.productsName = productDetail.productsName;
-            productDetails.price = productDetail.price;
-            productDetails.quantity = productDetail.quantity;
-            productDetails.skuId = productDetail.skuId;
-            productDetails.importPrice = productDetail.importPrice;
-            productDetails.option = productDetail.option;
+            productDetails.ProductsName = productDetail.productsName;
+            productDetails.Price = productDetail.price;
+            productDetails.Quantity = productDetail.quantity;
+            productDetails.SkuId = productDetail.skuId;
+            productDetails.ImportPrice = productDetail.importPrice;
+            productDetails.Option = productDetail.option;
             return _productDetailService.RemoveProductDetails(productDetails);
         }
     }

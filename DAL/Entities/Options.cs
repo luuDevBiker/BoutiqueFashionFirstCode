@@ -4,10 +4,10 @@ namespace DAL.Entities
 {
     public class Options
     {
-        public Guid optionID { get; set; }
-        public string optionName { get; set; }
-        public bool isOptionEnabled { get; set; }
-        public ICollection<ProductOptions> productOptions { get; set; }
-        public ICollection<OptionValues> optionValues { get; set; }
+        public Guid OptionID { get; set; }
+        public string OptionName { get; set; }
+        public bool IsOptionEnabled { get; set; }
+        public ICollection<ProductOptions> ProductOptions { get; set; }
+        public ICollection<OptionValues> OptionValues { get; set; }
     }
 }
