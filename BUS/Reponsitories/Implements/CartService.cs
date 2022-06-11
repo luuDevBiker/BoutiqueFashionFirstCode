@@ -14,11 +14,30 @@ namespace BUS.Reponsitories.Implements
         private readonly IGenericRepository<CartItem> _cartItemService;
         public CartService(IGenericRepository<CartItem> cartItemService)
         {
-            _cartItemService=cartItemService ?? throw new ArgumentNullException(nameof(cartItemService));
+            _cartItemService = cartItemService ?? throw new ArgumentNullException(nameof(cartItemService));
         }
         public bool AddCart(CartItem cartItem)
         {
+            if (cartItem == null) return false;
+            if (_cartItemService.GetAllDataQuery().FirstOrDefault(p => p.UserId == cartItem.UserId && p.ProductName == cartItem.ProductName) == null)
+            {
+                _cartItemService.AddDataCommand(cartItem);
+            }
+            else
+            {
+                var cart = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.UserId == cartItem.UserId && p.ProductName == cartItem.ProductName);
+                cart.Quantity = cartItem.Quantity;
+                _cartItemService.UpdateDataCommand(cart);
+            }
             return false;
+        }
+        public List<CartItem> GetProductInCart()
+        {
+            return _cartItemService.GetAllDataQuery().ToList();
+        }
+        public bool order(Guid userId)
+        {
+            var cart = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
         }
     }
 }
