@@ -50,7 +50,7 @@ namespace DAL.DBcontext
             modelBuilder.Entity<Order>(cart =>
             {
                 cart.ToTable("Order");
-                cart.HasKey(p => p.CartID);
+                cart.HasKey(p => p.OrderID);
                 cart.Property(p => p.UserID).IsRequired();
                 cart.Property(p => p.OrderTime).HasDefaultValue(DateTime.Now.ToString("HH:mm:ss tt"));
                 cart.Property(p => p.PayingCustomer).IsRequired();

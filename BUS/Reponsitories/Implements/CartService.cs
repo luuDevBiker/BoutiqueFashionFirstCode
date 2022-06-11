@@ -35,9 +35,10 @@ namespace BUS.Reponsitories.Implements
         {
             return _cartItemService.GetAllDataQuery().ToList();
         }
-        public bool order(Guid userId)
+        public bool Order(Guid userId)
         {
             var cart = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
+            return false;
         }
     }
 }
