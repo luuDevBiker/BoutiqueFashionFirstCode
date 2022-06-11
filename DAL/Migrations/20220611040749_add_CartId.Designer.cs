@@ -4,6 +4,7 @@ using DAL.DBcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220611040749_add_CartId")]
+    partial class add_CartId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,9 +42,6 @@ namespace DAL.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("VariantId")
                         .HasColumnType("uniqueidentifier");
@@ -101,7 +100,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
-                    b.Property<Guid>("OrderID")
+                    b.Property<Guid>("CartID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -116,7 +115,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("OrderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 6, 11, 11, 47, 19, 0, DateTimeKind.Unspecified));
+                        .HasDefaultValue(new DateTime(2022, 6, 11, 11, 7, 48, 0, DateTimeKind.Unspecified));
 
                     b.Property<float>("PayingCustomer")
                         .HasColumnType("real");
@@ -135,7 +134,7 @@ namespace DAL.Migrations
                     b.Property<Guid>("UserID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("OrderID");
+                    b.HasKey("CartID");
 
                     b.HasIndex("UserID");
 
