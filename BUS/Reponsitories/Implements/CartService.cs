@@ -1,4 +1,5 @@
-﻿using BUS.Reponsitories.Interfaces;
+﻿using BUS.BusEntity;
+using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
 using System;
@@ -22,23 +23,28 @@ namespace BUS.Reponsitories.Implements
             if (_cartItemService.GetAllDataQuery().FirstOrDefault(p => p.UserId == cartItem.UserId && p.ProductName == cartItem.ProductName) == null)
             {
                 _cartItemService.AddDataCommand(cartItem);
+                return true;
             }
             else
             {
                 var cart = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.UserId == cartItem.UserId && p.ProductName == cartItem.ProductName);
-                cart.Quantity = cartItem.Quantity;
+                if (cart == null) return false;
+                cart.Quantity += 1;
                 _cartItemService.UpdateDataCommand(cart);
+                return true;
             }
-            return false;
+           
         }
         public List<CartItem> GetProductInCart()
         {
             return _cartItemService.GetAllDataQuery().ToList();
         }
-        public bool Order(Guid userId)
+        public bool UpdateCart(CartItem cartItem)
         {
-            var cart = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
-            return false;
+            if (cartItem == null) return false;
+            _cartItemService.UpdateDataCommand(cartItem);
+            return true;
         }
+
     }
 }

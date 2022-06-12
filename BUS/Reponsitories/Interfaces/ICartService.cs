@@ -10,5 +10,7 @@ namespace BUS.Reponsitories.Interfaces
     public interface ICartService
     {
         public bool AddCart(CartItem cartItem);
+        public bool UpdateCart(CartItem cartItem);
+        public List<CartItem> GetProductInCart();
     }
 }
