@@ -1,4 +1,4 @@
-﻿using BUS.BusEntity;
+﻿using BUS.Dtos;
 
 namespace BoutiqueFashionFirstCode.ViewModel
 {
@@ -9,6 +9,6 @@ namespace BoutiqueFashionFirstCode.ViewModel
         public float importPrice { get; set; }
         public float price { get; set; }
         public int quantity { get; set; }
-        public List<Option>? option { get; set; }
+        public List<OptionDto>? option { get; set; }
     }
 }

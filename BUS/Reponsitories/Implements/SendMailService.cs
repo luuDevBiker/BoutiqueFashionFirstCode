@@ -1,5 +1,4 @@
-﻿using BUS.BusEntity;
-using DAL.Entities;
+﻿using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
 using Microsoft.Extensions.Options;
 using MimeKit;
