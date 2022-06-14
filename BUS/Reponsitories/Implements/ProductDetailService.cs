@@ -1,4 +1,4 @@
-﻿using BUS.BusEntity;
+﻿using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
@@ -46,7 +46,7 @@ namespace BUS.Reponsitories.Implements
         {
             if (optionValues != null)
             {
-                if (_optionValueService.GetAllDataQuery().Where(p => p.optionValues.Trim().ToLower() == optionValues.optionValues.Trim().ToLower() && p.optionID == optionValues.optionID).FirstOrDefault() == null)
+                if (_optionValueService.GetAllDataQuery().Where(p => p.OptionValue.Trim().ToLower() == optionValues.OptionValue.Trim().ToLower() && p.OptionID == optionValues.OptionID).FirstOrDefault() == null)
                 {
                     _optionValueService.AddDataCommand(optionValues);
                     return true;
@@ -61,7 +61,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            if (_optionService.GetAllDataQuery().Where(p => p.optionID == options.optionID).FirstOrDefault() == null)
+            if (_optionService.GetAllDataQuery().Where(p => p.OptionName == options.OptionName).FirstOrDefault() == null)
             {
                 _optionService.AddDataCommand(options);
                 return true;
@@ -77,7 +77,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            if (_productService.GetAllDataQuery().Where(p => p.productID == products.productID).FirstOrDefault() == null)
+            if (_productService.GetAllDataQuery().Where(p => p.ProductName == products.ProductName).FirstOrDefault() == null)
             {
                 _productService.AddDataCommand(products);
                 return true;
@@ -93,7 +93,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            if (_productOptionService.GetAllDataQuery().Where(p => p.productID == productOptions.optionID && p.optionID == productOptions.optionID).FirstOrDefault() == null)
+            if (_productOptionService.GetAllDataQuery().Where(p => p.ProductID == productOptions.OptionID && p.OptionID == productOptions.OptionID && p.IsProductOptionEnabled == true).FirstOrDefault() == null)
             {
                 _productOptionService.AddDataCommand(productOptions);
                 return true;
@@ -108,7 +108,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            if (_productVariantService.GetAllDataQuery().Where(p => p.variantID == products.variantID).FirstOrDefault() == null)
+            if (_productVariantService.GetAllDataQuery().Where(p => p.VariantID == products.VariantID).FirstOrDefault() == null)
             {
                 _productVariantService.AddDataCommand(products);
                 return true;
@@ -123,7 +123,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            if (_variantValueService.GetAllDataQuery().Where(p => p.variantID == variantValues.variantID && p.productID == variantValues.productID && p.variantID == variantValues.variantID && p.valuesID == variantValues.valuesID).FirstOrDefault() == null)
+            if (_variantValueService.GetAllDataQuery().Where(p => p.VariantID == variantValues.VariantID && p.ProductID == variantValues.ProductID && p.VariantID == variantValues.VariantID && p.ValuesID == variantValues.ValuesID && p.IsVariantValueEnabled == true).FirstOrDefault() == null)
             {
                 _variantValueService.AddDataCommand(variantValues);
                 return true;
@@ -131,53 +131,53 @@ namespace BUS.Reponsitories.Implements
 
             return false;
         }
-        public bool AddProductDetails(ProductDetails productDetails)
+        public bool AddProductDetails(ProductDetailsDto productDetails)
         {
             if (productDetails == null)
             {
                 return false;
             }
-            if (!GetProductDetails().Any(p => p.productsName == productDetails.productsName && p.price == productDetails.price && p.option == productDetails.option && p.price == productDetails.price && p.importPrice == productDetails.importPrice))
+            if (!GetProductDetails().Any(p => p.ProductsName == productDetails.ProductsName && p.Price == productDetails.Price && p.Option == productDetails.Option && p.Price == productDetails.Price && p.ImportPrice == productDetails.ImportPrice))
             {
                 var product = new Products();
-                product.productID = productDetails.productId;
-                product.productName = productDetails.productsName;
-                product.isProductEnabled = true;
+                product.ProductID = productDetails.ProductId;
+                product.ProductName = productDetails.ProductsName;
+                product.IsProductEnabled = true;
                 _productService.AddDataCommand(product);
                 _lstProduct.Add(product);
                 var productvariant = new ProductVariants();
-                productvariant.productID = product.productID;
-                productvariant.variantID = Guid.NewGuid();
-                productvariant.skuID = productDetails.skuId;
-                productvariant.importPrice = productDetails.importPrice;
-                productvariant.price = productDetails.price;
-                productvariant.quantity = productDetails.quantity;
-                productvariant.isProductVariantEnabled = true;
+                productvariant.ProductID = product.ProductID;
+                productvariant.VariantID = Guid.NewGuid();
+                productvariant.SkuID = productDetails.SkuId;
+                productvariant.ImportPrice = productDetails.ImportPrice;
+                productvariant.Price = productDetails.Price;
+                productvariant.Quantity = productDetails.Quantity;
+                productvariant.IsProductVariantEnabled = true;
                 _productVariantService.AddDataCommand(productvariant);
                 _lstProductVariant.Add(productvariant);
 
-                var checkExistOPtion = _lstOption.Any(p => productDetails.option.Select(entity => entity.optionName).ToList().Contains(p.optionName));
-                foreach (var newOption in productDetails.option)
+                var checkExistOPtion = _lstOption.Any(p => productDetails.Option.Select(entity => entity.OptionName).ToList().Contains(p.OptionName));
+                foreach (var newOption in productDetails.Option)
                 {
-                    if (CheckExistOption(newOption.optionName))
+                    if (CheckExistOption(newOption.OptionName))
                     {
 
                         var productOption = new ProductOptions();
-                        productOption.productID = product.productID;
-                        var optionId = _lstOption.Where(p => p.optionName == newOption.optionName).Select(p => p.optionID).FirstOrDefault();
-                        productOption.optionID = optionId;
-                        productOption.isProductOptionEnabled = true;
+                        productOption.ProductID = product.ProductID;
+                        var optionId = _lstOption.Where(p => p.OptionName == newOption.OptionName).Select(p => p.OptionID).FirstOrDefault();
+                        productOption.OptionID = optionId;
+                        productOption.IsProductOptionEnabled = true;
                         _productOptionService.AddDataCommand(productOption);
                         _lstProductOption.Add(productOption);
-                        if (CheckExistOptionValue(newOption.optionName, newOption.optionValue))
+                        if (CheckExistOptionValue(newOption.OptionName, newOption.OptionValue))
                         {
                             var variantValue = new VariantValues();
-                            variantValue.productID = product.productID;//
-                            variantValue.variantID = productvariant.variantID;//
-                            variantValue.optionID = optionId;
-                            var optionValueId = _lstOptionValue.Where(p => p.optionValues == newOption.optionValue).Select(p => p.valuesID).FirstOrDefault();
-                            variantValue.valuesID = optionValueId;
-                            variantValue.isVariantValueEnabled = true;
+                            variantValue.ProductID = product.ProductID;//
+                            variantValue.VariantID = productvariant.VariantID;//
+                            variantValue.OptionID = optionId;
+                            var optionValueId = _lstOptionValue.Where(p => p.OptionValue == newOption.OptionValue).Select(p => p.ValuesID).FirstOrDefault();
+                            variantValue.ValuesID = optionValueId;
+                            variantValue.IsVariantValueEnabled = true;
                             _variantValueService.AddDataCommand(variantValue);
                             _lstVariantValue.Add(variantValue);
 
@@ -185,18 +185,18 @@ namespace BUS.Reponsitories.Implements
                         else
                         {
                             var optionValue = new OptionValues();
-                            optionValue.optionValues = newOption.optionValue;
-                            optionValue.optionID = optionId;
-                            optionValue.valuesID = Guid.NewGuid();
-                            optionValue.isOptionValueEnabled = true;
+                            optionValue.OptionValue = newOption.OptionValue;
+                            optionValue.OptionID = optionId;
+                            optionValue.ValuesID = Guid.NewGuid();
+                            optionValue.IsOptionValueEnabled = true;
                             _optionValueService.AddDataCommand(optionValue);
                             _lstOptionValue.Add(optionValue);
                             var variantValue = new VariantValues();///
-                            variantValue.productID = product.productID;
-                            variantValue.variantID = productvariant.variantID;
-                            variantValue.optionID = optionId;
-                            var optionValueId = _lstOptionValue.Where(p => p.optionValues == newOption.optionValue).Select(p => p.valuesID).FirstOrDefault();
-                            variantValue.valuesID = optionValueId;
+                            variantValue.ProductID = product.ProductID;
+                            variantValue.VariantID = productvariant.VariantID;
+                            variantValue.OptionID = optionId;
+                            var optionValueId = _lstOptionValue.Where(p => p.OptionValue == newOption.OptionValue).Select(p => p.ValuesID).FirstOrDefault();
+                            variantValue.ValuesID = optionValueId;
                             _variantValueService.AddDataCommand(variantValue);
                             _lstVariantValue.Add(variantValue);
                         }
@@ -206,30 +206,30 @@ namespace BUS.Reponsitories.Implements
                     else
                     {
                         var option = new Options();
-                        option.optionID = Guid.NewGuid();
-                        option.optionName = newOption.optionName;
-                        option.isOptionEnabled = true;
+                        option.OptionID = Guid.NewGuid();
+                        option.OptionName = newOption.OptionName;
+                        option.IsOptionEnabled = true;
                         _lstOption.Add(option);
                         _optionService.AddDataCommand(option);
                         var optionValue = new OptionValues();
-                        optionValue.optionID = option.optionID;
-                        optionValue.valuesID = Guid.NewGuid();
-                        optionValue.optionValues = newOption.optionValue;
-                        optionValue.isOptionValueEnabled = true;
+                        optionValue.OptionID = option.OptionID;
+                        optionValue.ValuesID = Guid.NewGuid();
+                        optionValue.OptionValue = newOption.OptionValue;
+                        optionValue.IsOptionValueEnabled = true;
                         _optionValueService.AddDataCommand(optionValue);
                         _lstOptionValue.Add(optionValue);
                         var productOption = new ProductOptions();
-                        productOption.productID = product.productID;
-                        var optionId = option.optionID;
-                        productOption.optionID = optionId;
-                        productOption.isProductOptionEnabled = true;
+                        productOption.ProductID = product.ProductID;
+                        var optionId = option.OptionID;
+                        productOption.OptionID = optionId;
+                        productOption.IsProductOptionEnabled = true;
                         _productOptionService.AddDataCommand(productOption);
                         _lstProductOption.Add(productOption);
                         var variantValue = new VariantValues();
-                        variantValue.productID = product.productID;//
-                        variantValue.variantID = productvariant.variantID;//
-                        variantValue.optionID = optionId;
-                        variantValue.valuesID = optionValue.valuesID;
+                        variantValue.ProductID = product.ProductID;//
+                        variantValue.VariantID = productvariant.VariantID;//
+                        variantValue.OptionID = optionId;
+                        variantValue.ValuesID = optionValue.ValuesID;
                         _variantValueService.AddDataCommand(variantValue);
                         _lstVariantValue.Add(variantValue);
 
@@ -245,13 +245,13 @@ namespace BUS.Reponsitories.Implements
         }
         private bool CheckExistOption(string optionName)
         {
-            var optionExisted = GetOption().Any(p => p.optionName == optionName);
+            var optionExisted = GetOption().Any(p => p.OptionName == optionName);
             return optionExisted;
 
         }
         public Guid CheckExistProduct(string productName)
         {
-            var productId = _lstProduct.Where(p => p.productName.Trim().ToLower() == productName.Trim().ToLower()).Select(p => p.productID).FirstOrDefault();
+            var productId = _lstProduct.Where(p => p.ProductName.Trim().ToLower() == productName.Trim().ToLower()).Select(p => p.ProductID).FirstOrDefault();
             if (productId != null)
             {
                 return productId;
@@ -262,11 +262,17 @@ namespace BUS.Reponsitories.Implements
                 return productId;
             }
         }
+        /// <summary>
+        /// Check option value exist in table option value
+        /// </summary>
+        /// <param name="optionName"></param>
+        /// <param name="optionValue"></param>
+        /// <returns>if exist return : true . else dont exist return false</returns>
         private bool CheckExistOptionValue(string optionName, string optionValue)
         {
             bool optionValueExist = true;
-            var optionId = GetOption().Where(p => p.optionName == optionName).Select(p => p.optionID).FirstOrDefault();
-            optionValueExist = GetOptionValue().Any(p => p.optionID == optionId && p.optionValues == optionValue);
+            var optionId = GetOption().Where(p => p.OptionName == optionName).Select(p => p.OptionID).FirstOrDefault();
+            optionValueExist = GetOptionValue().Any(p => p.OptionID == optionId && p.OptionValue == optionValue);
             return optionValueExist;
         }
         public bool DeleteGetOptionValue(OptionValues optionValues)
@@ -306,139 +312,251 @@ namespace BUS.Reponsitories.Implements
 
         public List<Options> GetOption()
         {
-            return _lstOption = _optionService.GetAllDataQuery().Where(p => p.isOptionEnabled == true).ToList();
+            return _lstOption = _optionService.GetAllDataQuery().Where(p => p.IsOptionEnabled == true).ToList();
         }
 
         public List<OptionValues> GetOptionValue()
         {
-            return _lstOptionValue = _optionValueService.GetAllDataQuery().Where(p => p.isOptionValueEnabled == true).ToList();
+            return _lstOptionValue = _optionValueService.GetAllDataQuery().Where(p => p.IsOptionValueEnabled == true).ToList();
         }
 
-        public List<ProductDetails> GetProductDetails()
+        public List<ProductDetailsDto> GetProductDetails()
         {
             var getAllProductDetails =
                 (from a in _lstVariantValue
                  group a by new
                  {
-                     a.productID,
-                     a.variantID
+                     a.ProductID,
+                     a.VariantID
                  } into z
-                 join b in _lstProduct on z.Key.productID equals b.productID
-                 from c in _lstProductVariant.Where(p => p.productID == z.Key.productID && p.variantID == z.Key.variantID)
-                 select new ProductDetails
+                 join b in _lstProduct on z.Key.ProductID equals b.ProductID
+                 from c in _lstProductVariant.Where(p => p.ProductID == z.Key.ProductID && p.VariantID == z.Key.VariantID)
+                 select new ProductDetailsDto
                  {
-                     productId = b.productID,
-                     VariantId = z.Key.variantID,
-                     productsName = b.productName,
-                     skuId = c.skuID,
-                     importPrice = c.importPrice,
-                     quantity = c.quantity,
-                     price = c.price,
-                     option = (from d in _lstVariantValue
-                               join e in _lstOption on d.optionID equals e.optionID
-                               join f in _lstOptionValue on d.valuesID equals f.valuesID
-                               where d.productID == z.Key.productID && d.variantID == z.Key.variantID
-                               select new Option
+                     ProductId = b.ProductID,
+                     VariantId = z.Key.VariantID,
+                     ProductsName = b.ProductName,
+                     SkuId = c.SkuID,
+                     ImportPrice = c.ImportPrice,
+                     Quantity = c.Quantity,
+                     Price = c.Price,
+                     Option = (from d in _lstVariantValue
+                               join e in _lstOption on d.OptionID equals e.OptionID
+                               join f in _lstOptionValue on d.ValuesID equals f.ValuesID
+                               where d.ProductID == z.Key.ProductID && d.VariantID == z.Key.VariantID
+                               select new OptionDto
                                {
-                                   optionName = e.optionName,
-                                   optionValue = f.optionValues
+                                   OptionName = e.OptionName,
+                                   OptionValue = f.OptionValue
                                }).ToList()
                  }).ToList();
             return getAllProductDetails;
         }
-        public bool UpdateProductDetails(ProductDetails productDetails)
+        public bool UpdateProductDetails(ProductDetailsDto productDetails)
         {
-            if (productDetails == null || productDetails.productsName == null || productDetails.productId == null || productDetails.option == null) return false;
+            if (productDetails == null || productDetails.ProductsName == null || productDetails.ProductId == null || productDetails.Option == null) return false;
             bool CheckStatus = false;
-            Products product = _lstProduct.FirstOrDefault(p => p.productID == productDetails.productId);
+            Products product = _lstProduct.FirstOrDefault(p => p.ProductID == productDetails.ProductId);
             if (product == null) return false;
-            product.productName = productDetails.productsName;
-            ProductVariants productVariant = _lstProductVariant.FirstOrDefault(p => p.productID == productDetails.productId && p.variantID == productDetails.VariantId);
+            product.ProductName = productDetails.ProductsName;
+            ProductVariants productVariant = _lstProductVariant.FirstOrDefault(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId);
             if (productVariant == null) return false;
-            productVariant.price = productDetails.price;
-            productVariant.quantity = productDetails.quantity;
-            productVariant.skuID = productDetails.skuId;
-            productVariant.importPrice = productDetails.importPrice;
-            UpdateProduct(product);
-            int indexProduct = _lstProduct.FindIndex(p => p.productID == productDetails.productId);
+            productVariant.Price = productDetails.Price;
+            productVariant.Quantity = productDetails.Quantity;
+            productVariant.SkuID = productDetails.SkuId;
+            productVariant.ImportPrice = productDetails.ImportPrice;
+            UpdateProduct(product); // update product
+            int indexProduct = _lstProduct.FindIndex(p => p.ProductID == productDetails.ProductId);
             _lstProduct.RemoveAt(indexProduct);
             _lstProduct.Add(product);
-            UpdateProductVariant(productVariant);
-            int indexProductVariant = _lstProduct.FindIndex(p => p.productID == productDetails.productId);
+            UpdateProductVariant(productVariant); // update product variant 
+            int indexProductVariant = _lstProduct.FindIndex(p => p.ProductID == productDetails.ProductId);
             _lstProductVariant.RemoveAt(indexProductVariant);
             _lstProductVariant.Add(productVariant);
-            var productDetailOld = GetProductDetails().FirstOrDefault(p => p.productId == productDetails.productId && p.VariantId == productDetails.VariantId);
+            var productDetailOld = GetProductDetails().FirstOrDefault(p => p.ProductId == productDetails.ProductId && p.VariantId == productDetails.VariantId);
             if (productDetailOld == null) return false;
-            for (int i = 0; i < productDetails.option.Count; i++)
+            for (int i = 0; i < productDetails.Option.Count; i++)
             {
-                for (int j = 0; j < productDetailOld.option.Count; j++)
+                for (int j = 0; j < productDetailOld.Option.Count; j++)
                 {
                     bool checkOptionExist = true;
-                    if (productDetails.option[i].optionName == productDetailOld.option[j].optionName)
+                    if (productDetails.Option[i].OptionName == productDetailOld.Option[j].OptionName) // check trùng option
                     {
-                        Guid optionId = _lstOption.Where(p => p.optionName == productDetails.option[i].optionName)
-                        .Select(p => p.optionID).FirstOrDefault();
-                        if (productDetails.option[i].optionValue != productDetailOld.option[j].optionValue)
+                        Guid optionId = _lstOption.Where(p => p.OptionName == productDetails.Option[i].OptionName)
+                        .Select(p => p.OptionID).FirstOrDefault();
+                        if (productDetails.Option[i].OptionValue != productDetailOld.Option[j].OptionValue)
                         {
-                            if (CheckExistOptionValue(productDetails.option[i].optionName, productDetails.option[i].optionValue))
+                            if (CheckExistOptionValue(productDetails.Option[i].OptionName, productDetails.Option[i].OptionValue))
                             {
-                                Guid optionValueId = _lstOptionValue.Where(p => p.optionValues == productDetails.option[i].optionValue)
-                                    .Select(p => p.valuesID).FirstOrDefault();
-                                VariantValues variantValues = _lstVariantValue.FirstOrDefault(p => p.optionID == optionId && p.productID == productDetails.productId && p.variantID == productDetails.VariantId);
+                                // take option value ID of variant value in update
+                                Guid optionValueId =
+                                    _lstOptionValue
+                                    .Where(p =>
+                                        p.OptionValue == productDetails.Option[i].OptionValue &&
+                                        p.OptionID == optionId
+                                    )
+                                    .Select(p => p.ValuesID)
+                                    .FirstOrDefault();
+                                var variantValues =
+                                     _lstVariantValue
+                                     .FirstOrDefault(p =>
+                                         p.OptionID == optionId &&
+                                         p.ProductID == productDetails.ProductId &&
+                                         p.VariantID == productDetails.VariantId
+                                          );
                                 if (variantValues == null) return false;
-                                variantValues.variantID = optionValueId;
-                                UpdateVariantValue(variantValues);
+                                if (variantValues.ValuesID == optionValueId && variantValues.IsVariantValueEnabled == false)
+                                {
+                                    variantValues.IsVariantValueEnabled = true;
+                                    UpdateVariantValue(variantValues);
+                                }
+                                else
+                                {
+                                    variantValues.IsVariantValueEnabled = false;
+                                    UpdateVariantValue(variantValues);
+                                    variantValues.ValuesID = optionValueId;
+                                    AddVariantValue(variantValues);
+                                }
+                                int indexUpdate =
+                                    _lstVariantValue
+                                    .FindIndex(p =>
+                                        p.VariantID == variantValues.VariantID &&
+                                        p.ProductID == productDetails.ProductId &&
+                                        p.OptionID == optionId
+                                        );
+                                _lstVariantValue.RemoveAt(indexUpdate);
+                                _lstVariantValue.Add(variantValues);
                             }
                             else
                             {
                                 OptionValues optionValues = new OptionValues();
-                                optionValues.valuesID = Guid.NewGuid();
-                                optionValues.optionValues = productDetails.option[i].optionValue;
-                                optionValues.optionID = optionId;
-                                optionValues.isOptionValueEnabled = true;
-                                VariantValues variantValues = new VariantValues();
-                                variantValues.productID = productDetails.productId;
-                                variantValues.variantID = productDetails.VariantId;
-                                variantValues.optionID = optionId;
-                                variantValues.valuesID = optionValues.valuesID;
-                                variantValues.isVariantValueEnabled = true;
-                                AddGetOptionValue(optionValues);
+                                optionValues.ValuesID = Guid.NewGuid();
+                                optionValues.OptionValue = productDetails.Option[i].OptionValue;
+                                optionValues.OptionID = optionId;
+                                optionValues.IsOptionValueEnabled = true;
+                                AddGetOptionValue(optionValues);// add optionvalue
+                                _lstOptionValue.Add(optionValues);
+                                var variantValues = _lstVariantValue.FirstOrDefault(p => p.OptionID == optionId && p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId && p.IsVariantValueEnabled == true);
+                                if (variantValues == null) return false;
+                                variantValues.IsVariantValueEnabled = false;
                                 UpdateVariantValue(variantValues);
+                                variantValues.IsVariantValueEnabled = true;
+                                variantValues.ValuesID = optionValues.ValuesID;
+                                AddVariantValue(variantValues);// update variantvalue
+                                int indexUpdate = _lstVariantValue.FindIndex(p => p.VariantID == variantValues.VariantID);
+                                _lstVariantValue.RemoveAt(indexUpdate);
+                                _lstVariantValue.Add(variantValues);
                             }
                         }
                         checkOptionExist = false;
                         break;
                     }
-                    else if (checkOptionExist && j + 1 == productDetailOld.option.Count)
+                    else if (checkOptionExist && j + 1 == productDetailOld.Option.Count)
                     {
-                        Options option = new Options();
-                        option.optionName = productDetails.option[i].optionName;
-                        option.optionID = Guid.NewGuid();
-                        option.isOptionEnabled = true;
-                        AddOptin(option);
-                        _lstOption.Add(option);
-                        OptionValues optionValues = new OptionValues();
-                        optionValues.optionID = option.optionID;
-                        optionValues.valuesID = Guid.NewGuid();
-                        optionValues.optionValues = productDetails.option[i].optionValue;
-                        optionValues.isOptionValueEnabled = true;
-                        AddGetOptionValue(optionValues);
-                        _lstOptionValue.Add(optionValues);
-                        ProductOptions productOptions = new ProductOptions();
-                        productOptions.optionID = option.optionID;
-                        productOptions.productID = productDetails.productId;
-                        productOptions.isProductOptionEnabled = true;
-                        AddProductOption(productOptions);
-                        _lstProductOption.Add(productOptions);
-                        VariantValues variantValues = new VariantValues();
-                        variantValues.optionID = option.optionID;
-                        variantValues.valuesID = optionValues.valuesID;
-                        variantValues.variantID = productDetails.VariantId;
-                        variantValues.productID = productDetails.productId;
-                        variantValues.isVariantValueEnabled = true;
-                        AddVariantValue(variantValues);
-                        _lstVariantValue.Add(variantValues);
+                        if (CheckExistOption(productDetails.Option[i].OptionName))
+                        {
+                            Guid optionId = _lstOption.Where(p => p.OptionName == productDetails.Option[i].OptionName)
+                            .Select(p => p.OptionID).FirstOrDefault();
+                            if (CheckExistOptionValue(productDetails.Option[i].OptionName, productDetails.Option[i].OptionValue))
+                            {
+                                var optionValueId =
+                                 _lstOptionValue
+                                 .Where(p =>
+                                     p.OptionValue == productDetails.Option[i].OptionValue &&
+                                     p.OptionID == optionId
+                                 )
+                                 .Select(p => p.ValuesID)
+                                 .FirstOrDefault();
+                                var variantValue = new VariantValues();
+                                variantValue.ProductID = productDetails.ProductId;
+                                variantValue.VariantID = productDetails.VariantId;
+                                variantValue.OptionID = optionId;
+                                variantValue.ValuesID = optionValueId;
+                                variantValue.IsVariantValueEnabled = true;
+                                var checkExist = _lstVariantValue.FirstOrDefault(p => p.ProductID == variantValue.ProductID && p.VariantID == variantValue.VariantID && p.OptionID == variantValue.OptionID && p.ValuesID == variantValue.ValuesID);
+
+                                if (checkExist == null)
+                                {
+                                    UpdateVariantValue(variantValue);
+                                }
+                                else
+                                {
+                                    AddVariantValue(variantValue);
+                                    _lstVariantValue.Add(variantValue);
+                                }
+                            }
+                            else
+                            {
+                                OptionValues optionValues = new OptionValues();
+                                optionValues.ValuesID = Guid.NewGuid();
+                                optionValues.OptionValue = productDetails.Option[i].OptionValue;
+                                optionValues.OptionID = optionId;
+                                optionValues.IsOptionValueEnabled = true;
+                                AddGetOptionValue(optionValues);
+                                _lstOptionValue.Add(optionValues);
+                                var variantValue = new VariantValues();
+                                variantValue.ProductID = productDetails.ProductId;
+                                variantValue.VariantID = productDetails.VariantId;
+                                variantValue.OptionID = optionId;
+                                variantValue.ValuesID = optionValues.ValuesID;
+                                AddVariantValue(variantValue);
+                                _lstVariantValue.Add(variantValue);
+                            }
+
+                        }
+                        else
+                        {
+                            var option = new Options();
+                            option.OptionID = Guid.NewGuid();
+                            option.OptionName = productDetails.Option[i].OptionName;
+                            option.IsOptionEnabled = true;
+                            AddOptin(option);
+                            _lstOption.Add(option);
+                            var optionValue = new OptionValues();
+                            optionValue.ValuesID = Guid.NewGuid();
+                            optionValue.OptionID = option.OptionID;
+                            optionValue.OptionValue = productDetails.Option[i].OptionValue;
+                            optionValue.IsOptionValueEnabled = true;
+                            AddGetOptionValue(optionValue);
+                            _lstOptionValue.Add(optionValue);
+                            var productOption = new ProductOptions();
+                            productOption.ProductID = productDetails.ProductId;
+                            productOption.OptionID = option.OptionID;
+                            productOption.IsProductOptionEnabled = true;
+                            AddProductOption(productOption);
+                            _lstProductOption.Add(productOption);
+                            var variantValue = new VariantValues();
+                            variantValue.ProductID = productDetails.ProductId;
+                            variantValue.VariantID = productDetails.VariantId;
+                            variantValue.OptionID = option.OptionID;
+                            variantValue.ValuesID = optionValue.ValuesID;
+                            variantValue.IsVariantValueEnabled = true;
+                            AddVariantValue(variantValue);
+                            _lstVariantValue.Add(variantValue);
+                        }
                         break;
+                    }
+                }
+            }
+            var forProductVariant = GetProductDetails().FirstOrDefault(p => p.ProductId == productDetails.ProductId && p.VariantId == productDetails.VariantId);
+            for (int i = 0; i < forProductVariant.Option.Count; i++)
+            {
+                bool checkExist = true;
+                for (int j = 0; j < productDetails.Option.Count; j++)
+                {
+
+                    if (forProductVariant.Option[i].OptionName == productDetails.Option[j].OptionName && forProductVariant.Option[i].OptionValue == productDetails.Option[j].OptionValue)
+                    {
+                        checkExist = false;
+                    }
+                    if (checkExist && j + 1 == productDetails.Option.Count)
+                    {
+                        var optionId = _lstOption.Where(p => p.OptionName == forProductVariant.Option[i].OptionName).Select(p => p.OptionID).FirstOrDefault();
+                        var valueId = _lstOptionValue.Where(p => p.OptionValue == forProductVariant.Option[i].OptionValue && p.OptionID == optionId).Select(p => p.ValuesID).FirstOrDefault();
+                        var vv = _lstVariantValue.FirstOrDefault(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId && p.IsVariantValueEnabled == true && p.OptionID == optionId && p.ValuesID == valueId);
+                        if (vv == null) return false;
+                        vv.IsVariantValueEnabled = false;
+                        UpdateVariantValue(vv);
                     }
                 }
             }
@@ -446,34 +564,35 @@ namespace BUS.Reponsitories.Implements
             return CheckStatus;
         }
 
-        public bool RemoveProductDetails(ProductDetails productDetails)
+        public bool RemoveProductDetails(ProductDetailsDto productDetails)
         {
-            var variants = _lstVariantValue.Where(p => p.productID == productDetails.productId && p.variantID == productDetails.VariantId).ToList();
-            if (variants == null) return false;
+            var variants = _lstVariantValue.Where(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId).ToList();
+            if (variants.Count == 0) return false;
             foreach (var variant in variants)
             {
-                _variantValueService.DeleteDataCommand(variant);
+                variant.IsVariantValueEnabled = false;
+                _variantValueService.UpdateDataCommand(variant);
             }
             return true;
         }
         public List<ProductOptions> GetProductOptions()
         {
-            return _lstProductOption = _productOptionService.GetAllDataQuery().Where(p => p.isProductOptionEnabled == true).ToList();
+            return _lstProductOption = _productOptionService.GetAllDataQuery().Where(p => p.IsProductOptionEnabled == true).ToList();
         }
 
         public List<Products> GetProducts()
         {
-            return _lstProduct = _productService.GetAllDataQuery().Where(p => p.isProductEnabled == true).ToList();
+            return _lstProduct = _productService.GetAllDataQuery().Where(p => p.IsProductEnabled == true).ToList();
         }
 
         public List<ProductVariants> GetProductVariants()
         {
-            return _lstProductVariant = _productVariantService.GetAllDataQuery().Where(p => p.isProductVariantEnabled == true).ToList();
+            return _lstProductVariant = _productVariantService.GetAllDataQuery().Where(p => p.IsProductVariantEnabled == true).ToList();
         }
 
         public List<VariantValues> GetVariantValues()
         {
-            return _lstVariantValue = _variantValueService.GetAllDataQuery().Where(p => p.isVariantValueEnabled == true).ToList();
+            return _lstVariantValue = _variantValueService.GetAllDataQuery().Where(p => p.IsVariantValueEnabled == true).ToList();
         }
 
         public bool UpdateGetOptionValue(OptionValues optionValues)

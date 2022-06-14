@@ -22,429 +22,458 @@ namespace DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("DAL.Entities.cart", b =>
+            modelBuilder.Entity("DAL.Entities.CartItem", b =>
                 {
-                    b.Property<Guid>("cartID")
+                    b.Property<Guid>("CartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("amountPlay")
+                    b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<bool>("isOrderEnabled")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<DateTime>("orderTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 6, 7, 21, 16, 30, 0, DateTimeKind.Unspecified));
-
-                    b.Property<float>("payingCustomer")
-                        .HasColumnType("real");
-
-                    b.Property<float>("payments")
-                        .HasColumnType("real");
-
-                    b.Property<float>("refunds")
-                        .HasColumnType("real");
-
-                    b.Property<bool>("statusDelete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<Guid>("userID")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("cartID");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("userID");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
-                    b.ToTable("carts", (string)null);
-                });
-
-            modelBuilder.Entity("DAL.Entities.cartDetails", b =>
-                {
-                    b.Property<Guid>("orderID")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("variantID")
+                    b.Property<Guid>("VariantId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isOrderDetailEnabled")
-                        .HasColumnType("bit");
+                    b.HasKey("CartId");
 
-                    b.Property<int>("quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                    b.HasIndex("ProductId");
 
-                    b.Property<float>("unitPrice")
-                        .HasColumnType("real");
-
-                    b.HasKey("orderID", "variantID");
-
-                    b.HasIndex("variantID");
-
-                    b.ToTable("cartDetails", (string)null);
+                    b.ToTable("CartItem", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.Options", b =>
                 {
-                    b.Property<Guid>("optionID")
+                    b.Property<Guid>("OptionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isOptionEnabled")
+                    b.Property<bool>("IsOptionEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("optionName")
+                    b.Property<string>("OptionName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("optionID");
+                    b.HasKey("OptionID");
 
                     b.ToTable("options", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.OptionValues", b =>
                 {
-                    b.Property<Guid>("valuesID")
+                    b.Property<Guid>("ValuesID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isOptionValueEnabled")
+                    b.Property<bool>("IsOptionValueEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<Guid>("optionID")
+                    b.Property<Guid>("OptionID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("optionValues")
+                    b.Property<string>("OptionValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("valuesID");
+                    b.HasKey("ValuesID");
 
-                    b.HasIndex("optionID");
+                    b.HasIndex("OptionID");
 
                     b.ToTable("optionValues", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Entities.ProductOptions", b =>
+            modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
-                    b.Property<Guid>("optionID")
+                    b.Property<Guid>("OrderID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("productID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<float>("AmountPay")
+                        .HasColumnType("real");
 
-                    b.Property<bool>("isProductOptionEnabled")
+                    b.Property<bool>("IsOrderEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("optionID", "productID");
+                    b.Property<DateTime>("OrderTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2022, 6, 14, 21, 29, 13, 0, DateTimeKind.Unspecified));
 
-                    b.HasIndex("productID");
+                    b.Property<float>("PayingCustomer")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Payments")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("StatusDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Order", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.OrderDetails", b =>
+                {
+                    b.Property<Guid>("OrderID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VariantID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsOrderDetailEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<float>("UnitPrice")
+                        .HasColumnType("real");
+
+                    b.HasKey("OrderID", "VariantID");
+
+                    b.HasIndex("VariantID");
+
+                    b.ToTable("OrdertDetails", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.ProductOptions", b =>
+                {
+                    b.Property<Guid>("OptionID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsProductOptionEnabled")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.HasKey("OptionID", "ProductID");
+
+                    b.HasIndex("ProductID");
 
                     b.ToTable("productOptions");
                 });
 
             modelBuilder.Entity("DAL.Entities.Products", b =>
                 {
-                    b.Property<Guid>("productID")
+                    b.Property<Guid>("ProductID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isProductEnabled")
+                    b.Property<bool>("IsProductEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("productName")
+                    b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("productID");
+                    b.HasKey("ProductID");
 
                     b.ToTable("products", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductVariants", b =>
                 {
-                    b.Property<Guid>("variantID")
+                    b.Property<Guid>("VariantID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("importPrice")
+                    b.Property<float>("ImportPrice")
                         .HasColumnType("real");
 
-                    b.Property<bool>("isProductVariantEnabled")
+                    b.Property<bool>("IsProductVariantEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<float>("price")
+                    b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("productID")
+                    b.Property<Guid>("ProductID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("skuID")
+                    b.Property<Guid>("SkuID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("variantID");
+                    b.HasKey("VariantID");
 
-                    b.HasIndex("productID");
+                    b.HasIndex("ProductID");
 
                     b.ToTable("productVariants", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.RolesUser", b =>
                 {
-                    b.Property<Guid>("rolesID")
+                    b.Property<Guid>("RolesID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isRolesUserEnabled")
+                    b.Property<bool>("IsRolesUserEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("rolesName")
+                    b.Property<string>("RolesName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("rolesID");
+                    b.HasKey("RolesID");
 
                     b.ToTable("rolesUsers", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.user", b =>
                 {
-                    b.Property<Guid>("userID")
+                    b.Property<Guid>("UserID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gender")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<string>("address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("birdDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isUserEnabled")
+                    b.Property<bool>("IsUserEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("numberPhone")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("password")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("rolesID")
+                    b.Property<Guid>("RolesID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("userName")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("userID");
+                    b.HasKey("UserID");
 
-                    b.HasIndex("rolesID");
+                    b.HasIndex("RolesID");
 
                     b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.VariantValues", b =>
                 {
-                    b.Property<Guid>("productID")
+                    b.Property<Guid>("ProductID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("variantID")
+                    b.Property<Guid>("VariantID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("optionID")
+                    b.Property<Guid>("OptionID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("valuesID")
+                    b.Property<Guid>("ValuesID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isVariantValueEnabled")
+                    b.Property<bool>("IsVariantValueEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("productID", "variantID", "optionID", "valuesID");
+                    b.HasKey("ProductID", "VariantID", "OptionID", "ValuesID");
 
-                    b.HasIndex("valuesID");
+                    b.HasIndex("ValuesID");
 
-                    b.HasIndex("variantID");
+                    b.HasIndex("VariantID");
 
                     b.ToTable("variantValues", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Entities.cart", b =>
-                {
-                    b.HasOne("DAL.Entities.user", "user")
-                        .WithMany("carts")
-                        .HasForeignKey("userID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("DAL.Entities.cartDetails", b =>
-                {
-                    b.HasOne("DAL.Entities.cart", "carts")
-                        .WithMany("cartDetails")
-                        .HasForeignKey("orderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.ProductVariants", "productVariants")
-                        .WithMany("CartDetails")
-                        .HasForeignKey("variantID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("carts");
-
-                    b.Navigation("productVariants");
-                });
-
             modelBuilder.Entity("DAL.Entities.OptionValues", b =>
                 {
-                    b.HasOne("DAL.Entities.Options", "options")
-                        .WithMany("optionValues")
-                        .HasForeignKey("optionID")
+                    b.HasOne("DAL.Entities.Options", "Options")
+                        .WithMany("OptionValues")
+                        .HasForeignKey("OptionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("options");
+                    b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Order", b =>
+                {
+                    b.HasOne("DAL.Entities.user", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.OrderDetails", b =>
+                {
+                    b.HasOne("DAL.Entities.Order", "Orderds")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.ProductVariants", "ProductVariants")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("VariantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orderds");
+
+                    b.Navigation("ProductVariants");
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductOptions", b =>
                 {
-                    b.HasOne("DAL.Entities.Options", "options")
-                        .WithMany("productOptions")
-                        .HasForeignKey("optionID")
+                    b.HasOne("DAL.Entities.Options", "Options")
+                        .WithMany("ProductOptions")
+                        .HasForeignKey("OptionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Products", "products")
-                        .WithMany("productOptions")
-                        .HasForeignKey("productID")
+                    b.HasOne("DAL.Entities.Products", "Products")
+                        .WithMany("ProductOptions")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("options");
+                    b.Navigation("Options");
 
-                    b.Navigation("products");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductVariants", b =>
                 {
-                    b.HasOne("DAL.Entities.Products", "product")
-                        .WithMany("productVariants")
-                        .HasForeignKey("productID")
+                    b.HasOne("DAL.Entities.Products", "Product")
+                        .WithMany("ProductVariants")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("product");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("DAL.Entities.user", b =>
                 {
-                    b.HasOne("DAL.Entities.RolesUser", "rolesUsers")
-                        .WithMany("users")
-                        .HasForeignKey("rolesID")
+                    b.HasOne("DAL.Entities.RolesUser", "RolesUsers")
+                        .WithMany("Users")
+                        .HasForeignKey("RolesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("rolesUsers");
+                    b.Navigation("RolesUsers");
                 });
 
             modelBuilder.Entity("DAL.Entities.VariantValues", b =>
                 {
-                    b.HasOne("DAL.Entities.OptionValues", "optionValue")
-                        .WithMany("variantValues")
-                        .HasForeignKey("valuesID")
+                    b.HasOne("DAL.Entities.OptionValues", "OptionValue")
+                        .WithMany("VariantValues")
+                        .HasForeignKey("ValuesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.ProductVariants", "productVariant")
-                        .WithMany("variantValues")
-                        .HasForeignKey("variantID")
+                    b.HasOne("DAL.Entities.ProductVariants", "ProductVariant")
+                        .WithMany("VariantValues")
+                        .HasForeignKey("VariantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("optionValue");
+                    b.Navigation("OptionValue");
 
-                    b.Navigation("productVariant");
-                });
-
-            modelBuilder.Entity("DAL.Entities.cart", b =>
-                {
-                    b.Navigation("cartDetails");
+                    b.Navigation("ProductVariant");
                 });
 
             modelBuilder.Entity("DAL.Entities.Options", b =>
                 {
-                    b.Navigation("optionValues");
+                    b.Navigation("OptionValues");
 
-                    b.Navigation("productOptions");
+                    b.Navigation("ProductOptions");
                 });
 
             modelBuilder.Entity("DAL.Entities.OptionValues", b =>
                 {
-                    b.Navigation("variantValues");
+                    b.Navigation("VariantValues");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("DAL.Entities.Products", b =>
                 {
-                    b.Navigation("productOptions");
+                    b.Navigation("ProductOptions");
 
-                    b.Navigation("productVariants");
+                    b.Navigation("ProductVariants");
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductVariants", b =>
                 {
-                    b.Navigation("CartDetails");
+                    b.Navigation("OrderDetails");
 
-                    b.Navigation("variantValues");
+                    b.Navigation("VariantValues");
                 });
 
             modelBuilder.Entity("DAL.Entities.RolesUser", b =>
                 {
-                    b.Navigation("users");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DAL.Entities.user", b =>
                 {
-                    b.Navigation("carts");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

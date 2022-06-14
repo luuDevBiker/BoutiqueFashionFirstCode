@@ -44,6 +44,26 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[11.0.1, )"
+            },
+            "Iot.Core": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Iot.Core.AspNetCore": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Iot.Core.Domain": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Iot.Core.Infrastructure": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[3.2.0, )"

@@ -4,12 +4,12 @@ namespace DAL.Entities
 {
     public class OptionValues
     {
-        public Guid valuesID { get; set; }
-        public Guid optionID { get; set; }
-        public string optionValues { get; set; }
-        public bool isOptionValueEnabled { get; set; }
-        public Options options { get; set; }
-        public ICollection<VariantValues> variantValues { get; set; }
+        public Guid ValuesID { get; set; }
+        public Guid OptionID { get; set; }
+        public string OptionValue { get; set; }
+        public bool IsOptionValueEnabled { get; set; }
+        public Options Options { get; set; }
+        public ICollection<VariantValues> VariantValues { get; set; }
 
     }
 }
