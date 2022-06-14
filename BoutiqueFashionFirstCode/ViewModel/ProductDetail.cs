@@ -1,14 +1,16 @@
 ﻿using BUS.BusEntity;
+using DAL.Entities;
 
 namespace BoutiqueFashionFirstCode.ViewModel
 {
     public class ProductDetail
     {
 
-        public string productsName { get; set; }
-        public float importPrice { get; set; }
-        public float price { get; set; }
-        public int quantity { get; set; }
-        public List<Option>? option { get; set; }
+        public string ProductName { get; set; }
+        public float ImportPrice { get; set; }
+        public float Price { get; set; }
+        public int Quantity { get; set; }
+        public ICollection<ImageProducts>? Images { get; set; }
+        public List<Option>? Option { get; set; }
     }
 }

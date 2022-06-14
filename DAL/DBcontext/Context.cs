@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DAL.DBcontext
 {
@@ -27,6 +28,8 @@ namespace DAL.DBcontext
         public DbSet<ProductOptions> productOptions { get; set; }
         public DbSet<Products> products { get; set; }
         public DbSet<CartItem> cartItems { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RolesUser>(rolesUser =>
@@ -66,8 +69,13 @@ namespace DAL.DBcontext
                 productVariants.Property(p => p.ImportPrice).IsRequired();
                 productVariants.Property(p => p.Price).IsRequired();
                 productVariants.Property(p => p.Quantity).IsRequired();
+                productVariants.Property(p => p.Images).HasConversion(
+                    v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                    v => JsonConvert.DeserializeObject<ICollection<ImageProducts>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                    );
                 productVariants.Property(p => p.IsProductVariantEnabled).HasDefaultValue(true);
                 productVariants.HasOne<Products>(p => p.Product).WithMany(p => p.ProductVariants).HasForeignKey(p => p.ProductID);
+
             });
             modelBuilder.Entity<Products>(products =>
             {
@@ -126,6 +134,8 @@ namespace DAL.DBcontext
                 cartItems.HasIndex(p => p.ProductId);
 
             });
+         
+
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using BUS.BusEntity;
+
 using BUS.ViewModel;
 using DAL.Entities;
 
@@ -17,6 +18,8 @@ namespace BUS.Profiles
         {
             CreateMap<CartItem, CreatCartViewModel>().ReverseMap();
             CreateMap<CartItem, CartDto>().ReverseMap();
+            CreateMap<user, LoginDto>().ReverseMap();
+         
           
         }
     }

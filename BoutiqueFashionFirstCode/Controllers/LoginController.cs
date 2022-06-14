@@ -3,6 +3,8 @@ using BUS.Reponsitories.Implements;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using BoutiqueFashionFirstCode.ViewModel;
+using BUS.ViewModel;
+using BUS.BusEntity;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoutiqueFashionFirstCode.Controllers
@@ -19,9 +21,9 @@ namespace BoutiqueFashionFirstCode.Controllers
         }
         // GET api/<LoginController>/5
         [HttpGet("CheckLogin")]
-        public bool CheckLogin(string account, string password)
+        public LoginDto CheckLogin(ViewUserLogin viewUserLogin)
         {
-            return _loginService.Login(account, password);
+            return _loginService.Login(viewUserLogin);
         }
 
         // POST api/<LoginController>

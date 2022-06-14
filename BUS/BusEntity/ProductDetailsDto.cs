@@ -1,12 +1,13 @@
+﻿using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Entities;
+
 namespace BUS.BusEntity
 {
-    public class ProductDetails
+    public class ProductDetailsDto
     {
         public Guid ProductId { get; set; }
         public Guid VariantId { get; set; }

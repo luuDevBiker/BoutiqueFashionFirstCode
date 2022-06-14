@@ -47,10 +47,10 @@ namespace BUS.Reponsitories.Interfaces
         public bool UpdateVariantValue(VariantValues variantValues);
         public bool DeleteVariantValue(VariantValues variantValues);
         #endregion
-        public List<ProductDetails> GetProductDetails();
+        public List<ProductDetailsDto> GetProductDetails();
         public bool AddProductDetails(ProductDetails productDetails);
         public Guid CheckExistProduct(string productName);
- 	public bool UpdateProductDetails(ProductDetails productDetails);
+        public bool UpdateProductDetails(ProductDetailsDto productDetails);
         public bool RemoveProductDetails(ProductDetails productDetails);
     }
 }

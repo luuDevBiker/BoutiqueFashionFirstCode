@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using DAL.Entities;
 using DAL.Reponsitories.Implements;
 using DAL.Reponsitories.Interfaces;
+using BUS.ViewModel;
+using BUS.BusEntity;
+using Iot.Core.Extensions;
+using AutoMapper;
 
 namespace BUS.Reponsitories.Implements
 {
@@ -16,16 +20,19 @@ namespace BUS.Reponsitories.Implements
         private readonly IGenericRepository<user> _userService;
         private readonly IGenericRepository<RolesUser> _rolesUserService;
         private readonly SendMailService _sendMailService;
+        private readonly IMapper _imapper;
         List<user> _users;
         List<RolesUser> _rolesUsers;
-        public LoginService(IGenericRepository<user> userService, SendMailService sendMail, IGenericRepository<RolesUser> rolesUserService)
+        public LoginService(IGenericRepository<user> userService, SendMailService sendMail, IGenericRepository<RolesUser> rolesUserService, IMapper imapper)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _rolesUserService = rolesUserService ?? throw new ArgumentNullException(nameof(rolesUserService));
             _sendMailService = sendMail ?? throw new ArgumentNullException(nameof(sendMail));
+            _imapper = imapper ?? throw new ArgumentNullException(nameof(imapper));
             _users = new List<user>();
             _rolesUsers = new List<RolesUser>();
             lstUser();
+            lstRolesUser();
 
         }
 
@@ -48,25 +55,31 @@ namespace BUS.Reponsitories.Implements
 
         }
 
-        public bool Login(string account, string password)
+        public LoginDto Login(ViewUserLogin viewUserAfterLogin)
         {
 
-            if (account != null && password != null)
+            if (!viewUserAfterLogin.Account.IsNullOrDefault() && !viewUserAfterLogin.PassWord.IsNullOrDefault())
             {
-                user userlogin = _users.FirstOrDefault(c => c.Email == account && c.Password == password);
+                var userlogin = _users.FirstOrDefault(c => c.Email == viewUserAfterLogin.Account && c.Password == viewUserAfterLogin.PassWord);
                 if (userlogin != null)
                 {
-                    return true;
+                    var userDtoHaventRole = _imapper.Map<LoginDto>(userlogin);
+                    var roleName = _rolesUsers.Where(p => p.RolesID == userDtoHaventRole.RolesID).Select(p => p.RolesName).FirstOrDefault();
+                    if (!roleName.IsNullOrDefault())
+                    {
+                        userDtoHaventRole.RolesName = roleName;
+                        return userDtoHaventRole;
+                    }
+
                 }
-                else
-                {
-                    return false;
-                }
+                return null;
+
             }
             else
             {
-                return false;
+                return null;
             }
+
 
         }
 
