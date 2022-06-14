@@ -567,7 +567,7 @@ namespace BUS.Reponsitories.Implements
         public bool RemoveProductDetails(ProductDetails productDetails)
         {
             var variants = _lstVariantValue.Where(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId).ToList();
-            if (variants == null) return false;
+            if (variants.Count == 0) return false;
             foreach (var variant in variants)
             {
                 variant.IsVariantValueEnabled = false;
