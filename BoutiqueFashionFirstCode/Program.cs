@@ -10,6 +10,10 @@ using BUS.Dtos;
 using Microsoft.AspNetCore.OData;using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Org.BouncyCastle.Security;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using BUS.BusEntity;
+using BUS.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 var cross = "myCross";
@@ -51,7 +55,7 @@ static IEdmModel GetEdmModel()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAutoMapper(typeof(BoutiqueProfile));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddScoped<ILoginService, LoginService>();

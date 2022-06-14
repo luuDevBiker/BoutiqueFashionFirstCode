@@ -1,9 +1,13 @@
 ﻿using BoutiqueFashionFirstCode.ViewModel;
 using BUS.BusEntity;
 using BUS.Reponsitories.Interfaces;
+using BUS.ViewModel;
 using DAL.Entities;
+using Iot.Core.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
+
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -17,31 +21,25 @@ namespace BoutiqueFashionFirstCode.Controllers
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
         }
         [HttpGet("GetProductInCart")]
-        public List<CartItem> GetCart(Guid userId)
+        public IQueryable<CartDto> GetCart([FromHeader]Guid userId)
         {
             return _cartService.GetProductInCart(userId);
         }
-        [HttpPost("AddproductInCart")]
-        public bool AddCart(CartViewModel cart)
+        [HttpPost("AddProductInCart")]
+        public bool AddCart([FromBody] CreatCartViewModel cart)
         {
-            var cartitem = new CartItem();
-            cartitem.CartId = Guid.NewGuid();
-            cartitem.ProductId = cart.ProductId;
-            cartitem.VariantId = cart.VariantId;
-            cartitem.Quantity = cart.Quantity;
-            cartitem.Price = cart.Price;
-            cartitem.UserId = cart.UserId;
-            return _cartService.AddCart(cartitem);
+            return _cartService.AddCart(cart);
         }
-        [HttpPut("UpdateItemInCart")]
-        public bool UpdateItemInCart(CartItem cart)
+        [HttpPut("UpdateProductInCart")]
+        public bool UpdateProductInCart(UpdateCartViewModel cart)
         {
             return _cartService.UpdateCart(cart);
         }
-        [HttpDelete("RemoveItemInCart")]
-        public bool RemoveItemInCart(Guid cartid)
+        [HttpDelete("DeteleProductInCart/{key}")]
+        public bool DeteleProductInCart([FromODataUri] Guid key)
         {
-            return _cartService.RevoteItemIncart(cartid);
+            return _cartService.RevoteItemIncart(key);
         }
+
     }
 }

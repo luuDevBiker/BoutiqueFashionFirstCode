@@ -1,4 +1,6 @@
-﻿using BUS.BusEntity;
+﻿using BUS.Profiles;
+using BUS.BusEntity;
+using BUS.ViewModel;
 using DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,9 @@ namespace BUS.Reponsitories.Interfaces
 {
     public interface ICartService
     {
-        public bool AddCart(CartItem cartItem);
-        public bool UpdateCart(CartItem cartItem);
-        public List<CartItem> GetProductInCart(Guid userId);
-        public bool RevoteItemIncart(Guid cartid);
+        public bool AddCart(CreatCartViewModel cart);
+        public IQueryable<CartDto> GetProductInCart(Guid userId);
+        public bool RevoteItemIncart(Guid cartId);
+        public bool UpdateCart(UpdateCartViewModel cart);
     }
 }
