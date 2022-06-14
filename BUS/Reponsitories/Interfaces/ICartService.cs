@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using BUS.BusEntity;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace BUS.Reponsitories.Interfaces
     {
         public bool AddCart(CartItem cartItem);
         public bool UpdateCart(CartItem cartItem);
-        public List<CartItem> GetProductInCart();
+        public List<CartItem> GetProductInCart(Guid userId);
+        public bool RevoteItemIncart(Guid cartid);
     }
 }
