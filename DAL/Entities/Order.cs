@@ -8,9 +8,9 @@ namespace DAL.Entities
         public Guid UserID { get; set; }
       
         public DateTime OrderTime { get; set; }
-        public float AmountPlay { get; set; }
+        public float AmountPay { get; set; }
         public float PayingCustomer { get; set; }
-        public float Refunds { get; set; }
+     
         public float Payments { get; set; }
         public bool StatusDelete { get; set; }
         public bool IsOrderEnabled { get; set; }

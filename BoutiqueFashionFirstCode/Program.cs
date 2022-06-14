@@ -5,9 +5,10 @@ using DAL.Reponsitories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
 using DAL.Reponsitories.Implements;
-
+using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using BUS.BusEntity;
+using BUS.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 var cross = "myCross";
@@ -25,6 +26,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(BoutiqueProfile));
 //builder.Services.AddScoped<IGenericRepository<user>, GenericRepository<user>>();
 //builder.Services.AddScoped<IGenericRepository<Options>, GenericRepository<Options>>();
 //builder.Services.AddScoped<IGenericRepository<OptionValues>, GenericRepository<OptionValues>>();

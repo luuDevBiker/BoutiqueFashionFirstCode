@@ -122,7 +122,7 @@ namespace DAL.DBcontext
             modelBuilder.Entity<CartItem>(cartItems =>
             {
                 cartItems.ToTable("CartItem");
-                cartItems.HasKey(p => p.ProductId);
+                cartItems.HasKey(p => p.CartId);
                 cartItems.HasIndex(p => p.ProductId);
 
             });
