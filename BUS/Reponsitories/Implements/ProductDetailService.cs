@@ -1,4 +1,4 @@
-﻿using BUS.BusEntity;
+﻿using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
@@ -131,7 +131,7 @@ namespace BUS.Reponsitories.Implements
 
             return false;
         }
-        public bool AddProductDetails(ProductDetails productDetails)
+        public bool AddProductDetails(ProductDetailsDto productDetails)
         {
             if (productDetails == null)
             {
@@ -320,7 +320,7 @@ namespace BUS.Reponsitories.Implements
             return _lstOptionValue = _optionValueService.GetAllDataQuery().Where(p => p.IsOptionValueEnabled == true).ToList();
         }
 
-        public List<ProductDetails> GetProductDetails()
+        public List<ProductDetailsDto> GetProductDetails()
         {
             var getAllProductDetails =
                 (from a in _lstVariantValue
@@ -331,7 +331,7 @@ namespace BUS.Reponsitories.Implements
                  } into z
                  join b in _lstProduct on z.Key.ProductID equals b.ProductID
                  from c in _lstProductVariant.Where(p => p.ProductID == z.Key.ProductID && p.VariantID == z.Key.VariantID)
-                 select new ProductDetails
+                 select new ProductDetailsDto
                  {
                      ProductId = b.ProductID,
                      VariantId = z.Key.VariantID,
@@ -344,7 +344,7 @@ namespace BUS.Reponsitories.Implements
                                join e in _lstOption on d.OptionID equals e.OptionID
                                join f in _lstOptionValue on d.ValuesID equals f.ValuesID
                                where d.ProductID == z.Key.ProductID && d.VariantID == z.Key.VariantID
-                               select new Option
+                               select new OptionDto
                                {
                                    OptionName = e.OptionName,
                                    OptionValue = f.OptionValue
@@ -352,7 +352,7 @@ namespace BUS.Reponsitories.Implements
                  }).ToList();
             return getAllProductDetails;
         }
-        public bool UpdateProductDetails(ProductDetails productDetails)
+        public bool UpdateProductDetails(ProductDetailsDto productDetails)
         {
             if (productDetails == null || productDetails.ProductsName == null || productDetails.ProductId == null || productDetails.Option == null) return false;
             bool CheckStatus = false;
@@ -564,7 +564,7 @@ namespace BUS.Reponsitories.Implements
             return CheckStatus;
         }
 
-        public bool RemoveProductDetails(ProductDetails productDetails)
+        public bool RemoveProductDetails(ProductDetailsDto productDetails)
         {
             var variants = _lstVariantValue.Where(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId).ToList();
             if (variants == null) return false;

@@ -1,8 +1,9 @@
-﻿using BUS.BusEntity;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BUS.Reponsitories.Interfaces;
 using BoutiqueFashionFirstCode.ViewModel;
+using BUS.Dtos;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -16,15 +17,18 @@ namespace BoutiqueFashionFirstCode.Controllers
             _productDetailService = productDetailService ?? throw new ArgumentNullException(nameof(productDetailService));
         }
         [HttpGet("GetAllProductDetail")]
-        public List<ProductDetails> GetAllProductDetail()
+        public List<dynamic> GetAllProductDetail(ODataQueryOptions<ProductDetailsDto> queryOptions)
         {
-            return _productDetailService.GetProductDetails();
+            var result= _productDetailService.GetProductDetails().AsQueryable();
+            var finalResult = queryOptions.ApplyTo(result);
+            var castedProductDetailColletion = finalResult.Cast<ProductDetailsDto>() as IQueryable<dynamic>;
+            return castedProductDetailColletion.ToList();
         }
         [HttpPost("PostProductDetail")]
         public bool PostProductDetail(ProductDetail productDetail)
         {
 
-            var productDetails = new ProductDetails();
+            var productDetails = new ProductDetailsDto();
             productDetails.ProductId = Guid.NewGuid();
             productDetails.VariantId = Guid.NewGuid();
             productDetails.ProductsName = productDetail.productsName;
@@ -38,7 +42,7 @@ namespace BoutiqueFashionFirstCode.Controllers
         [HttpPut("Updateproduct")]
         public bool UpdateProduct(UpdateProductDetail productDetail)
         {
-            var productDetails = new ProductDetails();
+            var productDetails = new ProductDetailsDto();
             productDetails.ProductId = productDetail.productId;
             productDetails.VariantId = productDetail.VariantId;
             productDetails.ProductsName = productDetail.productsName;
@@ -52,7 +56,7 @@ namespace BoutiqueFashionFirstCode.Controllers
         [HttpDelete("DeteteProduct")]
         public bool DeteteProduct(UpdateProductDetail productDetail)
         {
-            var productDetails = new ProductDetails();
+            var productDetails = new ProductDetailsDto();
             productDetails.ProductId = productDetail.productId;
             productDetails.VariantId = productDetail.VariantId;
             productDetails.ProductsName = productDetail.productsName;
