@@ -1,4 +1,6 @@
 ﻿using BUS.Dtos;
+﻿using AutoMapper;
+using BUS.BusEntity;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
@@ -13,6 +15,7 @@ namespace BUS.Reponsitories.Implements
         private readonly IGenericRepository<Products> _productService;
         private readonly IGenericRepository<ProductVariants> _productVariantService;
         private readonly IGenericRepository<VariantValues> _variantValueService;
+        private readonly IMapper _mapper;
         List<Options> _lstOption;
         List<ProductOptions> _lstProductOption;
         List<OptionValues> _lstOptionValue;
@@ -20,7 +23,7 @@ namespace BUS.Reponsitories.Implements
         List<ProductVariants> _lstProductVariant;
         List<VariantValues> _lstVariantValue;
 
-        public ProductDetailService(IGenericRepository<Options> optionService, IGenericRepository<OptionValues> optionValueService, IGenericRepository<ProductOptions> productOptionService, IGenericRepository<Products> productService, IGenericRepository<ProductVariants> productVariantService, IGenericRepository<VariantValues> variantValueService)
+        public ProductDetailService(IGenericRepository<Options> optionService, IGenericRepository<OptionValues> optionValueService, IGenericRepository<ProductOptions> productOptionService, IGenericRepository<Products> productService, IGenericRepository<ProductVariants> productVariantService, IGenericRepository<VariantValues> variantValueService, IMapper mapper)
         {
             _optionService = optionService ?? throw new ArgumentNullException(nameof(optionService));
             _optionValueService = optionValueService ?? throw new ArgumentNullException(nameof(optionValueService));
@@ -28,6 +31,7 @@ namespace BUS.Reponsitories.Implements
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _productVariantService = productVariantService ?? throw new ArgumentNullException(nameof(productVariantService));
             _variantValueService = variantValueService ?? throw new ArgumentNullException(nameof(variantValueService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _lstOption = new List<Options>();
             _lstProductOption = new List<ProductOptions>();
             _lstOptionValue = new List<OptionValues>();
@@ -66,7 +70,6 @@ namespace BUS.Reponsitories.Implements
                 _optionService.AddDataCommand(options);
                 return true;
             }
-
             return false;
 
         }
@@ -98,7 +101,6 @@ namespace BUS.Reponsitories.Implements
                 _productOptionService.AddDataCommand(productOptions);
                 return true;
             }
-
             return false;
         }
 
@@ -113,7 +115,6 @@ namespace BUS.Reponsitories.Implements
                 _productVariantService.AddDataCommand(products);
                 return true;
             }
-
             return false;
         }
 
@@ -128,7 +129,6 @@ namespace BUS.Reponsitories.Implements
                 _variantValueService.AddDataCommand(variantValues);
                 return true;
             }
-
             return false;
         }
         public bool AddProductDetails(ProductDetailsDto productDetails)
@@ -152,6 +152,12 @@ namespace BUS.Reponsitories.Implements
                 productvariant.ImportPrice = productDetails.ImportPrice;
                 productvariant.Price = productDetails.Price;
                 productvariant.Quantity = productDetails.Quantity;
+                //List<ImageProducts> lstImageInProduct
+                foreach (var image in productDetails.Images)
+                {
+                    var imageInProduct = _mapper.Map<ImageProducts>(image);
+                    productvariant.Images.Add(imageInProduct);
+                }
                 productvariant.IsProductVariantEnabled = true;
                 _productVariantService.AddDataCommand(productvariant);
                 _lstProductVariant.Add(productvariant);
@@ -161,7 +167,6 @@ namespace BUS.Reponsitories.Implements
                 {
                     if (CheckExistOption(newOption.OptionName))
                     {
-
                         var productOption = new ProductOptions();
                         productOption.ProductID = product.ProductID;
                         var optionId = _lstOption.Where(p => p.OptionName == newOption.OptionName).Select(p => p.OptionID).FirstOrDefault();
@@ -180,7 +185,6 @@ namespace BUS.Reponsitories.Implements
                             variantValue.IsVariantValueEnabled = true;
                             _variantValueService.AddDataCommand(variantValue);
                             _lstVariantValue.Add(variantValue);
-
                         }
                         else
                         {
@@ -200,8 +204,6 @@ namespace BUS.Reponsitories.Implements
                             _variantValueService.AddDataCommand(variantValue);
                             _lstVariantValue.Add(variantValue);
                         }
-
-
                     }
                     else
                     {
@@ -232,11 +234,9 @@ namespace BUS.Reponsitories.Implements
                         variantValue.ValuesID = optionValue.ValuesID;
                         _variantValueService.AddDataCommand(variantValue);
                         _lstVariantValue.Add(variantValue);
-
                     }
                 }
                 return true;
-
             }
             else
             {
@@ -247,7 +247,6 @@ namespace BUS.Reponsitories.Implements
         {
             var optionExisted = GetOption().Any(p => p.OptionName == optionName);
             return optionExisted;
-
         }
         public Guid CheckExistProduct(string productName)
         {
@@ -340,6 +339,7 @@ namespace BUS.Reponsitories.Implements
                      ImportPrice = c.ImportPrice,
                      Quantity = c.Quantity,
                      Price = c.Price,
+                     Images = c.Images,
                      Option = (from d in _lstVariantValue
                                join e in _lstOption on d.OptionID equals e.OptionID
                                join f in _lstOptionValue on d.ValuesID equals f.ValuesID
@@ -365,12 +365,15 @@ namespace BUS.Reponsitories.Implements
             productVariant.Quantity = productDetails.Quantity;
             productVariant.SkuID = productDetails.SkuId;
             productVariant.ImportPrice = productDetails.ImportPrice;
+            productVariant.Images = productDetails.Images;
             UpdateProduct(product); // update product
             int indexProduct = _lstProduct.FindIndex(p => p.ProductID == productDetails.ProductId);
             _lstProduct.RemoveAt(indexProduct);
             _lstProduct.Add(product);
+            var imageDto = productDetails.Images.ToList();
+
             UpdateProductVariant(productVariant); // update product variant 
-            int indexProductVariant = _lstProduct.FindIndex(p => p.ProductID == productDetails.ProductId);
+            int indexProductVariant = _lstProductVariant.FindIndex(p => p.ProductID == productDetails.ProductId);
             _lstProductVariant.RemoveAt(indexProductVariant);
             _lstProductVariant.Add(productVariant);
             var productDetailOld = GetProductDetails().FirstOrDefault(p => p.ProductId == productDetails.ProductId && p.VariantId == productDetails.VariantId);
@@ -474,7 +477,6 @@ namespace BUS.Reponsitories.Implements
                                 variantValue.ValuesID = optionValueId;
                                 variantValue.IsVariantValueEnabled = true;
                                 var checkExist = _lstVariantValue.FirstOrDefault(p => p.ProductID == variantValue.ProductID && p.VariantID == variantValue.VariantID && p.OptionID == variantValue.OptionID && p.ValuesID == variantValue.ValuesID);
-
                                 if (checkExist == null)
                                 {
                                     UpdateVariantValue(variantValue);
@@ -502,7 +504,6 @@ namespace BUS.Reponsitories.Implements
                                 AddVariantValue(variantValue);
                                 _lstVariantValue.Add(variantValue);
                             }
-
                         }
                         else
                         {
@@ -544,7 +545,6 @@ namespace BUS.Reponsitories.Implements
                 bool checkExist = true;
                 for (int j = 0; j < productDetails.Option.Count; j++)
                 {
-
                     if (forProductVariant.Option[i].OptionName == productDetails.Option[j].OptionName && forProductVariant.Option[i].OptionValue == productDetails.Option[j].OptionValue)
                     {
                         checkExist = false;
@@ -567,7 +567,7 @@ namespace BUS.Reponsitories.Implements
         public bool RemoveProductDetails(ProductDetailsDto productDetails)
         {
             var variants = _lstVariantValue.Where(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId).ToList();
-            if (variants == null) return false;
+            if (variants.Count == 0) return false;
             foreach (var variant in variants)
             {
                 variant.IsVariantValueEnabled = false;
@@ -603,7 +603,6 @@ namespace BUS.Reponsitories.Implements
             }
             _optionValueService.UpdateDataCommand(optionValues);
             return true;
-
         }
 
         public bool UpdateOption(Options options)
