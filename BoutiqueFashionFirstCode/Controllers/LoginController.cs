@@ -28,6 +28,7 @@ namespace BoutiqueFashionFirstCode.Controllers
 
         // POST api/<LoginController>
         [HttpPost("Register")]
+
         public bool Register(Register register)
         {
             Guid rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.RolesName == "Nhân viên").Select(p => p.RolesID).FirstOrDefault();
