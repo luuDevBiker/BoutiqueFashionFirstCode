@@ -12,7 +12,7 @@ namespace DAL.Entities
         public string Url { get; set; }
         public string ThumbNail { get; set; }
         public string OriginalFileName { get; set; }
-        public string ContentLength { get; set; }
+        public Int64 ContentLength { get; set; }
         public string AbsolutePath { get; set; }
         public string FileName { get; set; }
         public string ThumbnailName { get; set; }
