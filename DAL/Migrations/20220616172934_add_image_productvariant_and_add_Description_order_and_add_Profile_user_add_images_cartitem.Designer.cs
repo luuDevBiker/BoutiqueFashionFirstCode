@@ -4,6 +4,7 @@ using DAL.DBcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220616172934_add_image_productvariant_and_add_Description_order_and_add_Profile_user_add_images_cartitem")]
+    partial class add_image_productvariant_and_add_Description_order_and_add_Profile_user_add_images_cartitem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,7 +126,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("OrderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 6, 17, 1, 41, 24, 0, DateTimeKind.Unspecified));
+                        .HasDefaultValue(new DateTime(2022, 6, 17, 0, 29, 33, 0, DateTimeKind.Unspecified));
 
                     b.Property<float>("PayingCustomer")
                         .HasColumnType("real");
@@ -132,10 +134,10 @@ namespace DAL.Migrations
                     b.Property<float>("Payments")
                         .HasColumnType("real");
 
-                    b.Property<int>("StatusOrder")
+                    b.Property<bool>("StatusDelete")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<Guid>("UserID")
                         .HasColumnType("uniqueidentifier");
@@ -218,6 +220,10 @@ namespace DAL.Migrations
                     b.Property<Guid>("VariantID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Images")
                         .IsRequired()
@@ -310,6 +316,7 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Profile")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RolesID")

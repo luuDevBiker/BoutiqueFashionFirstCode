@@ -13,7 +13,7 @@ namespace BUS.Reponsitories.Interfaces
     public interface ICartService
     {
         public bool AddCart(CreatCartViewModel cart);
-        public IQueryable<CartDto> GetProductInCart(Guid userId);
+        public List<CartDto> GetProductInCart(Guid userId);
         public bool RevoteItemIncart(Guid cartId);
         public bool UpdateCart(UpdateCartViewModel cart);
     }
