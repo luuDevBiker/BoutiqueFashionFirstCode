@@ -1,11 +1,11 @@
-﻿using DAL.Entities;
+﻿using DAL.ValueObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BUS.BusEntity
+namespace BUS.Dtos
 {
     public class UserDto
     {
@@ -19,6 +19,6 @@ namespace BUS.BusEntity
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public bool IsUserEnabled { get; set; }
-        public ImageProducts Avatar { get; set; }
+        public ImageValueObject Avatar { get; set; }
     }
 }

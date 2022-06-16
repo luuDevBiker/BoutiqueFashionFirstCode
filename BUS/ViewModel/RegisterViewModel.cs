@@ -1,6 +1,6 @@
-﻿namespace BoutiqueFashionFirstCode.ViewModel
+﻿namespace BUS.ViewModel
 {
-    public class Register
+    public class RegisterViewModel
     {
         //string username, string email, int sdt, string password
         public string username { get; set; }

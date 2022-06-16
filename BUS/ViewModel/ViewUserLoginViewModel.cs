@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BUS.ViewModel
 {
-    public class ViewUserLogin
+    public class ViewUserLoginViewModel
     {
         public string Account { get; set; }
-        public string PassWord { get; set; }
+        public string Password { get; set; }
     }
 }

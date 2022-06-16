@@ -1,4 +1,4 @@
-﻿using BUS.BusEntity;
+﻿using BUS.Dtos;
 using DAL.Entities;
 using System;
 using System.Collections.Generic;

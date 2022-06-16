@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using BUS.BusEntity;
+using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
+using DAL.ValueObject;
 
 namespace BUS.Reponsitories.Implements
 {
@@ -135,7 +136,7 @@ namespace BUS.Reponsitories.Implements
 
             return false;
         }
-        public bool AddProductDetails(ProductDetails productDetails)
+        public bool AddProductDetails(ProductDetailsDto productDetails)
         {
             if (productDetails == null)
             {
@@ -159,7 +160,7 @@ namespace BUS.Reponsitories.Implements
                 //List<ImageProducts> lstImageInProduct
                 foreach (var image in productDetails.Images)
                 {
-                    var imageInProduct = _mapper.Map<ImageProducts>(image);
+                    var imageInProduct = _mapper.Map<ImageValueObject>(image);
                     productvariant.Images.Add(imageInProduct);
                 }
                 productvariant.IsProductVariantEnabled = true;
@@ -355,7 +356,7 @@ namespace BUS.Reponsitories.Implements
                                join e in _lstOption on d.OptionID equals e.OptionID
                                join f in _lstOptionValue on d.ValuesID equals f.ValuesID
                                where d.ProductID == z.Key.ProductID && d.VariantID == z.Key.VariantID
-                               select new Option
+                               select new OptionDto
                                {
                                    OptionName = e.OptionName,
                                    OptionValue = f.OptionValue
@@ -578,7 +579,7 @@ namespace BUS.Reponsitories.Implements
             return CheckStatus;
         }
 
-        public bool RemoveProductDetails(ProductDetails productDetails)
+        public bool RemoveProductDetails(ProductDetailsDto productDetails)
         {
             var variants = _lstVariantValue.Where(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId).ToList();
             if (variants.Count == 0) return false;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Entities;
-namespace BUS.BusEntity
+namespace BUS.Dtos
 {
     public class Login
     {

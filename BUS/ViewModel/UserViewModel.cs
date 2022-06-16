@@ -1,4 +1,4 @@
-﻿namespace BoutiqueFashionFirstCode.ViewModel
+﻿namespace BUS.ViewModel
 {
     public class UserViewModel
     {

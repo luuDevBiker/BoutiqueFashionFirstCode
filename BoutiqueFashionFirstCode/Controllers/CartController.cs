@@ -1,5 +1,5 @@
 ﻿using BoutiqueFashionFirstCode.ViewModel;
-using BUS.BusEntity;
+using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 using BUS.ViewModel;
 using DAL.Entities;

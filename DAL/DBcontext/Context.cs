@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using DAL.ValueObject;
 
 namespace DAL.DBcontext
 {
@@ -49,6 +50,10 @@ namespace DAL.DBcontext
                 user.Property(p => p.Gender).HasDefaultValue(1);
                 user.Property(p => p.IsUserEnabled).HasDefaultValue(true);
                 user.HasOne<RolesUser>(p => p.RolesUsers).WithMany(p => p.Users).HasForeignKey(p => p.RolesID);
+                user.Property(p => p.Avatar).HasConversion(
+                  v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                  v => JsonConvert.DeserializeObject<ImageValueObject>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                  );
             });
             modelBuilder.Entity<Order>(cart =>
             {
@@ -71,7 +76,7 @@ namespace DAL.DBcontext
                 productVariants.Property(p => p.Quantity).IsRequired();
                 productVariants.Property(p => p.Images).HasConversion(
                     v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    v => JsonConvert.DeserializeObject<ICollection<ImageProducts>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                    v => JsonConvert.DeserializeObject<ICollection<ImageValueObject>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                     );
                 productVariants.Property(p => p.IsProductVariantEnabled).HasDefaultValue(true);
                 productVariants.HasOne<Products>(p => p.Product).WithMany(p => p.ProductVariants).HasForeignKey(p => p.ProductID);

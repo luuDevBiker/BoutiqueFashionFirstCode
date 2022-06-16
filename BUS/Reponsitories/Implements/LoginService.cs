@@ -8,7 +8,7 @@ using DAL.Entities;
 using DAL.Reponsitories.Implements;
 using DAL.Reponsitories.Interfaces;
 using BUS.ViewModel;
-using BUS.BusEntity;
+using BUS.Dtos;
 using Iot.Core.Extensions;
 using AutoMapper;
 
@@ -55,12 +55,12 @@ namespace BUS.Reponsitories.Implements
 
         }
 
-        public LoginDto Login(ViewUserLogin viewUserAfterLogin)
+        public LoginDto Login(ViewUserLoginViewModel viewUserAfterLogin)
         {
 
-            if (!viewUserAfterLogin.Account.IsNullOrDefault() && !viewUserAfterLogin.PassWord.IsNullOrDefault())
+            if (!viewUserAfterLogin.Account.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault())
             {
-                var userlogin = _users.FirstOrDefault(c => c.Email == viewUserAfterLogin.Account && c.Password == viewUserAfterLogin.PassWord);
+                var userlogin = _users.FirstOrDefault(c => c.Email == viewUserAfterLogin.Account && c.Password == viewUserAfterLogin.Password);
                 if (userlogin != null)
                 {
                     var userDtoHaventRole = _imapper.Map<LoginDto>(userlogin);
@@ -90,7 +90,7 @@ namespace BUS.Reponsitories.Implements
 
         public List<user> lstUser()
         {
-            _users = _userService.GetAllDataQuery().ToList();
+            _users = _userService.GetAllDataQuery().Where(p=>p.IsUserEnabled==true).ToList();
             return _users;
         }
 

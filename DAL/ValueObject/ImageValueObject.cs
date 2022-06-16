@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace DAL.ValueObject
 {
-    public class ImageProducts
+    public class ImageValueObject
     {
 
         public string Url { get; set; }

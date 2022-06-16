@@ -1,4 +1,4 @@
-﻿using BUS.BusEntity;
+﻿using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;

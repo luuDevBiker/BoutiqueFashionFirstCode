@@ -1,5 +1,4 @@
-﻿
-using BUS.BusEntity;
+﻿using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
@@ -32,9 +31,9 @@ namespace BUS.Reponsitories.Implements
 
         public bool AddCart(CreatCartViewModel cart)
         {
-            if (cart.ProductId.IsNullOrDefault() && !Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
-            if (cart.VariantId.IsNullOrDefault() && !Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
-            if (cart.UserId.IsNullOrDefault() && !Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
+            if (cart.ProductId.IsNullOrDefault() || Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
+            if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
+            if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
             if (cart.Quantity <0) throw new ArgumentNullException("Quantity");
             if (cart.Price <0) throw new ArgumentNullException("Price");
             if (cart.ProductName.IsNullOrDefault()) throw new ArgumentNullException("Product Name");
@@ -50,7 +49,7 @@ namespace BUS.Reponsitories.Implements
 
         public IQueryable<CartDto> GetProductInCart(Guid userId)
         {
-            if (!userId.IsNullOrDefault() && !Guid.Equals(userId, Guid.Empty))
+            if (!userId.IsNullOrDefault() || Guid.Equals(userId, Guid.Empty))
             {
                 var lstCartItem1 = _cartItemService.GetAllDataQuery().ToList();
                 var lstCartItem = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).AsQueryable();
@@ -82,11 +81,11 @@ namespace BUS.Reponsitories.Implements
 
         public bool UpdateCart(UpdateCartViewModel cart)
         {
-            if (cart.ProductId.IsNullOrDefault() && !Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
-            if (cart.VariantId.IsNullOrDefault() && !Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
-            if (cart.UserId.IsNullOrDefault() && !Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
-            if (cart.Quantity.IsNullOrDefault()) throw new ArgumentNullException("Quantity");
-            if (cart.Price.IsNullOrDefault()) throw new ArgumentNullException("Price");
+            if (cart.ProductId.IsNullOrDefault() || Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
+            if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
+            if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
+            if (cart.Quantity <0) throw new ArgumentNullException("Quantity");
+            if (cart.Price <0) throw new ArgumentNullException("Price");
             if (cart.ProductName.IsNullOrDefault()) throw new ArgumentNullException("Product Name");
             var itemInCartItem = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId.Equals(cart.CartId));
             if (itemInCartItem.IsNullOrDefault()) throw new ForbidException("Update Cart", "Don't exist this product in your cart");
