@@ -17,6 +17,7 @@ namespace DAL.Entities
         public string? Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public ICollection<ProfilesUser>? Profile { get; set; }
         public bool IsUserEnabled { get; set; }
         public RolesUser RolesUsers { get; set; }
         public ICollection<Order> Orders { get; set; }

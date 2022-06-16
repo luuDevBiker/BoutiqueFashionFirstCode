@@ -54,6 +54,10 @@ namespace DAL.DBcontext
                   v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                   v => JsonConvert.DeserializeObject<ImageValueObject>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                   );
+                user.Property(p => p.Profile).HasConversion(
+                  v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                  v => JsonConvert.DeserializeObject<ICollection<ProfilesUser>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                  );
             });
             modelBuilder.Entity<Order>(cart =>
             {
@@ -63,9 +67,10 @@ namespace DAL.DBcontext
                 cart.Property(p => p.OrderTime).HasDefaultValue(DateTime.Now.ToString("HH:mm:ss tt"));
                 cart.Property(p => p.PayingCustomer).IsRequired();
                 cart.Property(p => p.Payments).IsRequired();
-                cart.Property(p => p.StatusDelete).HasDefaultValue(true);
+               
                 cart.Property(p => p.IsOrderEnabled).HasDefaultValue(true);
                 cart.HasOne<user>(p => p.User).WithMany(p => p.Orders).HasForeignKey(p => p.UserID);
+                cart.Property(p => p.StatusOrder).HasDefaultValue(1);
             });
             modelBuilder.Entity<ProductVariants>(productVariants =>
             {
@@ -137,7 +142,10 @@ namespace DAL.DBcontext
                 cartItems.ToTable("CartItem");
                 cartItems.HasKey(p => p.CartId);
                 cartItems.HasIndex(p => p.ProductId);
-
+                cartItems.Property(p => p.Images).HasConversion(
+                 v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                 v => JsonConvert.DeserializeObject<ICollection<ImageValueObject>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                 );
             });
          
 

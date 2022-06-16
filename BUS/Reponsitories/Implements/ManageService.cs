@@ -27,7 +27,7 @@ namespace BUS.Reponsitories.Implements
         public bool AddUser(CreatUserViewModel creatUser)
         {
             var userDto = _mapper.Map<UserDto>(creatUser);
-            userDto.Gender = creatUser.GenderStr.Trim().ToLower() == "NAM" ? 1 : 0;
+            userDto.Gender = creatUser.GenderStr.Trim().ToLower() == "nam" ? 1 : 0;
             userDto.UserID = Guid.NewGuid();
             var lstRole = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList(); ;
             var roleId = lstRole.Where(p => p.RolesName.Trim().ToLower() == userDto.RoleName.Trim().ToLower()).Select(p => p.RolesID).FirstOrDefault();
@@ -71,20 +71,35 @@ namespace BUS.Reponsitories.Implements
             return userDto;
         }
 
-        public IEnumerable<UserDto> GetUsers(Guid userId)
+        public List<UserDto> GetUsers(Guid userId)
         {
             var lstUserEntity = _userRepository.GetAllDataQuery().Where(p => p.IsUserEnabled == true).AsEnumerable();
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId);
-            var roleName=_userRoleRepository.GetAllDataQuery().Where(p=>p.RolesID==user.RolesID).Select(p=>p.RolesName).FirstOrDefault();
-            if (user.IsNullOrDefault()) return null;
+            var roleName = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == user.RolesID).Select(p => p.RolesName).FirstOrDefault();
+            if (user.IsNullOrDefault()) throw new ArgumentNullException("User null");
+            if (roleName.Trim().ToLower() == "admin")
+            {
+                var lstUser = _userRepository.GetAllDataQuery().ToList();
+                var lstUserDto = _mapper.Map<List<UserDto>>(lstUser);
+                foreach (var userDto in lstUserDto)
+                {
+                    var roleNameUserDto = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == userDto.RolesID).Select(p => p.RolesName).FirstOrDefault();
+                    if (roleNameUserDto.IsNullOrDefault()) userDto.RoleName = "Undetermined";
+                    userDto.RoleName = roleNameUserDto;
+                }
+                return lstUserDto;
+            }
+            else
+            {
+                throw new ArgumentNullException("Get failure list");
+            }
 
-            return null;
         }
 
         public bool UpdateUser(UpdateUserViewModel updateUserViewModel)
         {
             var userDto = _mapper.Map<UserDto>(updateUserViewModel);
-            userDto.Gender = updateUserViewModel.GenderStr.Trim().ToLower() == "NAM" ? 1 : 0;
+            userDto.Gender = updateUserViewModel.GenderStr.Trim().ToLower() == "nam" ? 1 : 0;
             var roleId = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesName.Trim().ToLower() == updateUserViewModel.RoleName.Trim().ToLower()).Select(p => p.RolesID).FirstOrDefault();
             userDto.RolesID = roleId;
             var userEntity = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(updateUserViewModel.UserID) && p.IsUserEnabled == true);

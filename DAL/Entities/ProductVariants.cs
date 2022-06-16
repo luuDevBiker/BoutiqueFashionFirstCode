@@ -19,7 +19,7 @@ namespace DAL.Entities
 
         public float Price { get; set; }
         public int Quantity { get; set; }
-
+        
         public bool IsProductVariantEnabled { get; set; }
         public Products Product { get; set; }
         public ICollection<OrderDetails> OrderDetails { get; set; }

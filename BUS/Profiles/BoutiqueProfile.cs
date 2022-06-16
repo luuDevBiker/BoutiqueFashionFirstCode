@@ -9,6 +9,7 @@ using BUS.Dtos;
 
 using BUS.ViewModel;
 using DAL.Entities;
+using DAL.ValueObject;
 
 namespace BUS.Profiles
 {
@@ -22,8 +23,9 @@ namespace BUS.Profiles
             CreateMap<user, UserDto>().ReverseMap();
             CreateMap<UserDto, CreatUserViewModel>().ReverseMap();
             CreateMap<UserDto, UpdateUserViewModel>().ReverseMap();
-         
-          
+            CreateMap<ProfileDto, ProfileViewModel>().ReverseMap();
+            CreateMap<ProfileDto, ProfilesUser>().ReverseMap();
+
         }
     }
 }
