@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BUS.Reponsitories.Interfaces;
 using BoutiqueFashionFirstCode.ViewModel;
 using BUS.ViewModel;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -17,11 +18,11 @@ namespace BoutiqueFashionFirstCode.Controllers
             _productDetailService = productDetailService ?? throw new ArgumentNullException(nameof(productDetailService));
         }
         [HttpGet("GetAllProductDetail")]
-        public List<ProductDetailsDto> GetAllProductDetail()
+        public List<ProductDetailsDto> GetAllProductDetail(ODataQueryOptions<ProductDetailsDto> queryOptions)
         {
             var result= _productDetailService.GetProductDetails().AsQueryable();
             var finalResult = queryOptions.ApplyTo(result);
-            var castedProductDetailColletion = finalResult.Cast<ProductDetailsDto>() as IQueryable<dynamic>;
+            var castedProductDetailColletion = finalResult.Cast<ProductDetailsDto>();
             return castedProductDetailColletion.ToList();
         }
         [HttpPost("PostProductDetail")]

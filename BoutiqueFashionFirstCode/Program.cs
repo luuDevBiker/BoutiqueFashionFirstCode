@@ -12,7 +12,6 @@ using Microsoft.OData.ModelBuilder;
 using Org.BouncyCastle.Security;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using BUS.Dtos;
 using BUS.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
