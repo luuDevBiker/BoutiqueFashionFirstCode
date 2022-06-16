@@ -99,7 +99,7 @@ namespace DAL.Migrations
                 {
                     variantID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     productID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    skuID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    skuID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     importPrice = table.Column<float>(type: "real", nullable: false),
                     price = table.Column<float>(type: "real", nullable: false),
                     qunatity = table.Column<int>(type: "int", nullable: false),

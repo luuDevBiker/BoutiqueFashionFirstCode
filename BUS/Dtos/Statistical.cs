@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BUS.BusEntity
+namespace BUS.Dtos
 {
     public class Statistical
     {
@@ -12,6 +12,6 @@ namespace BUS.BusEntity
         public Guid VariantId { get; set; }
         public string ProductName { get; set; }
         public int QuantitySold { get; set; }
-        public List<Option> options { get; set; }
+        public List<OptionDto> options { get; set; }
     }
 }

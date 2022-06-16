@@ -1,5 +1,5 @@
 ﻿using BUS.Profiles;
-using BUS.BusEntity;
+using BUS.Dtos;
 using BUS.ViewModel;
 using DAL.Entities;
 using System;

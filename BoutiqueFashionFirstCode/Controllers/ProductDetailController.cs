@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+using BUS.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BUS.Reponsitories.Interfaces;
 using BoutiqueFashionFirstCode.ViewModel;
-using BUS.Dtos;
-using Microsoft.AspNetCore.OData.Query;
+using BUS.ViewModel;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -17,7 +17,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             _productDetailService = productDetailService ?? throw new ArgumentNullException(nameof(productDetailService));
         }
         [HttpGet("GetAllProductDetail")]
-        public List<dynamic> GetAllProductDetail(ODataQueryOptions<ProductDetailsDto> queryOptions)
+        public List<ProductDetailsDto> GetAllProductDetail()
         {
             var result= _productDetailService.GetProductDetails().AsQueryable();
             var finalResult = queryOptions.ApplyTo(result);
@@ -25,33 +25,34 @@ namespace BoutiqueFashionFirstCode.Controllers
             return castedProductDetailColletion.ToList();
         }
         [HttpPost("PostProductDetail")]
-        public bool PostProductDetail(ProductDetail productDetail)
+        public bool PostProductDetail(ProductDetailViewModel productDetail)
         {
-
-            var productDetails = new ProductDetailsDto();
-            productDetails.ProductId = Guid.NewGuid();
-            productDetails.VariantId = Guid.NewGuid();
-            productDetails.ProductsName = productDetail.productsName;
-            productDetails.Price = productDetail.price;
-            productDetails.Quantity = productDetail.quantity;
-            productDetails.SkuId = Guid.NewGuid();
-            productDetails.ImportPrice = productDetail.importPrice;
-            productDetails.Option = productDetail.option;
-            return _productDetailService.AddProductDetails(productDetails);
+            var productDetailToAdd = new ProductDetailsDto();
+            productDetailToAdd.ProductId = Guid.NewGuid();
+            productDetailToAdd.VariantId = Guid.NewGuid();
+            productDetailToAdd.ProductsName = productDetail.ProductName;
+            productDetailToAdd.Price = productDetail.Price;
+            productDetailToAdd.Quantity = productDetail.Quantity;
+            productDetailToAdd.SkuId = productDetail.SkuId;
+            productDetailToAdd.ImportPrice = productDetail.ImportPrice;
+            productDetailToAdd.Option = productDetail.Option;
+            productDetailToAdd.Images = productDetail.Images;
+            return _productDetailService.AddProductDetails(productDetailToAdd);
         }
         [HttpPut("Updateproduct")]
         public bool UpdateProduct(UpdateProductDetail productDetail)
         {
-            var productDetails = new ProductDetailsDto();
-            productDetails.ProductId = productDetail.productId;
-            productDetails.VariantId = productDetail.VariantId;
-            productDetails.ProductsName = productDetail.productsName;
-            productDetails.Price = productDetail.price;
-            productDetails.Quantity = productDetail.quantity;
-            productDetails.SkuId = productDetail.skuId;
-            productDetails.ImportPrice = productDetail.importPrice;
-            productDetails.Option = productDetail.option;
-            return _productDetailService.UpdateProductDetails(productDetails);
+            var productDetailToUpdate = new ProductDetailsDto();
+            productDetailToUpdate.ProductId = productDetail.productId;
+            productDetailToUpdate.VariantId = productDetail.VariantId;
+            productDetailToUpdate.ProductsName = productDetail.productsName;
+            productDetailToUpdate.Price = productDetail.price;
+            productDetailToUpdate.Quantity = productDetail.quantity;
+            productDetailToUpdate.SkuId = productDetail.skuId;
+            productDetailToUpdate.ImportPrice = productDetail.importPrice;
+            productDetailToUpdate.Option = productDetail.option;
+            productDetailToUpdate.Images = productDetail.Images;
+            return _productDetailService.UpdateProductDetails(productDetailToUpdate);
         }
         [HttpDelete("DeteteProduct")]
         public bool DeteteProduct(UpdateProductDetail productDetail)

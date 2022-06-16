@@ -1,9 +1,10 @@
 ﻿using BUS.Dtos;
 ﻿using AutoMapper;
-using BUS.BusEntity;
+using BUS.Dtos;
 using BUS.Reponsitories.Interfaces;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
+using DAL.ValueObject;
 
 namespace BUS.Reponsitories.Implements
 {
@@ -155,7 +156,7 @@ namespace BUS.Reponsitories.Implements
                 //List<ImageProducts> lstImageInProduct
                 foreach (var image in productDetails.Images)
                 {
-                    var imageInProduct = _mapper.Map<ImageProducts>(image);
+                    var imageInProduct = _mapper.Map<ImageValueObject>(image);
                     productvariant.Images.Add(imageInProduct);
                 }
                 productvariant.IsProductVariantEnabled = true;
