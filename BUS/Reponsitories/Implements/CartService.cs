@@ -47,19 +47,25 @@ namespace BUS.Reponsitories.Implements
             return true;
         }
 
-        public IQueryable<CartDto> GetProductInCart(Guid userId)
+        public List<CartDto> GetProductInCart(Guid userId)
         {
-            if (!userId.IsNullOrDefault() || Guid.Equals(userId, Guid.Empty))
+            if (!userId.IsNullOrDefault() || !Guid.Equals(userId, Guid.Empty))
             {
-                var lstCartItem1 = _cartItemService.GetAllDataQuery().ToList();
-                var lstCartItem = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).AsQueryable();
-                var lstCartViewModel = _mapper.ProjectTo<CartDto>(lstCartItem);
-                return lstCartViewModel;
+             
+                var lstCartItem = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
+                var lstCartDto = _mapper.Map<List<CartDto>>(lstCartItem);
+               
+                //var lstCartDtoNoImage = _mapper.Map<List<CartDto>>(lstCartItem);
+                //for (int i = 0; i < lstCartDtoNoImage.Count; i++)
+                //{
+                //    var Image = _productDetailService.GetProductDetails().Where(p => p.VariantId == lstCartDtoNoImage[i].VariantId).Select(p => p.Images);
+                //    lstCartDtoNoImage[i].ImageProduct = Image);
+                //}
+                return lstCartDto;
             }
             else
             {
-                var lstCartViewModelNull = new List<CartDto>();
-                return lstCartViewModelNull.AsQueryable();
+                throw new ArgumentNullException("User null");
             }
         }
 

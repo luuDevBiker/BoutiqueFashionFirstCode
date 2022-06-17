@@ -21,7 +21,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
         }
         [HttpGet("GetProductInCart")]
-        public IQueryable<CartDto> GetCart([FromHeader]Guid userId)
+        public List<CartDto> GetCart([FromHeader]Guid userId)
         {
             return _cartService.GetProductInCart(userId);
         }

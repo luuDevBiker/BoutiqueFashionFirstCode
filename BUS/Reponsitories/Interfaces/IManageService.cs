@@ -14,7 +14,7 @@ namespace BUS.Reponsitories.Interfaces
         public bool AddUser(CreatUserViewModel creatUser);
         public bool UpdateUser(UpdateUserViewModel updateUserViewModel);
         public bool DeleteUser(Guid userId);
-        public IEnumerable<UserDto> GetUsers(Guid userId);
+        public List<UserDto> GetUsers(Guid userId);
 
     }
 }

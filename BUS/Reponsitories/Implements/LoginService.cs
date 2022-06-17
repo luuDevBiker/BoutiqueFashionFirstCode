@@ -60,7 +60,7 @@ namespace BUS.Reponsitories.Implements
 
             if (!viewUserAfterLogin.Account.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault())
             {
-                var userlogin = _users.FirstOrDefault(c => c.Email == viewUserAfterLogin.Account && c.Password == viewUserAfterLogin.Password);
+                var userlogin = _users.FirstOrDefault(c => c.UserName == viewUserAfterLogin.Account && c.Password == viewUserAfterLogin.Password);
                 if (userlogin != null)
                 {
                     var userDtoHaventRole = _imapper.Map<LoginDto>(userlogin);

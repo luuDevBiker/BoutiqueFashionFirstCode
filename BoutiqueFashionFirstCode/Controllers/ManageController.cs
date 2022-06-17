@@ -20,6 +20,11 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             return _manageService.GetUserDtoDetail(userId);
         }
+        [HttpGet("GetAllUser")]
+        public List<UserDto> GetAllUser([FromHeader] Guid userId)
+        {
+            return _manageService.GetUsers(userId);
+        }
         [HttpPost("AddUser")]
         public bool AddUser(CreatUserViewModel creatUser)
         {
