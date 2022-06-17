@@ -10,7 +10,7 @@ namespace DAL.Entities
         public DateTime OrderTime { get; set; }
         public float AmountPay { get; set; }
         public float PayingCustomer { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public float Payments { get; set; }
         public int StatusOrder { get; set; }
         public bool IsOrderEnabled { get; set; }
