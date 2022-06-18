@@ -21,7 +21,7 @@ namespace BoutiqueFashionFirstCode.Controllers
         }
         // GET api/<LoginController>/5
         [HttpGet("CheckLogin")]
-        public LoginDto CheckLogin(ViewUserLoginViewModel viewUserLogin)
+        public LoginDto CheckLogin([FromBody]ViewUserLoginViewModel viewUserLogin)
         {
             return _loginService.Login(viewUserLogin);
         }

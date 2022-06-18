@@ -25,6 +25,12 @@ namespace BUS.Profiles
             CreateMap<UserDto, UpdateUserViewModel>().ReverseMap();
             CreateMap<ProfileDto, ProfileViewModel>().ReverseMap();
             CreateMap<ProfileDto, ProfilesUser>().ReverseMap();
+            CreateMap<Order, CreateOrderViewModel>().ReverseMap();
+            CreateMap<OrderDetails,OrderDto>().ReverseMap();
+            CreateMap<CreateOrderViewModel,OrderDto>().ReverseMap();
+            CreateMap<CartViewModel, OrderDetails>().ReverseMap();
+            CreateMap<UpdateCartDto, ProfilesUser>().ReverseMap();
+            CreateMap<UpdateCartDto, OrderDetails>().ReverseMap();
 
         }
     }

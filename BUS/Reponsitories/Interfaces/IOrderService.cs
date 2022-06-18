@@ -11,5 +11,9 @@ namespace BUS.Reponsitories.Interfaces
     public  interface IOrderService
     {
         public ProfileDto AddProfile(Guid userId, ProfileViewModel profileViewModel);
+        public OrderDto AddOrders(CreateOrderViewModel createOrderViewModel, ProfileViewModel profileViewModel);
+        public UpdateCartDto UpdateOrders(UpdateCartDtoViewModel updateCartViewModel);
+        public bool DeleteOrder(Guid orderId);
+        public bool DeleteOrderDetail(DeleteOrderDetailViewModel deleteOrder);
     }
 }

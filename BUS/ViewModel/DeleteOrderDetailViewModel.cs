@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BUS.ViewModel
 {
-    public class ViewUserLoginViewModel
+    public class DeleteOrderDetailViewModel
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid VariantId { get; set; }
     }
 }

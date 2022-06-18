@@ -18,6 +18,7 @@ namespace BUS.ViewModel
         public string District { get; set; }
         public string Wards { get; set; }
        
+       
         
 
     }
