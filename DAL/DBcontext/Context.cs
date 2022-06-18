@@ -56,7 +56,7 @@ namespace DAL.DBcontext
                   );
                 user.Property(p => p.Profile).HasConversion(
                   v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                  v => JsonConvert.DeserializeObject<ICollection<ProfilesUser>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
+                  v => JsonConvert.DeserializeObject<List<ProfilesUser>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                   );
             });
             modelBuilder.Entity<Order>(cart =>

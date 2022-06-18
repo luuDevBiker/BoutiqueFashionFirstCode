@@ -17,7 +17,7 @@ namespace BUS.ViewModel
         public string Province { get; set; }
         public string District { get; set; }
         public string Wards { get; set; }
-        public Guid OrderId { get; set; }
+       
        
         
 

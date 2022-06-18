@@ -28,6 +28,9 @@ namespace BUS.Profiles
             CreateMap<Order, CreateOrderViewModel>().ReverseMap();
             CreateMap<OrderDetails,OrderDto>().ReverseMap();
             CreateMap<CreateOrderViewModel,OrderDto>().ReverseMap();
+            CreateMap<CartViewModel, OrderDetails>().ReverseMap();
+            CreateMap<UpdateCartDto, ProfilesUser>().ReverseMap();
+            CreateMap<UpdateCartDto, OrderDetails>().ReverseMap();
 
         }
     }

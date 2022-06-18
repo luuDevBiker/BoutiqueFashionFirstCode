@@ -6,7 +6,7 @@ namespace DAL.Entities
     {
         public Guid OrderID { get; set; }
         public Guid UserID { get; set; }
-      
+        public Guid? ProfileId { get; set; }
         public DateTime OrderTime { get; set; }
         public float AmountPay { get; set; }
         public float PayingCustomer { get; set; }

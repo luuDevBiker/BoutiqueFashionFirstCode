@@ -12,7 +12,7 @@ namespace DAL.ValueObject
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-        public Guid OrderId { get; set; }
+        public Guid ProfileId { get; set; }
 
     }
 }

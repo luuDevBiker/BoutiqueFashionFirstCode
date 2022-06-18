@@ -11,6 +11,7 @@ using BUS.ViewModel;
 using BUS.Dtos;
 using Iot.Core.Extensions;
 using AutoMapper;
+using BUS.Exceptions;
 
 namespace BUS.Reponsitories.Implements
 {
@@ -58,9 +59,9 @@ namespace BUS.Reponsitories.Implements
         public LoginDto Login(ViewUserLoginViewModel viewUserAfterLogin)
         {
 
-            if (!viewUserAfterLogin.Account.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault())
+            if (!viewUserAfterLogin.UserName.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault())
             {
-                var userlogin = _users.FirstOrDefault(c => c.UserName == viewUserAfterLogin.Account && c.Password == viewUserAfterLogin.Password);
+                var userlogin = _users.FirstOrDefault(c => c.UserName == viewUserAfterLogin.UserName && c.Password == viewUserAfterLogin.Password);
                 if (userlogin != null)
                 {
                     var userDtoHaventRole = _imapper.Map<LoginDto>(userlogin);
@@ -72,12 +73,12 @@ namespace BUS.Reponsitories.Implements
                     }
 
                 }
-                return null;
+                throw new ForbidException("500", "Wrong login information");
 
             }
             else
             {
-                return null;
+                throw new ForbidException("400", "Information cannot be left blank");
             }
 
 
