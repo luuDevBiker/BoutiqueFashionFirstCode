@@ -31,7 +31,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             return _cartService.AddCart(cart);
         }
         [HttpPut("UpdateProductInCart")]
-        public bool UpdateProductInCart(UpdateCartViewModel cart)
+        public bool UpdateProductInCart([FromBody] UpdateCartViewModel cart)
         {
             return _cartService.UpdateCart(cart);
         }

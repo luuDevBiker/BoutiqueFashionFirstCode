@@ -26,7 +26,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             return castedProductDetailColletion.ToList();
         }
         [HttpPost("PostProductDetail")]
-        public bool PostProductDetail(ProductDetailViewModel productDetail)
+        public bool PostProductDetail([FromBody] ProductDetailViewModel productDetail)
         {
             var productDetailToAdd = new ProductDetailsDto();
             productDetailToAdd.ProductId = Guid.NewGuid();
@@ -41,7 +41,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             return _productDetailService.AddProductDetails(productDetailToAdd);
         }
         [HttpPut("Updateproduct")]
-        public bool UpdateProduct(UpdateProductDetail productDetail)
+        public bool UpdateProduct([FromBody] UpdateProductDetail productDetail)
         {
             var productDetailToUpdate = new ProductDetailsDto();
             productDetailToUpdate.ProductId = productDetail.productId;
@@ -56,7 +56,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             return _productDetailService.UpdateProductDetails(productDetailToUpdate);
         }
         [HttpDelete("DeteteProduct")]
-        public bool DeteteProduct(UpdateProductDetail productDetail)
+        public bool DeteteProduct([FromBody] UpdateProductDetail productDetail)
         {
             var productDetails = new ProductDetailsDto();
             productDetails.ProductId = productDetail.productId;

@@ -16,17 +16,22 @@ namespace BoutiqueFashionFirstCode.Controllers
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
         [HttpPost("AddOrders")]
-        public OrderDto AddOrders(AddOrderViewModel addOrderViewModel)
+        public OrderDto AddOrders([FromBody] AddOrderViewModel addOrderViewModel)
         {
             return _orderService.AddOrders(addOrderViewModel.createOrderViewModel, addOrderViewModel.profileViewModel);
         }
         [HttpPut("UpdateOrder")]
-        public UpdateCartDto UpdateOrder(UpdateCartDtoViewModel updateCartViewModel)
+        public UpdateCartDto UpdateOrder([FromBody]UpdateCartDtoViewModel updateCartViewModel)
         {
             return _orderService.UpdateOrders(updateCartViewModel);
         }
+        [HttpPut("UpdateProfile")]
+        public UpdateProfileOrderDto UpdateProfile([FromBody]UpdateProfileOrderViewModel updateProfileOrder)
+        {
+            return _orderService.UpdateProfile(updateProfileOrder);
+        }
         [HttpDelete("DeleteOrder")]
-        public bool DeleteOrder([FromBody] Guid orderId)
+        public bool DeleteOrder([FromHeader] Guid orderId)
         {
             return _orderService.DeleteOrder(orderId);
         }
@@ -34,6 +39,16 @@ namespace BoutiqueFashionFirstCode.Controllers
         public bool DeleteOrderDetail([FromBody] DeleteOrderDetailViewModel deleteOrder)
         {
             return _orderService.DeleteOrderDetail(deleteOrder);
+        }
+        [HttpGet("GetOrderClient")]
+        public List<GetOrder> GetOrderClient([FromHeader]Guid userId)
+        {
+            return _orderService.GetOrderClient(userId);
+        }
+        [HttpGet("GetOrderAdmin")]
+        public List<GetOrder> GetOrderAdmin()
+        {
+            return _orderService.GetOrderAdmin();
         }
     }
 }

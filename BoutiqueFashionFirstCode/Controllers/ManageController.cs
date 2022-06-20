@@ -26,12 +26,12 @@ namespace BoutiqueFashionFirstCode.Controllers
             return _manageService.GetUsers(userId);
         }
         [HttpPost("AddUser")]
-        public bool AddUser(CreatUserViewModel creatUser)
+        public bool AddUser([FromBody] CreatUserViewModel creatUser)
         {
            return  _manageService.AddUser(creatUser);
         }
         [HttpPut("UpdateUser")]
-        public bool UpdateUser(UpdateUserViewModel updateUserViewModel)
+        public bool UpdateUser([FromBody] UpdateUserViewModel updateUserViewModel)
         {
             return _manageService.UpdateUser(updateUserViewModel);
         }

@@ -5,6 +5,7 @@ using BUS.ViewModel;
 using DAL.Entities;
 using DAL.Reponsitories.Interfaces;
 using DAL.ValueObject;
+using Iot.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,48 +86,52 @@ namespace BUS.Reponsitories.Implements
         }
         public UpdateCartDto UpdateOrders(UpdateCartDtoViewModel updateCartViewModel)
         {
+            if (updateCartViewModel.OrderId.IsNullOrDefault()) throw new ArgumentNullException("OrderId null");
+            if (updateCartViewModel.ProductId.IsNullOrDefault()) throw new ArgumentNullException("ProductId null");
+            if (updateCartViewModel.VariantId.IsNullOrDefault()) throw new ArgumentNullException("VariantId null");
+            if (updateCartViewModel.ProductName.IsNullOrDefault()) throw new ArgumentNullException("ProductName null");
+            if (updateCartViewModel.Quantity.IsNullOrDefault()) throw new ArgumentNullException("Quantity null");
+            if (updateCartViewModel.UserId.IsNullOrDefault()) throw new ArgumentNullException("UserId null");
             var order = _orderRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == updateCartViewModel.OrderId);
-            if (order == null) throw new ArgumentNullException("order null");
-            var userOrder = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == updateCartViewModel.UserId);
-            if (userOrder == null) throw new ArgumentNullException("user null");
-            var lstProfileUser = new List<ProfilesUser>();
-            lstProfileUser = userOrder.Profile;
-            var profileUser = lstProfileUser.FirstOrDefault(p => p.ProfileId == order.ProfileId);
-            var address = updateCartViewModel.ProfileViewModel.Address + ", xã/phường " + updateCartViewModel.ProfileViewModel.Wards + ", quận/huyện " + updateCartViewModel.ProfileViewModel.District + ", tỉnh/Tp " + updateCartViewModel.ProfileViewModel.Province;
-            bool profileExist = profileUser.Email == updateCartViewModel.ProfileViewModel.Email && profileUser.PhoneNumber == updateCartViewModel.ProfileViewModel.PhoneNumber && profileUser.FullName == updateCartViewModel.ProfileViewModel.FullName && profileUser.Address == address;
-            if (profileExist != null)
-            {
-                var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID.Equals(updateCartViewModel.OrderId) && p.VariantID == updateCartViewModel.VariantId);
-                var productVariant = _productVariantRepository.GetAllDataQuery().FirstOrDefault(p => p.VariantID == orderDetail.VariantID);
-                var UpdateCartDto = new UpdateCartDto();
-                UpdateCartDto.OrderId = updateCartViewModel.OrderId;
-                UpdateCartDto.VariantId = updateCartViewModel.VariantId;
-                UpdateCartDto.ProductId = updateCartViewModel.ProductId;
-                UpdateCartDto.Quantity = updateCartViewModel.Quantity;
-                UpdateCartDto.ProfileId = profileUser.ProfileId;
-                UpdateCartDto.ImageProduct = productVariant.Images;
-                UpdateCartDto.ProductName = updateCartViewModel.ProductName;
-                UpdateCartDto.Price = productVariant.Price;
-                UpdateCartDto.FullName = profileUser.FullName;
-                UpdateCartDto.PhoneNumber = profileUser.PhoneNumber;
-                UpdateCartDto.Address = profileUser.Address;
-                UpdateCartDto.Email = profileUser.Email;
-                return UpdateCartDto;
-            }
-            else
-            {
-                var profileDto = _mapper.Map<ProfileDto>(updateCartViewModel);
-                profileDto.Address = address;
-                profileDto.ProfileId = Guid.NewGuid();
-              
-                _userRepository.UpdateDataCommand(userOrder);
-                order.ProfileId=profileDto.ProfileId;
-            }
-            return null;
+            if (order == null) throw new ArgumentException("Order null");
+            if (order.StatusOrder != 1) throw new ArgumentException("Order has been shipped");
+            var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p=>p.OrderID== updateCartViewModel.OrderId && p.VariantID == updateCartViewModel.VariantId && p.IsOrderDetailEnabled ==true);
+            orderDetail.Quantity = updateCartViewModel.Quantity;
+            var updateOrderDto =_mapper.Map<UpdateCartDto>(orderDetail);
+            return updateOrderDto;
+
+        }
+        public UpdateProfileOrderDto UpdateProfile(UpdateProfileOrderViewModel updateProfileOrderViewModel)
+        {
+            if (updateProfileOrderViewModel.OrderId.IsNullOrDefault()) throw new ArgumentNullException("OrderId null");
+            if (updateProfileOrderViewModel.ProfileId.IsNullOrDefault()) throw new ArgumentNullException("ProfileId null");
+            if (updateProfileOrderViewModel.Email.IsNullOrDefault()) throw new ArgumentNullException("Email null");
+            if (updateProfileOrderViewModel.FullName.IsNullOrDefault()) throw new ArgumentNullException("FullName null");
+            if (updateProfileOrderViewModel.PhoneNumber.IsNullOrDefault()) throw new ArgumentNullException("PhoneNumber null");
+            if (updateProfileOrderViewModel.Address.IsNullOrDefault()) throw new ArgumentNullException("Address null");
+            if (updateProfileOrderViewModel.Province.IsNullOrDefault()) throw new ArgumentNullException("Province null");
+            if (updateProfileOrderViewModel.District.IsNullOrDefault()) throw new ArgumentNullException("District null");
+            if (updateProfileOrderViewModel.Wards.IsNullOrDefault()) throw new ArgumentNullException("Wards null");
+            var order = _orderRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == updateProfileOrderViewModel.OrderId);
+            if (order == null) throw new ArgumentException("Order null");
+            if (order.StatusOrder != 1) throw new ArgumentException("Order has been shipped");
+            var userOrder = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == updateProfileOrderViewModel.UserId);
+            if (userOrder.IsNullOrDefault()) throw new ArgumentException("user null");
+            var lstProfileUser = userOrder.Profile;
+            var profileOrder = lstProfileUser.Where(p => p.ProfileId == updateProfileOrderViewModel.ProfileId);
+            var profileDto = _mapper.Map<UpdateProfileOrderDto>(profileOrder);
+            var address = updateProfileOrderViewModel.Address + ", xã/phường " + updateProfileOrderViewModel.Wards + ", quận/huyện " + updateProfileOrderViewModel.District + ", tỉnh/Tp " + updateProfileOrderViewModel.Province;
+            profileDto.Address = address;
+            var profileEntity = _mapper.Map<ProfilesUser>(profileDto);
+            var indexProfile= lstProfileUser.FindIndex(p=>p.ProfileId==updateProfileOrderViewModel.ProfileId);
+            lstProfileUser.Add(profileEntity);
+            userOrder.Profile = lstProfileUser;
+            _userRepository.UpdateDataCommand(userOrder);
+            return profileDto;
         }
         public bool DeleteOrder(Guid orderId)
         {
-            if (orderId == null) throw new ArgumentNullException("Order null");
+            if (orderId.IsNullOrDefault() || Guid.Equals(orderId,Guid.Empty)) throw new ArgumentNullException("OrderId null");
             var order = _orderRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == orderId && p.IsOrderEnabled==false);
             if (order == null) throw new ArgumentNullException("Order null");
             order.IsOrderEnabled = false;
@@ -142,6 +147,50 @@ namespace BUS.Reponsitories.Implements
             orderDetail.IsOrderDetailEnabled = false;
             _orderDetailRepository.UpdateDataCommand(orderDetail);
             return true;
+        }
+
+        public List<GetOrder> GetOrderClient(Guid userId)
+        {
+            var lstOrderUser = _orderRepository.GetAllDataQuery().Where(p => p.UserID.Equals(userId) && p.IsOrderEnabled == true).ToList();
+            var lstGetOrderDto = _mapper.Map<List<GetOrder>>(lstOrderUser);
+            for (int i = 0; i < lstOrderUser.Count; i++)
+            {
+                var orderId = lstOrderUser[i].OrderID;
+                var lstOrderDetail = _orderDetailRepository.GetAllDataQuery().Where(p => p.Equals(orderId) && p.IsOrderDetailEnabled.Equals(true)).ToList();
+                var lstOrderDetailDto = _mapper.Map<List<GetOrderDetail>>(lstOrderDetail);
+                lstGetOrderDto[i].OrderDetails = lstOrderDetailDto;
+                var userOrder = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(userId));
+                if (userOrder.Profile.IsNullOrDefault()) throw new ArgumentNullException("Can't get profile");
+                 var lstProfile = userOrder.Profile;
+                var profileOrder = lstProfile.FirstOrDefault(p => p.ProfileId.Equals(lstOrderUser[i].ProfileId));
+                lstGetOrderDto[i].Email = profileOrder.Email;
+                lstGetOrderDto[i].FullName = profileOrder.FullName;
+                lstGetOrderDto[i].Address = profileOrder.Address;
+                lstGetOrderDto[i].PhoneNumber = profileOrder.PhoneNumber;
+            }
+            return lstGetOrderDto;
+        }
+
+        public List<GetOrder> GetOrderAdmin()
+        {
+            var lstOrderUser = _orderRepository.GetAllDataQuery().Where(p => p.IsOrderEnabled.Equals(true)).ToList();
+            var lstGetOrderDto = _mapper.Map<List<GetOrder>>(lstOrderUser);
+            for (int i = 0; i < lstOrderUser.Count; i++)
+            {
+                var orderId = lstOrderUser[i].OrderID;
+                var lstOrderDetail = _orderDetailRepository.GetAllDataQuery().Where(p => p.Equals(orderId) && p.IsOrderDetailEnabled.Equals(true)).ToList();
+                var lstOrderDetailDto = _mapper.Map<List<GetOrderDetail>>(lstOrderDetail);
+                lstGetOrderDto[i].OrderDetails = lstOrderDetailDto;
+                var userOrder = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(lstOrderUser[i].UserID));
+                if (userOrder.Profile.IsNullOrDefault()) throw new ArgumentNullException("Can't get profile");
+                var lstProfile = userOrder.Profile;
+                var profileOrder = lstProfile.FirstOrDefault(p => p.ProfileId.Equals(lstOrderUser[i].ProfileId));
+                lstGetOrderDto[i].Email = profileOrder.Email;
+                lstGetOrderDto[i].FullName = profileOrder.FullName;
+                lstGetOrderDto[i].Address = profileOrder.Address;
+                lstGetOrderDto[i].PhoneNumber = profileOrder.PhoneNumber;
+            }
+            return lstGetOrderDto;
         }
     }
 }
