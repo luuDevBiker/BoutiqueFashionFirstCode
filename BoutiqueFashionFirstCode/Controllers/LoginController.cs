@@ -51,7 +51,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             return a;
         }
         [HttpGet("ForgotPassword")]
-        public bool ForgotPassword(string mail)
+        public bool ForgotPassword([FromHeader]string mail)
         {
             return _loginService.ForgotPassword(mail);
 
