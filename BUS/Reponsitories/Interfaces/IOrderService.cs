@@ -15,5 +15,8 @@ namespace BUS.Reponsitories.Interfaces
         public UpdateCartDto UpdateOrders(UpdateCartDtoViewModel updateCartViewModel);
         public bool DeleteOrder(Guid orderId);
         public bool DeleteOrderDetail(DeleteOrderDetailViewModel deleteOrder);
+        public UpdateProfileOrderDto UpdateProfile(UpdateProfileOrderViewModel updateProfileOrderViewModel);
+        public List<GetOrder> GetOrderClient(Guid userId);
+        public List<GetOrder> GetOrderAdmin();
     }
 }

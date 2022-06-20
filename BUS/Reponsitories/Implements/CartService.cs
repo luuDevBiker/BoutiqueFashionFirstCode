@@ -91,7 +91,7 @@ namespace BUS.Reponsitories.Implements
             if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
             if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
             if (cart.Quantity <0) throw new ArgumentNullException("Quantity");
-            if (cart.Price <0) throw new ArgumentNullException("Price");
+           
             if (cart.ProductName.IsNullOrDefault()) throw new ArgumentNullException("Product Name");
             var itemInCartItem = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId.Equals(cart.CartId));
             if (itemInCartItem.IsNullOrDefault()) throw new ForbidException("Update Cart", "Don't exist this product in your cart");

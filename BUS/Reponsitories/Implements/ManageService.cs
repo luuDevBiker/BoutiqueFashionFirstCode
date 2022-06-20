@@ -66,7 +66,7 @@ namespace BUS.Reponsitories.Implements
             userDto.RoleName = roleName;
             if (userDto.IsNullOrDefault())
             {
-                return null;
+                throw new ArgumentNullException("user null");
             }
             return userDto;
         }
