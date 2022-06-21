@@ -160,17 +160,18 @@ namespace BUS.Reponsitories.Implements
             for (int i = 0; i < lstOrderUser.Count; i++)
             {
                 var orderId = lstOrderUser[i].OrderID;
-                var lstOrderDetail = _orderDetailRepository.GetAllDataQuery().Where(p => p.Equals(orderId) && p.IsOrderDetailEnabled.Equals(true)).ToList();
+                var lstOrderDetail = _orderDetailRepository.GetAllDataQuery().Where(p => p.OrderID.Equals(orderId) && p.IsOrderDetailEnabled.Equals(true)).ToList();
                 var lstOrderDetailDto = _mapper.Map<List<GetOrderDetail>>(lstOrderDetail);
                 lstGetOrderDto[i].OrderDetails = lstOrderDetailDto;
                 var userOrder = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(userId));
                 if (userOrder.Profile.IsNullOrDefault()) throw new ArgumentNullException("Can't get profile");
-                 var lstProfile = userOrder.Profile;
-                var profileOrder = lstProfile.FirstOrDefault(p => p.ProfileId.Equals(lstOrderUser[i].ProfileId));
+                var profile = userOrder.Profile.Where(p => p.ProfileId == lstOrderUser[i].ProfileId).ToList();
+                if (profile.Count ==0) throw new ArgumentNullException("profile null");
+                var profileOrder = profile.FirstOrDefault(p => p.ProfileId.Equals(lstOrderUser[i].ProfileId));
                 lstGetOrderDto[i].Email = profileOrder.Email;
                 lstGetOrderDto[i].FullName = profileOrder.FullName;
                 lstGetOrderDto[i].Address = profileOrder.Address;
-                lstGetOrderDto[i].PhoneNumber = profileOrder.PhoneNumber;
+                lstGetOrderDto[i].PhoneNumber = profileOrder.PhoneNumber;   
             }
             return lstGetOrderDto;
         }
@@ -182,17 +183,23 @@ namespace BUS.Reponsitories.Implements
             for (int i = 0; i < lstOrderUser.Count; i++)
             {
                 var orderId = lstOrderUser[i].OrderID;
-                var lstOrderDetail = _orderDetailRepository.GetAllDataQuery().Where(p => p.Equals(orderId) && p.IsOrderDetailEnabled.Equals(true)).ToList();
+                var lstOrderDetail = _orderDetailRepository.GetAllDataQuery().Where(p => p.OrderID.Equals(orderId) && p.IsOrderDetailEnabled.Equals(true)).ToList();
                 var lstOrderDetailDto = _mapper.Map<List<GetOrderDetail>>(lstOrderDetail);
                 lstGetOrderDto[i].OrderDetails = lstOrderDetailDto;
                 var userOrder = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(lstOrderUser[i].UserID));
-                if (userOrder.Profile.IsNullOrDefault()) throw new ArgumentNullException("Can't get profile");
-                var lstProfile = userOrder.Profile;
-                var profileOrder = lstProfile.FirstOrDefault(p => p.ProfileId.Equals(lstOrderUser[i].ProfileId));
-                lstGetOrderDto[i].Email = profileOrder.Email;
-                lstGetOrderDto[i].FullName = profileOrder.FullName;
-                lstGetOrderDto[i].Address = profileOrder.Address;
-                lstGetOrderDto[i].PhoneNumber = profileOrder.PhoneNumber;
+                if (userOrder.Profile !=  null)
+                {
+                    var profile = userOrder.Profile.Where(p => p.ProfileId == lstOrderUser[i].ProfileId).ToList();
+                    var lstProfile = userOrder.Profile;
+                    if (profile.Count > 0)
+                    {
+                        var profileOrder = lstProfile.FirstOrDefault(p => p.ProfileId.Equals(lstOrderUser[i].ProfileId));
+                        lstGetOrderDto[i].Email = profileOrder.Email;
+                        lstGetOrderDto[i].FullName = profileOrder.FullName;
+                        lstGetOrderDto[i].Address = profileOrder.Address;
+                        lstGetOrderDto[i].PhoneNumber = profileOrder.PhoneNumber;
+                    }
+                }
             }
             return lstGetOrderDto;
         }
