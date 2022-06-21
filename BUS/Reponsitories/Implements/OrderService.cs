@@ -32,6 +32,7 @@ namespace BUS.Reponsitories.Implements
         public ProfileDto AddProfile(Guid userId, ProfileViewModel profileViewModel)
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId);
+            if (user.IsNullOrDefault()) throw new ArgumentNullException("not found user");
             var lstProfileUser = new List<ProfilesUser>();
             lstProfileUser = user.Profile;
             var address = profileViewModel.Address + ", xã/phường " + profileViewModel.Wards + ", quận/huyện " + profileViewModel.District + ", tỉnh/Tp " + profileViewModel.Province;
@@ -73,6 +74,9 @@ namespace BUS.Reponsitories.Implements
                     orderDetail.UnitPrice = item.Price;
                     orderDetail.IsOrderDetailEnabled = true;
                     _orderDetailRepository.AddDataCommand(orderDetail);
+                    var productVariant = _productVariantRepository.GetAllDataQuery().FirstOrDefault(p=>p.VariantID==item.VariantId);
+                    productVariant.Quantity = productVariant.Quantity -item.Quantity;
+                    _productVariantRepository.UpdateDataCommand(productVariant);
                 }
                 var orderDto = _mapper.Map<OrderDto>(createOrderViewModel);
                // var profile = AddProfile(createOrderViewModel.UserID, profileViewModel, order.OrderID);

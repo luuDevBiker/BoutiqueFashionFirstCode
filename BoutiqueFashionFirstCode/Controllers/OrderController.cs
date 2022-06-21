@@ -30,8 +30,8 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             return _orderService.UpdateProfile(updateProfileOrder);
         }
-        [HttpDelete("DeleteOrder")]
-        public bool DeleteOrder([FromHeader] Guid orderId)
+        [HttpDelete("DeleteOrder/{orderId}")]
+        public bool DeleteOrder(Guid orderId)
         {
             return _orderService.DeleteOrder(orderId);
         }
@@ -40,8 +40,8 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             return _orderService.DeleteOrderDetail(deleteOrder);
         }
-        [HttpGet("GetOrderClient")]
-        public List<GetOrder> GetOrderClient([FromHeader]Guid userId)
+        [HttpPost("GetOrderClient/{userId}")]
+        public List<GetOrder> GetOrderClient(Guid userId)
         {
             return _orderService.GetOrderClient(userId);
         }

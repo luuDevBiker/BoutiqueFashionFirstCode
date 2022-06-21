@@ -4,6 +4,7 @@ using DAL.DBcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220620055126_sua_nametable_order")]
+    partial class sua_nametable_order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,8 +111,8 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("AmountPay")
-                        .HasColumnType("bigint");
+                    b.Property<float>("AmountPay")
+                        .HasColumnType("real");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -123,13 +125,13 @@ namespace DAL.Migrations
                     b.Property<DateTime>("OrderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 6, 20, 18, 23, 10, 0, DateTimeKind.Unspecified));
+                        .HasDefaultValue(new DateTime(2022, 6, 20, 12, 51, 25, 0, DateTimeKind.Unspecified));
 
-                    b.Property<long>("PayingCustomer")
-                        .HasColumnType("bigint");
+                    b.Property<float>("PayingCustomer")
+                        .HasColumnType("real");
 
-                    b.Property<long>("Payments")
-                        .HasColumnType("bigint");
+                    b.Property<float>("Payments")
+                        .HasColumnType("real");
 
                     b.Property<Guid?>("ProfileId")
                         .HasColumnType("uniqueidentifier");
@@ -165,8 +167,8 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<long>("UnitPrice")
-                        .HasColumnType("bigint");
+                    b.Property<float>("UnitPrice")
+                        .HasColumnType("real");
 
                     b.HasKey("OrderID", "VariantID");
 
@@ -225,16 +227,16 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ImportPrice")
-                        .HasColumnType("bigint");
+                    b.Property<float>("ImportPrice")
+                        .HasColumnType("real");
 
                     b.Property<bool>("IsProductVariantEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<long>("Price")
-                        .HasColumnType("bigint");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<Guid>("ProductID")
                         .HasColumnType("uniqueidentifier");

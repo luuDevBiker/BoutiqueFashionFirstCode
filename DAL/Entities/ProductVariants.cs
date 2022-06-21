@@ -15,9 +15,9 @@ namespace DAL.Entities
         public Guid ProductID { get; set; }
         public string SkuID { get; set; }
 
-        public float ImportPrice { get; set; }
+        public Int64 ImportPrice { get; set; }
 
-        public float Price { get; set; }
+        public Int64 Price { get; set; }
         public int Quantity { get; set; }
         
         public bool IsProductVariantEnabled { get; set; }

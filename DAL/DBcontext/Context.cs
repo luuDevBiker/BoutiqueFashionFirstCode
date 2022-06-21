@@ -61,7 +61,7 @@ namespace DAL.DBcontext
             });
             modelBuilder.Entity<Order>(cart =>
             {
-                cart.ToTable("Order");
+                cart.ToTable("Orders");
                 cart.HasKey(p => p.OrderID);
                 cart.Property(p => p.UserID).IsRequired();
                 cart.Property(p => p.OrderTime).HasDefaultValue(DateTime.Now.ToString("HH:mm:ss tt"));

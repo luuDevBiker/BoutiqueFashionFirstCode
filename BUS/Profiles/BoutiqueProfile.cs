@@ -35,6 +35,7 @@ namespace BUS.Profiles
             CreateMap<UpdateProfileOrderDto, ProfilesUser>().ReverseMap();
             CreateMap<Order, GetOrder>().ReverseMap();
             CreateMap<GetOrderDetail, OrderDetails>().ReverseMap();
+            CreateMap<user, RegisterDto>().ReverseMap();
         
 
         }

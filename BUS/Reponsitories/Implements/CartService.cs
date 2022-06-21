@@ -34,17 +34,31 @@ namespace BUS.Reponsitories.Implements
             if (cart.ProductId.IsNullOrDefault() || Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
             if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
             if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
-            if (cart.Quantity <0) throw new ArgumentNullException("Quantity");
+            if (cart.Quantity <=0) throw new ArgumentNullException("Quantity ");
             if (cart.Price <0) throw new ArgumentNullException("Price");
             if (cart.ProductName.IsNullOrDefault()) throw new ArgumentNullException("Product Name");
             var product = _productDetailService.GetProductDetails().FirstOrDefault(p => p.ProductId == cart.ProductId && p.VariantId == cart.VariantId);
             if (product == null) return false;
             if (cart.Quantity > product.Quantity) throw new ForbidException("Error Cart", "Not enough products to Order");
-            var cartItem = new CartItem();
-            cartItem = _mapper.Map<CartItem>(cart);
-            cartItem.CartId = Guid.NewGuid();
-            _cartItemService.AddDataCommand(cartItem);
-            return true;
+            var cartExist = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.VariantId == cart.VariantId);
+            if (cartExist == null)
+            {
+                var cartItem = new CartItem();
+                cartItem = _mapper.Map<CartItem>(cart);
+                cartItem.CartId = Guid.NewGuid();
+                _cartItemService.AddDataCommand(cartItem);
+                throw new ForbidException("200", "Add successful");
+            }
+            else
+            {
+
+                var cartDto = _mapper.Map<CartItem>(cartExist);
+                cartDto.Quantity += cart.Quantity;
+                if (cartDto.Quantity > product.Quantity ) throw new ForbidException("Error Cart", "Not enough products to Order");
+                _cartItemService.UpdateDataCommand(cartDto);
+                throw new ForbidException("200", "Add successful");
+            }
+           
         }
 
         public List<CartDto> GetProductInCart(Guid userId)

@@ -11,7 +11,7 @@ namespace BUS.Reponsitories.Interfaces
     public interface ILoginService
     {
         public LoginDto Login(ViewUserLoginViewModel viewUserAfterLogin);
-        public bool Signup(user user);
+        public RegisterDto Signup(user user);
         public List<RolesUser> lstRolesUser();
         public bool ForgotPassword(string email);
         public List<user> lstUser();
