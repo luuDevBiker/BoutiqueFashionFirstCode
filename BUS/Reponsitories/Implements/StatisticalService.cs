@@ -80,8 +80,8 @@ namespace BUS.Reponsitories.Implements
                 statisticalCustomer.TotalMoney = total.Sum(p=>p.Payments);
                 foreach (var quantity in total)
                 {
-                   var orderDetail = _orderDetailService.GetAllDataQuery().Where(p=>p.OrderID==quantity.OrderID).Select(p=>p.VariantID).ToList();
-                    statisticalCustomer.QuantityProduct += orderDetail.Count();
+                   var orderDetail = _orderDetailService.GetAllDataQuery().Where(p=>p.OrderID==quantity.OrderID).Select(p=>p.Quantity).ToList();
+                    statisticalCustomer.QuantityProduct += orderDetail.Sum();
                 }
                 lstStatisticalCustomer.Add(statisticalCustomer);
             }

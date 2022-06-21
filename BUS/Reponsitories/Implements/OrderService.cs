@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BUS.Dtos;
+using BUS.Exceptions;
 using BUS.Reponsitories.Interfaces;
 using BUS.ViewModel;
 using DAL.Entities;
@@ -147,7 +148,7 @@ namespace BUS.Reponsitories.Implements
         {
             if (deleteOrder == null) throw new ArgumentNullException("Order null");
             var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == deleteOrder.OrderId && p.VariantID ==deleteOrder.VariantId && p.IsOrderDetailEnabled ==true);
-            if (orderDetail == null) throw new ArgumentNullException("Order null");
+            if (orderDetail == null) throw new ForbidException("400","OrderDetail null");
             orderDetail.IsOrderDetailEnabled = false;
             _orderDetailRepository.UpdateDataCommand(orderDetail);
             return true;
