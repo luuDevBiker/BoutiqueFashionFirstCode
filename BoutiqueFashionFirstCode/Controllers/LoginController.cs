@@ -20,7 +20,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             _loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
         }
         // GET api/<LoginController>/5
-        [HttpGet("CheckLogin")]
+        [HttpPost("CheckLogin")]
         public LoginDto CheckLogin([FromBody]ViewUserLoginViewModel viewUserLogin)
         {
             return _loginService.Login(viewUserLogin);
@@ -28,10 +28,10 @@ namespace BoutiqueFashionFirstCode.Controllers
 
         // POST api/<LoginController>
         [HttpPost("Register")]
-        public bool Register(RegisterViewModel register)
+        public RegisterDto Register(RegisterViewModel register)
         {
-            Guid rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.RolesName == "Nhân viên").Select(p => p.RolesID).FirstOrDefault();
-            user userAccount = new user();
+            var rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.RolesName == "Nhân viên").Select(p => p.RolesID).FirstOrDefault();
+            var userAccount = new user();
             userAccount.UserID = Guid.NewGuid();
             userAccount.UserName = register.username;
             userAccount.Email = register.email;
@@ -50,8 +50,8 @@ namespace BoutiqueFashionFirstCode.Controllers
             var a = _loginService.lstUser();
             return a;
         }
-        [HttpGet("ForgotPassword")]
-        public bool ForgotPassword([FromHeader]string mail)
+        [HttpPost("ForgotPassword/{mail}")]
+        public bool ForgotPassword(string mail)
         {
             return _loginService.ForgotPassword(mail);
 

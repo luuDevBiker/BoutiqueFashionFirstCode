@@ -10,7 +10,9 @@ namespace BUS.Reponsitories.Interfaces
 {
     public interface IStatisticalService
     {
-        public List<Statistical> Bestseller(DateTime first,DateTime last,Guid userId);
-     
+        public List<StatisticalProduction> Bestseller(Guid userId);
+        public List<StatisticalCustomer> BestCustomer(Guid userId);
+
+
     }
 }

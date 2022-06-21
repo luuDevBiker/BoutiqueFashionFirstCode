@@ -14,6 +14,6 @@ namespace BUS.ViewModel
         public string ProductName { get; set; }
         public ICollection<ImageValueObject> Images { get; set; }
         public int Quantity { get; set; }
-        public float Price { get; set; }
+        public Int64 Price { get; set; }
     }
 }

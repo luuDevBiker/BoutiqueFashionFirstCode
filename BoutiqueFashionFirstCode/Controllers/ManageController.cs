@@ -15,13 +15,13 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             _manageService = manageService ?? throw new ArgumentNullException(nameof(manageService));
         }
-        [HttpGet("GetUser")]
-        public UserDto GetUser([FromHeader]Guid userId)
+        [HttpPost("GetUser/{userId}")]
+        public UserDto GetUser(Guid userId)
         {
             return _manageService.GetUserDtoDetail(userId);
         }
-        [HttpGet("GetAllUser")]
-        public List<UserDto> GetAllUser([FromHeader] Guid userId)
+        [HttpPost("GetAllUser/{userId}")]
+        public List<UserDto> GetAllUser( Guid userId)
         {
             return _manageService.GetUsers(userId);
         }
@@ -35,8 +35,8 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             return _manageService.UpdateUser(updateUserViewModel);
         }
-        [HttpDelete("DeleteUser")]
-        public bool DeleteUser([FromHeader]Guid userId)
+        [HttpDelete("DeleteUser/{userId}")]
+        public bool DeleteUser(Guid userId)
         {
             return _manageService.DeleteUser(userId);
         }

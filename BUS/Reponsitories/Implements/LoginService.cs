@@ -49,7 +49,7 @@ namespace BUS.Reponsitories.Implements
                     builder.Append(_sendMailService.randomnumber(1000, 9999));
                     builder.Append(_sendMailService.randomstring(2, false));
                     _sendMailService.SendMail(email, builder.ToString());
-                    return true;
+            return true;
                 }
             }
             return false;
@@ -73,7 +73,7 @@ namespace BUS.Reponsitories.Implements
                     }
 
                 }
-                throw new ForbidException("500", "Wrong login information");
+                throw new ForbidException("400", "Wrong login information");
 
             }
             else
@@ -95,23 +95,21 @@ namespace BUS.Reponsitories.Implements
             return _users;
         }
 
-        public bool Signup(user user)
+        public RegisterDto Signup(user user)
         {
             if (user != null)
             {
-                if (_users.FirstOrDefault(p => p.Email == user.Email) == null)
-                {
-                    _userService.AddDataCommand(user);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (_users.FirstOrDefault(p => p.Email == user.Email) != null) throw new ArgumentNullException("Email exist");
+                if (_users.FirstOrDefault(p => p.PhoneNumber == user.PhoneNumber ) != null) throw new ArgumentNullException("PhoneNumber exist");
+                _userService.AddDataCommand(user);
+                var userDto = _imapper.Map<RegisterDto>(user);
+                var roleName = _rolesUserService.GetAllDataQuery().Where(p=>p.RolesID==user.RolesID).Select(p=>p.RolesName).FirstOrDefault();
+                userDto.RoleName = roleName;
+                return userDto;
             }
             else
             {
-                return true;
+                throw new ForbidException("400", "user null");
             }
 
         }

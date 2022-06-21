@@ -8,10 +8,10 @@ namespace DAL.Entities
         public Guid UserID { get; set; }
         public Guid? ProfileId { get; set; }
         public DateTime OrderTime { get; set; }
-        public float AmountPay { get; set; }
-        public float PayingCustomer { get; set; }
+        public Int64 AmountPay { get; set; }
+        public Int64 PayingCustomer { get; set; }
         public string? Description { get; set; }
-        public float Payments { get; set; }
+        public Int64 Payments { get; set; }
         public int StatusOrder { get; set; }
         public bool IsOrderEnabled { get; set; }
         public user User { get; set; }
