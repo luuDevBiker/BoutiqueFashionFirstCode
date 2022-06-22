@@ -2,7 +2,9 @@
 using BUS.Reponsitories.Interfaces;
 using BUS.ViewModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -40,13 +42,13 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             return _orderService.DeleteOrderDetail(deleteOrder);
         }
-        [HttpPost("GetOrderClient/{userId}")]
-        public List<GetOrder> GetOrderClient(Guid userId)
+        [HttpGet("GetOrderClient/{userId}")]
+        public List<GetOrder> GetOrderClient([FromODataUri]Guid userId)
         {
             return _orderService.GetOrderClient(userId);
         }
         [HttpGet("GetOrderAdmin")]
-        public List<GetOrder> GetOrderAdmin()
+        public List<GetOrder> GetOrderAdmin(ODataQueryOptions<GetOrder> queryOptions)
         {
             return _orderService.GetOrderAdmin();
         }

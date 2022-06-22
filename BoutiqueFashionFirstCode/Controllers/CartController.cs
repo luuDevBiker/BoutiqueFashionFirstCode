@@ -20,7 +20,7 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
         }
-        [HttpPost("GetProductInCart/{userId}")]
+        [HttpGet("GetProductInCart/{userId}")]
         public List<CartDto> GetCart(Guid userId)
         {
             return _cartService.GetProductInCart(userId);
