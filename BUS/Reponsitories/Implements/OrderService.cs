@@ -21,14 +21,16 @@ namespace BUS.Reponsitories.Implements
         private readonly IGenericRepository<Order> _orderRepository;
         private readonly IGenericRepository<OrderDetails> _orderDetailRepository;
         private readonly IGenericRepository<ProductVariants> _productVariantRepository;
+        private readonly IGenericRepository<CartItem> _cartItemRepository;
         private readonly IMapper _mapper;
-        public OrderService(IGenericRepository<user> userRepository, IMapper mapper, IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetails> orderDetailRepository, IGenericRepository<ProductVariants> productVariantRepository)
+        public OrderService(IGenericRepository<user> userRepository, IMapper mapper, IGenericRepository<Order> orderRepository, IGenericRepository<OrderDetails> orderDetailRepository, IGenericRepository<ProductVariants> productVariantRepository, IGenericRepository<CartItem> cartItemRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
             _orderDetailRepository = orderDetailRepository ?? throw new ArgumentNullException(nameof(orderDetailRepository));
             _productVariantRepository = productVariantRepository ?? throw new ArgumentNullException(nameof(productVariantRepository));
+            _cartItemRepository = cartItemRepository ?? throw new ArgumentNullException(nameof(cartItemRepository));
         }
         public ProfileDto AddProfile(Guid userId, ProfileViewModel profileViewModel)
         {
@@ -82,6 +84,11 @@ namespace BUS.Reponsitories.Implements
                 var orderDto = _mapper.Map<OrderDto>(createOrderViewModel);
                // var profile = AddProfile(createOrderViewModel.UserID, profileViewModel, order.OrderID);
                 orderDto.ProfileDto = profile;
+                var cartItem = _cartItemRepository.GetAllDataQuery().Where(p => p.UserId.Equals(createOrderViewModel.UserID)).ToList();
+                foreach (var item in cartItem)
+                {
+                    _cartItemRepository.DeleteDataCommand(item);
+                }
                 return orderDto;
             }
             else

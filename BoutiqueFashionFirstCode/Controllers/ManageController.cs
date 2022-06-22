@@ -3,6 +3,7 @@ using BUS.Reponsitories.Interfaces;
 using BUS.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -15,13 +16,13 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             _manageService = manageService ?? throw new ArgumentNullException(nameof(manageService));
         }
-        [HttpPost("GetUser/{userId}")]
-        public UserDto GetUser(Guid userId)
+        [HttpGet("GetUser/{userId}")]
+        public UserDto GetUser([FromODataUri] Guid userId)
         {
             return _manageService.GetUserDtoDetail(userId);
         }
-        [HttpPost("GetAllUser/{userId}")]
-        public List<UserDto> GetAllUser( Guid userId)
+        [HttpGet("GetAllUser/{userId}")]
+        public List<UserDto> GetAllUser([FromODataUri]  Guid userId)
         {
             return _manageService.GetUsers(userId);
         }

@@ -2,6 +2,7 @@
 using BUS.Reponsitories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -14,13 +15,13 @@ namespace BoutiqueFashionFirstCode.Controllers
         {
             _statisticalService = statisticalService ?? throw new ArgumentNullException(nameof(statisticalService));
         }
-        [HttpPost("lstSell/{userId}")]
-        public List<StatisticalProduction> Bestseller(Guid userId)
+        [HttpGet("lstSell/{userId}")]
+        public List<StatisticalProduction> Bestseller([FromODataUri]Guid userId)
         {
             return _statisticalService.Bestseller(userId);
         }
-        [HttpPost("lstCustomer/{userId}")]
-        public List<StatisticalCustomer> BestCustomer(Guid userId)
+        [HttpGet("lstCustomer/{userId}")]
+        public List<StatisticalCustomer> BestCustomer([FromODataUri]Guid userId)
         {
             return _statisticalService.BestCustomer(userId);
         }
