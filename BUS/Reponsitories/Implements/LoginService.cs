@@ -71,14 +71,22 @@ namespace BUS.Reponsitories.Implements
                         userDtoHaventRole.RolesName = roleName;
                         return userDtoHaventRole;
                     }
+                    else
+                    {
+                        return null;
+                    }
 
                 }
-                throw new ForbidException("400", "Wrong login information");
+                else
+                {
+                    return null;
+                }
+                
 
             }
             else
             {
-                throw new ForbidException("400", "Information cannot be left blank");
+                return null;
             }
 
 
@@ -99,8 +107,8 @@ namespace BUS.Reponsitories.Implements
         {
             if (user != null)
             {
-                if (_users.FirstOrDefault(p => p.Email == user.Email) != null) throw new ArgumentNullException("Email exist");
-                if (_users.FirstOrDefault(p => p.PhoneNumber == user.PhoneNumber ) != null) throw new ArgumentNullException("PhoneNumber exist");
+                if (_users.FirstOrDefault(p => p.Email == user.Email) != null) return null;
+                if (_users.FirstOrDefault(p => p.PhoneNumber == user.PhoneNumber ) != null) return null;
                 _userService.AddDataCommand(user);
                 var userDto = _imapper.Map<RegisterDto>(user);
                 var roleName = _rolesUserService.GetAllDataQuery().Where(p=>p.RolesID==user.RolesID).Select(p=>p.RolesName).FirstOrDefault();
@@ -109,7 +117,7 @@ namespace BUS.Reponsitories.Implements
             }
             else
             {
-                throw new ForbidException("400", "user null");
+                return null;
             }
 
         }

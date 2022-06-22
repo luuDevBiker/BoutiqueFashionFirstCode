@@ -60,7 +60,7 @@ namespace BUS.Reponsitories.Implements
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId && p.IsUserEnabled == true);
             if (user.IsNullOrDefault()) throw new ArgumentNullException("User null");
-            var ga = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList();
+            var ga = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList();// thua
             var roleName = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == user.RolesID && p.IsRolesUserEnabled == true).Select(p => p.RolesName).FirstOrDefault();
             var userDto = _mapper.Map<UserDto>(user);
             userDto.RoleName = roleName;
