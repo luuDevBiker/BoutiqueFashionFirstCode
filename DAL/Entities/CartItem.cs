@@ -1,6 +1,7 @@
 ﻿using DAL.ValueObject;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,5 +18,9 @@ namespace DAL.Entities
         public int Quantity { get; set; }
         public float Price { get; set; }
         public Guid UserId { get; set; }
+        public CartItem()
+        {
+            Images = new Collection<ImageValueObject>();
+        }
     }
 }

@@ -31,32 +31,36 @@ namespace BUS.Reponsitories.Implements
 
         public bool AddCart(CreatCartViewModel cart)
         {
-            if (cart.ProductId.IsNullOrDefault() || Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
-            if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
-            if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
-            if (cart.Quantity <=0) throw new ArgumentNullException("Quantity ");
-            if (cart.Price <0) throw new ArgumentNullException("Price");
-            if (cart.ProductName.IsNullOrDefault()) throw new ArgumentNullException("Product Name");
-            var product = _productDetailService.GetProductDetails().FirstOrDefault(p => p.ProductId == cart.ProductId && p.VariantId == cart.VariantId);
+           
+            if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) return false;
+            if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) return false;
+            if (cart.Quantity <=0) return false;
+          
+            var product = _productDetailService.GetProductDetails().FirstOrDefault(p =>  p.VariantId == cart.VariantId);
             if (product == null) return false;
-            if (cart.Quantity > product.Quantity) throw new ForbidException("Error Cart", "Not enough products to Order");
+            if (cart.Quantity > product.Quantity) return false;
             var cartExist = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.VariantId == cart.VariantId);
             if (cartExist == null)
             {
                 var cartItem = new CartItem();
                 cartItem = _mapper.Map<CartItem>(cart);
+                cartItem.ProductId = product.ProductId;
+                cartItem.ProductName = product.ProductsName;
+                cartItem.Quantity = cart.Quantity;   
+                cartItem.Images = product.Images;
+                cartItem.Price = product.Price;
                 cartItem.CartId = Guid.NewGuid();
                 _cartItemService.AddDataCommand(cartItem);
-                throw new ForbidException("200", "Add successful");
+               return true ;
             }
             else
             {
 
                 var cartDto = _mapper.Map<CartItem>(cartExist);
                 cartDto.Quantity += cart.Quantity;
-                if (cartDto.Quantity > product.Quantity ) throw new ForbidException("Error Cart", "Not enough products to Order");
+                if (cartDto.Quantity > product.Quantity ) return false;
                 _cartItemService.UpdateDataCommand(cartDto);
-                throw new ForbidException("200", "Add successful");
+                return true;
             }
            
         }
@@ -79,14 +83,14 @@ namespace BUS.Reponsitories.Implements
             }
             else
             {
-                throw new ArgumentNullException("User null");
+                return null;
             }
         }
 
         public bool RevoteItemIncart(Guid cartId)
         {
             if (cartId.IsNullOrDefault() || Guid.Equals(cartId, Guid.Empty))
-                throw new ArgumentNullException("Cart Id");
+                return false;
             var itemCart = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId == cartId);
             if (itemCart != null)
             {
@@ -101,14 +105,14 @@ namespace BUS.Reponsitories.Implements
 
         public bool UpdateCart(UpdateCartViewModel cart)
         {
-            if (cart.ProductId.IsNullOrDefault() || Guid.Equals(cart.ProductId, Guid.Empty)) throw new ArgumentNullException("Product Id");
-            if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) throw new ArgumentNullException("Vatiant Id");
-            if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) throw new ArgumentNullException("User Id");
-            if (cart.Quantity <0) throw new ArgumentNullException("Quantity");
+          
+            if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) return false;
+            if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) return false;
+            if (cart.Quantity <0) return false;
            
-            if (cart.ProductName.IsNullOrDefault()) throw new ArgumentNullException("Product Name");
+          
             var itemInCartItem = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId.Equals(cart.CartId));
-            if (itemInCartItem.IsNullOrDefault()) throw new ForbidException("Update Cart", "Don't exist this product in your cart");
+            if (itemInCartItem.IsNullOrDefault()) return false;
             itemInCartItem.Quantity = cart.Quantity;
             _cartItemService.UpdateDataCommand(itemInCartItem);
             return true;

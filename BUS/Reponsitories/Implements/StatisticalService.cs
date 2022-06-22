@@ -32,12 +32,12 @@ namespace BUS.Reponsitories.Implements
         public List<StatisticalProduction> Bestseller(Guid userId)
         {
             if (userId.IsNullOrDefault() || Guid.Equals(userId, Guid.Empty))
-                throw new ArgumentNullException("User Id");
+                return null;
             var user = _userService.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(userId) && p.IsUserEnabled.Equals(true));
-            if (user.IsNullOrDefault()) throw new ArgumentNullException("user null");
+            if (user.IsNullOrDefault()) return null;
             var checkRoleUser = _rolesUserService.GetAllDataQuery().Where(p => p.RolesID.Equals(user.RolesID)).Select(p => p.RolesName).FirstOrDefault();
-            if (checkRoleUser.IsNullOrDefault()) throw new ArgumentNullException("get role user fail");
-            if (checkRoleUser.Trim().ToLower() != "admin") throw new ArgumentNullException("non-admin account");
+            if (checkRoleUser.IsNullOrDefault()) return null;
+            if (checkRoleUser.Trim().ToLower() != "admin") return null;
             var lstOrderDetail = _orderDetailService.GetAllDataQuery().Where(p => p.IsOrderDetailEnabled.Equals(true)).ToList();
             var lstProductVariant = _productVariantService.GetAllDataQuery().ToList();
             var lstProduct = _productService.GetAllDataQuery().ToList();
@@ -60,12 +60,12 @@ namespace BUS.Reponsitories.Implements
         public List<StatisticalCustomer> BestCustomer(Guid userId)
         {
             if (userId.IsNullOrDefault() || Guid.Equals(userId, Guid.Empty))
-                throw new ArgumentNullException("User Id");
+                return null;
             var user = _userService.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(userId) && p.IsUserEnabled.Equals(true));
-            if (user.IsNullOrDefault()) throw new ArgumentNullException("user null");
+            if (user.IsNullOrDefault()) return null;
             var checkRoleUser = _rolesUserService.GetAllDataQuery().Where(p => p.RolesID.Equals(user.RolesID)).Select(p => p.RolesName).FirstOrDefault();
-            if (checkRoleUser.IsNullOrDefault()) throw new ArgumentNullException("get role user fail");
-            if (!(checkRoleUser.Trim().ToLower() == "admin" || checkRoleUser.Trim().ToLower() == "nhân viên")) throw new ArgumentNullException("non-admin account");
+            if (checkRoleUser.IsNullOrDefault()) return null;
+            if (!(checkRoleUser.Trim().ToLower() == "admin" || checkRoleUser.Trim().ToLower() == "nhân viên")) return null;
             var lstStatisticalCustomer = new List<StatisticalCustomer>();
             var lstUserOrder = _orderService.GetAllDataQuery().Where(p => p.IsOrderEnabled.Equals(true)).ToList();
             var lstUserOrderDis = lstUserOrder.DistinctBy(p => p.UserID).ToList();
