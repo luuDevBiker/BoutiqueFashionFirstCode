@@ -34,15 +34,15 @@ namespace BUS.Reponsitories.Implements
             userDto.RolesID = roleId;
             userDto.IsUserEnabled = true;
             var userEntity = _mapper.Map<user>(userDto);
-            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("User");
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("RolesID");
-            if (userEntity.PhoneNumber.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("PhoneNumber");
-            if (userEntity.UserName.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("UserName");
-            if (userEntity.Email.IsNullOrDefault()) throw new ArgumentNullException("Email");
-            if (userEntity.PhoneNumber.IsNullOrDefault()) throw new ArgumentNullException("PhoneNumber");
-            if (userEntity.Avatar.IsNullOrDefault()) throw new ArgumentNullException("Avatar");
+            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.PhoneNumber.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.UserName.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.Email.IsNullOrDefault()) return false;
+            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
+            if (userEntity.Avatar.IsNullOrDefault()) return false;
             userEntity.Password = "123456";
-            if (_userRepository.GetAllDataQuery().FirstOrDefault(p => p.Email == creatUser.Email) != null) throw new ArgumentNullException("Email exist");
+            if (_userRepository.GetAllDataQuery().FirstOrDefault(p => p.Email == creatUser.Email) != null) return false;
             _userRepository.AddDataCommand(userEntity);
             return true;
         }
@@ -50,7 +50,7 @@ namespace BUS.Reponsitories.Implements
         public bool DeleteUser(Guid userId)
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId && p.IsUserEnabled == true);
-            if (user == null) throw new ArgumentNullException("Null exception");
+            if (user == null) return false;
             user.IsUserEnabled = false;
             _userRepository.UpdateDataCommand(user);
             return true;
@@ -59,14 +59,14 @@ namespace BUS.Reponsitories.Implements
         public UserDto GetUserDtoDetail(Guid userId)
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId && p.IsUserEnabled == true);
-            if (user.IsNullOrDefault()) throw new ArgumentNullException("User null");
+            if (user.IsNullOrDefault()) return null;
             var ga = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList();// thua
             var roleName = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == user.RolesID && p.IsRolesUserEnabled == true).Select(p => p.RolesName).FirstOrDefault();
             var userDto = _mapper.Map<UserDto>(user);
             userDto.RoleName = roleName;
             if (userDto.IsNullOrDefault())
             {
-                throw new ArgumentNullException("user null");
+                return null;
             }
             return userDto;
         }
@@ -76,7 +76,7 @@ namespace BUS.Reponsitories.Implements
             var lstUserEntity = _userRepository.GetAllDataQuery().Where(p => p.IsUserEnabled == true).AsEnumerable();
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId);
             var roleName = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == user.RolesID).Select(p => p.RolesName).FirstOrDefault();
-            if (user.IsNullOrDefault()) throw new ArgumentNullException("User null");
+            if (user.IsNullOrDefault()) return null;
             if (roleName.Trim().ToLower() == "admin")
             {
                 var lstUser = _userRepository.GetAllDataQuery().ToList();
@@ -91,7 +91,7 @@ namespace BUS.Reponsitories.Implements
             }
             else
             {
-                throw new ArgumentNullException("Get failure list");
+                return null;
             }
 
         }
@@ -103,7 +103,7 @@ namespace BUS.Reponsitories.Implements
             var roleId = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesName.Trim().ToLower() == updateUserViewModel.RoleName.Trim().ToLower()).Select(p => p.RolesID).FirstOrDefault();
             userDto.RolesID = roleId;
             var userEntity = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID.Equals(updateUserViewModel.UserID) && p.IsUserEnabled == true);
-            if (userEntity.IsNullOrDefault()) throw new ArgumentNullException("Null exception");
+            if (userEntity.IsNullOrDefault()) return false;
             userEntity.DOB = userDto.DOB;
             userEntity.Gender = userDto.Gender;
             userEntity.RolesID = roleId;
@@ -113,12 +113,12 @@ namespace BUS.Reponsitories.Implements
             userEntity.PhoneNumber = userDto.PhoneNumber;
             userEntity.Email = userDto.Email;
             userEntity.IsUserEnabled=userDto.IsUserEnabled;
-            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("User");
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("RolesID");
-            if (userEntity.PhoneNumber.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("PhoneNumber");
-            if (userEntity.UserName.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) throw new ArgumentNullException("UserName");
-            if (userEntity.Email.IsNullOrDefault()) throw new ArgumentNullException("Email");
-            if (userEntity.PhoneNumber.IsNullOrDefault()) throw new ArgumentNullException("PhoneNumber");
+            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.PhoneNumber.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.UserName.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.Email.IsNullOrDefault()) return false;
+            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
             _userRepository.UpdateDataCommand(userEntity);
             return true;
         }
