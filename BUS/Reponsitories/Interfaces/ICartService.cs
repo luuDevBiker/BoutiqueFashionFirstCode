@@ -14,7 +14,7 @@ namespace BUS.Reponsitories.Interfaces
     {
         public bool AddCart(CreatCartViewModel cart);
         public List<CartDto> GetProductInCart(Guid userId);
-        public bool RevoteItemIncart(Guid cartId);
+        public bool RemoveItemIncart(Guid cartId);
         public bool UpdateCart(UpdateCartViewModel cart);
     }
 }
