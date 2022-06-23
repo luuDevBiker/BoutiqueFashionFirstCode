@@ -10,7 +10,7 @@ namespace DAL.ValueObject
     {
 
         public string Url { get; set; }
-        public string ThumbNail { get; set; }
+        public string Thumbnail { get; set; }
         public string OriginalFileName { get; set; }
         public Int64 ContentLength { get; set; }
         public string AbsolutePath { get; set; }
