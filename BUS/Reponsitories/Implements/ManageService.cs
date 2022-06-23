@@ -35,9 +35,9 @@ namespace BUS.Reponsitories.Implements
             userDto.IsUserEnabled = true;
             var userEntity = _mapper.Map<user>(userDto);
             if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.UserName.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.RolesID, Guid.Empty)) return false;
+            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
+            if (userEntity.UserName.IsNullOrDefault() ) return false;
             if (userEntity.Email.IsNullOrDefault()) return false;
             if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
             if (userEntity.Avatar.IsNullOrDefault()) return false;
@@ -114,11 +114,11 @@ namespace BUS.Reponsitories.Implements
             userEntity.Email = userDto.Email;
             userEntity.IsUserEnabled=userDto.IsUserEnabled;
             if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.UserName.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
+            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.RolesID, Guid.Empty)) return false;
+            if (userEntity.PhoneNumber.IsNullOrDefault() ) return false;
+            if (userEntity.UserName.IsNullOrDefault() ) return false;
             if (userEntity.Email.IsNullOrDefault()) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
+            if (userEntity.Gender.IsNullOrDefault()) return false;
             _userRepository.UpdateDataCommand(userEntity);
             return true;
         }
