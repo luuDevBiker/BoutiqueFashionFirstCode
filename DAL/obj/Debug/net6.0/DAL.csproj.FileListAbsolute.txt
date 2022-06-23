@@ -26,3 +26,17 @@ D:\FPT_School\BoutiqueFashionFirstCode\DAL\obj\Debug\net6.0\refint\DAL.dll
 D:\FPT_School\BoutiqueFashionFirstCode\DAL\obj\Debug\net6.0\DAL.pdb
 D:\FPT_School\BoutiqueFashionFirstCode\DAL\obj\Debug\net6.0\DAL.genruntimeconfig.cache
 D:\FPT_School\BoutiqueFashionFirstCode\DAL\obj\Debug\net6.0\ref\DAL.dll
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\bin\Debug\net6.0\DAL.deps.json
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\bin\Debug\net6.0\DAL.runtimeconfig.json
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\bin\Debug\net6.0\DAL.dll
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\bin\Debug\net6.0\DAL.pdb
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.csproj.AssemblyReference.cache
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.AssemblyInfoInputs.cache
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.AssemblyInfo.cs
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.csproj.CoreCompileInputs.cache
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.dll
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\refint\DAL.dll
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.pdb
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\DAL.genruntimeconfig.cache
+D:\NET105\GhepCode5\BoutiqueFashionBE\DAL\obj\Debug\net6.0\ref\DAL.dll

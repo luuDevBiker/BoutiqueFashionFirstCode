@@ -21,7 +21,8 @@ namespace BoutiqueFashionFirstCode.Controllers
         }
         // GET api/<LoginController>/5
         [HttpPost("CheckLogin")]
-        public LoginDto CheckLogin([FromBody]ViewUserLoginViewModel viewUserLogin)
+        public LoginDto CheckLogin([FromBody]ViewUserLoginViewModel viewUserLogin)// các Class có tên "ViewModel" ở cuối là các đối tượng chứa các thuộc tính nhận giá trị mà FontEnd vào của phương thức.
+                                                                                  // phương thức LOgin( sử dụng Http method Post ). call đến service LOgin.
         {
             return _loginService.Login(viewUserLogin);
         }

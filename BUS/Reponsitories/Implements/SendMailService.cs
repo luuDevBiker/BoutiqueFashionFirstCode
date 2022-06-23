@@ -36,10 +36,10 @@ namespace BUS.Reponsitories.Implements
             smtp.Credentials = new NetworkCredential("kienntp038@gmail.com", "kien2810");
             var a = _userService.GetAllDataQuery().FirstOrDefault(p => p.Email == mail);
             a.Password = pass;
-            _userService.UpdateDataCommand(a);
+            _userService.UpdateDataCommand(a);// update mật khẩu cho User.
             try
             {
-                smtp.Send(mess);
+                smtp.Send(mess);// gửi mật khẩu mới về mail.
 
             }
             catch (Exception e)
@@ -48,7 +48,7 @@ namespace BUS.Reponsitories.Implements
 
             }
         }
-        public string randomstring(int size, bool a)
+        public string randomstring(int size, bool a) // random chuỗi cho mật khẩu.
         {
             StringBuilder builder = new StringBuilder();
             Random random = new Random();
@@ -64,7 +64,7 @@ namespace BUS.Reponsitories.Implements
             return builder.ToString();
         }
 
-        public int randomnumber(int min, int max)
+        public int randomnumber(int min, int max)// random. số từ min đến max cho phần số.
         {
             Random random = new Random();
             return random.Next(min, max);
