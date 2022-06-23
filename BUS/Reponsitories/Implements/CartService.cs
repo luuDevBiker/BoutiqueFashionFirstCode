@@ -29,18 +29,22 @@ namespace BUS.Reponsitories.Implements
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public bool AddCart(CreatCartViewModel cart)
+        public bool AddCart(CreatCartViewModel cart) // truyền vào 1 đôi tượng có chứa VariantId, số Lượng muốn mua của sản Phẩm, Id Người dùng.
         {
            
             if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) return false;
             if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) return false;
             if (cart.Quantity <=0) return false;
-          
-            var product = _productDetailService.GetProductDetails().FirstOrDefault(p =>  p.VariantId == cart.VariantId);
-            if (product == null) return false;
+          // 34->36: check null các thuộc tính truyền vào.
+
+
+            var product = _productDetailService.GetProductDetails().FirstOrDefault(p =>  p.VariantId == cart.VariantId);//tìm sản phẩm trong Db.
+            if (product == null) return false;// nếu không só sản phẩm, hoặc Số LƯợng trong kho không đủ thì không thêm nữa
             if (cart.Quantity > product.Quantity) return false;
-            var cartExist = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.VariantId == cart.VariantId);
-            if (cartExist == null)
+            var cartExist = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.VariantId == cart.VariantId); 
+            // kiểm tra mặt hàng vừa thêm vào có trùng với mặt hàng đã thêm vào giỏ hàng trước đó
+
+            if (cartExist == null)// nếu không tồn tại thì Thêm mới Sản Phẩm vào giỏ hàng
             {
                 var cartItem = new CartItem();
                 cartItem = _mapper.Map<CartItem>(cart);
@@ -53,11 +57,11 @@ namespace BUS.Reponsitories.Implements
                 _cartItemService.AddDataCommand(cartItem);
                return true ;
             }
-            else
+            else// nếu đã tồn tại thì số lượng của sản phẩm đó sẽ được update.
             {
 
                 var cartDto = _mapper.Map<CartItem>(cartExist);
-                cartDto.Quantity += cart.Quantity;
+                cartDto.Quantity = cart.Quantity;
                 if (cartDto.Quantity > product.Quantity ) return false;
                 _cartItemService.UpdateDataCommand(cartDto);
                 return true;
@@ -67,10 +71,11 @@ namespace BUS.Reponsitories.Implements
 
         public List<CartDto> GetProductInCart(Guid userId)
         {
-            if (!userId.IsNullOrDefault() || !Guid.Equals(userId, Guid.Empty))
-            {
+            if (!userId.IsNullOrDefault() || !Guid.Equals(userId, Guid.Empty)) // check User tồn tại hay khum.
+            { // nếu User tồn tại thì....
              
                 var lstCartItem = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
+                // lấy ra danh sách  các sản phẩm đã thêm vào giỏ hàng.
                 var lstCartDto = _mapper.Map<List<CartDto>>(lstCartItem);
                
                 //var lstCartDtoNoImage = _mapper.Map<List<CartDto>>(lstCartItem);
@@ -79,42 +84,47 @@ namespace BUS.Reponsitories.Implements
                 //    var Image = _productDetailService.GetProductDetails().Where(p => p.VariantId == lstCartDtoNoImage[i].VariantId).Select(p => p.Images);
                 //    lstCartDtoNoImage[i].ImageProduct = Image);
                 //}
-                return lstCartDto;
+                return lstCartDto; // trả List Sản phẩm hiển thị.
             }
             else
             {
+                //nếu User không tồn tại thì trả về null
                 return null;
             }
         }
 
-        public bool RevoteItemIncart(Guid cartId)
+        public bool RemoveItemIncart(Guid cartId)
         {
-            if (cartId.IsNullOrDefault() || Guid.Equals(cartId, Guid.Empty))
+            if (cartId.IsNullOrDefault() || Guid.Equals(cartId, Guid.Empty)) // checks null đầu vào.
                 return false;
-            var itemCart = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId == cartId);
+            var itemCart = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId == cartId); // tìm sản phẩm trong giỏ hàng thông qua Cart Id.
             if (itemCart != null)
             {
+                //nếu sản phẩm  tồn tại trong giỏ hàng thì Xóa sản phẩm đó trong giỏ hàng.
                 _cartItemService.DeleteDataCommand(itemCart);
                 return true;
             }
             else
-            {
+            {//nếu Sản Phẩm không tồn tại thì xóa không thành công.
                 return false;
             }
         }
-
+ 
         public bool UpdateCart(UpdateCartViewModel cart)
         {
-          
+          // 115 đến 118 check giá trị đầu vào.
             if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) return false;
             if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) return false;
             if (cart.Quantity <0) return false;
            
           
             var itemInCartItem = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId.Equals(cart.CartId));
-            if (itemInCartItem.IsNullOrDefault()) return false;
+            // tìm kiếm Sản phẩm muốn update theo IdCart
+            if (itemInCartItem.IsNullOrDefault()) return false; // nếu KHông tồn tại thì  trả Về False
+
+            // nếu tồn tại thì update Sản Phẩm trong GIỏ hàng
             itemInCartItem.Quantity = cart.Quantity;
-            _cartItemService.UpdateDataCommand(itemInCartItem);
+            _cartItemService.UpdateDataCommand(itemInCartItem); 
             return true;
 
 

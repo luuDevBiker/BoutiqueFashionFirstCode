@@ -1,4 +1,4 @@
-using BUS.Reponsitories.Interfaces;
+﻿using BUS.Reponsitories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,36 +39,37 @@ namespace BUS.Reponsitories.Implements
 
         public bool ForgotPassword(string email)
         {
-
-            if (email != null)
+            // hàm nay nhận vào Email  
+            if (email != null) // nếu Email khác Null
             {
-                if (_userService.GetAllDataQuery().FirstOrDefault(p => p.Email == email) != null)
+                if (_userService.GetAllDataQuery().FirstOrDefault(p => p.Email == email) != null)// tìm đến User có Email truyền vào.
                 {
                     StringBuilder builder = new StringBuilder();
-                    builder.Append(_sendMailService.randomstring(4, true));
-                    builder.Append(_sendMailService.randomnumber(1000, 9999));
-                    builder.Append(_sendMailService.randomstring(2, false));
-                    _sendMailService.SendMail(email, builder.ToString());
-            return true;
+                    builder.Append(_sendMailService.randomstring(4, true)); // random mật khẩu 
+                    builder.Append(_sendMailService.randomnumber(1000, 9999));// random mật khẩu 
+                    builder.Append(_sendMailService.randomstring(2, false));// random mật khẩu 
+                    _sendMailService.SendMail(email, builder.ToString());// gửi mật khẩu mới về mail.
+                    return true;
                 }
             }
             return false;
-
         }
 
         public LoginDto Login(ViewUserLoginViewModel viewUserAfterLogin)
         {
 
-            if (!viewUserAfterLogin.UserName.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault())
+            if (!viewUserAfterLogin.UserName.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault()) // kiểm tra tham số đầu vào UserName và PassWord null hay không. 
             {
                 var userlogin = _users.FirstOrDefault(c => c.UserName == viewUserAfterLogin.UserName && c.Password == viewUserAfterLogin.Password);
+                // tìm kiếm và lấy ra thông tin và quyền của User có tài khoản và mật khẩu khi đăng nhập vào.
                 if (userlogin != null)
                 {
-                    var userDtoHaventRole = _imapper.Map<LoginDto>(userlogin);
+                    var userDtoHaventRole = _imapper.Map<LoginDto>(userlogin); // lấy thông tin cần thiết của User để trả ra.
                     var roleName = _rolesUsers.Where(p => p.RolesID == userDtoHaventRole.RolesID).Select(p => p.RolesName).FirstOrDefault();
+                    // lấy quyền thông qua RoleId.
                     if (!roleName.IsNullOrDefault())
                     {
-                        userDtoHaventRole.RolesName = roleName;
+                        userDtoHaventRole.RolesName = roleName; // gán tên quyền để trả ra.
                         return userDtoHaventRole;
                     }
                     else

@@ -1,20 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj": {}
+    "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\BUS\\BUS.csproj": {}
   },
   "projects": {
-    "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj": {
+    "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\BUS\\BUS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj",
+        "projectUniqueName": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\BUS\\BUS.csproj",
         "projectName": "BUS",
-        "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\BUS.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\BUS\\obj\\",
+        "projectPath": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\BUS\\BUS.csproj",
+        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
+        "outputPath": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\BUS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\NuGet.Config",
+          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,14 +23,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget-packages.azurewebsites.net/nuget": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj": {
-                "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj"
+              "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\DAL\\DAL.csproj": {
+                "projectPath": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\DAL\\DAL.csproj"
               }
             }
           }
@@ -88,21 +90,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj": {
+    "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj",
+        "projectUniqueName": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT_School\\BoutiqueFashionFirstCode\\DAL\\obj\\",
+        "projectPath": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\MyPC\\.nuget\\packages\\",
+        "outputPath": "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\NET105\\GhepCode5\\BoutiqueFashionBE\\NuGet.Config",
+          "C:\\Users\\MyPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -110,7 +113,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget-packages.azurewebsites.net/nuget": {}
         },
         "frameworks": {
           "net6.0": {
@@ -141,6 +145,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             }
           },
           "imports": [
@@ -158,7 +166,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
