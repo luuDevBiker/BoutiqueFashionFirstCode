@@ -29,18 +29,11 @@ namespace BUS.Reponsitories.Implements
             var userDto = _mapper.Map<UserDto>(creatUser);
             userDto.Gender = creatUser.GenderStr.Trim().ToLower() == "nam" ? 1 : 0;
             userDto.UserID = Guid.NewGuid();
-            var lstRole = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList(); ;
+            var lstRole = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList(); 
             var roleId = lstRole.Where(p => p.RolesName.Trim().ToLower() == userDto.RoleName.Trim().ToLower()).Select(p => p.RolesID).FirstOrDefault();
             userDto.RolesID = roleId;
             userDto.IsUserEnabled = true;
             var userEntity = _mapper.Map<user>(userDto);
-            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.RolesID, Guid.Empty)) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
-            if (userEntity.UserName.IsNullOrDefault() ) return false;
-            if (userEntity.Email.IsNullOrDefault()) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
-            if (userEntity.Avatar.IsNullOrDefault()) return false;
             userEntity.Password = "123456";
             if (_userRepository.GetAllDataQuery().FirstOrDefault(p => p.Email == creatUser.Email) != null) return false;
             _userRepository.AddDataCommand(userEntity);
@@ -60,7 +53,7 @@ namespace BUS.Reponsitories.Implements
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId && p.IsUserEnabled == true);
             if (user.IsNullOrDefault()) return null;
-            var ga = _userRoleRepository.GetAllDataQuery().Where(p => p.IsRolesUserEnabled == true).ToList();// thua
+          
             var roleName = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == user.RolesID && p.IsRolesUserEnabled == true).Select(p => p.RolesName).FirstOrDefault();
             var userDto = _mapper.Map<UserDto>(user);
             userDto.RoleName = roleName;
@@ -73,7 +66,7 @@ namespace BUS.Reponsitories.Implements
 
         public List<UserDto> GetUsers(Guid userId)
         {
-            var lstUserEntity = _userRepository.GetAllDataQuery().Where(p => p.IsUserEnabled == true).AsEnumerable();
+          
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId);
             var roleName = _userRoleRepository.GetAllDataQuery().Where(p => p.RolesID == user.RolesID).Select(p => p.RolesName).FirstOrDefault();
             if (user.IsNullOrDefault()) return null;
@@ -109,16 +102,10 @@ namespace BUS.Reponsitories.Implements
             userEntity.RolesID = roleId;
             userEntity.Address = userDto.Address;
             userEntity.UserName = userDto.UserName;
-            userEntity.Avatar=userDto.Avatar;
+            userEntity.Avatar = userDto.Avatar;
             userEntity.PhoneNumber = userDto.PhoneNumber;
             userEntity.Email = userDto.Email;
-            userEntity.IsUserEnabled=userDto.IsUserEnabled;
-            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.RolesID, Guid.Empty)) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault() ) return false;
-            if (userEntity.UserName.IsNullOrDefault() ) return false;
-            if (userEntity.Email.IsNullOrDefault()) return false;
-            if (userEntity.Gender.IsNullOrDefault()) return false;
+            userEntity.IsUserEnabled = userDto.IsUserEnabled;
             _userRepository.UpdateDataCommand(userEntity);
             return true;
         }
