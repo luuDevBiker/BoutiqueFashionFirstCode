@@ -34,13 +34,6 @@ namespace BUS.Reponsitories.Implements
             userDto.RolesID = roleId;
             userDto.IsUserEnabled = true;
             var userEntity = _mapper.Map<user>(userDto);
-            if (userEntity.UserID.IsNullOrDefault() || Guid.Equals(userEntity.UserID, Guid.Empty)) return false;
-            if (userEntity.RolesID.IsNullOrDefault() || Guid.Equals(userEntity.RolesID, Guid.Empty)) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
-            if (userEntity.UserName.IsNullOrDefault() ) return false;
-            if (userEntity.Email.IsNullOrDefault()) return false;
-            if (userEntity.PhoneNumber.IsNullOrDefault()) return false;
-            if (userEntity.Avatar.IsNullOrDefault()) return false;
             userEntity.Password = "123456";
             if (_userRepository.GetAllDataQuery().FirstOrDefault(p => p.Email == creatUser.Email) != null) return false;
             _userRepository.AddDataCommand(userEntity);
