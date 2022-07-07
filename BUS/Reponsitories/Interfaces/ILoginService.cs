@@ -10,10 +10,10 @@ namespace BUS.Reponsitories.Interfaces
 {
     public interface ILoginService
     {
-        public LoginDto Login(ViewUserLoginViewModel viewUserAfterLogin);
-        public RegisterDto Signup(user user);
+        public Task<LoginDto> Login(ViewUserLoginViewModel viewUserAfterLogin);
+        public Task<RegisterDto> Signup(user user);
         public List<RolesUser> lstRolesUser();
-        public bool ForgotPassword(string email);
+        public Task<bool> ForgotPassword(string email);
         public List<user> lstUser();
     }
 }

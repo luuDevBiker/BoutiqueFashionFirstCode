@@ -32,7 +32,7 @@ namespace BUS.Reponsitories.Implements
             _productVariantRepository = productVariantRepository ?? throw new ArgumentNullException(nameof(productVariantRepository));
             _cartItemRepository = cartItemRepository ?? throw new ArgumentNullException(nameof(cartItemRepository));
         }
-        public ProfileDto AddProfile(Guid userId, ProfileViewModel profileViewModel)
+        public  ProfileDto AddProfile(Guid userId, ProfileViewModel profileViewModel)
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId);
             if (user.IsNullOrDefault()) return null;
@@ -54,11 +54,11 @@ namespace BUS.Reponsitories.Implements
                 var profileEntity = _mapper.Map<ProfilesUser>(profileDto);
                 lstProfileUser.Add(profileEntity);
                 user.Profile = lstProfileUser;
-                _userRepository.UpdateDataCommand(user);
+                 _userRepository.UpdateAsync(user);
                 return profileDto;
             }
         }
-        public OrderDto AddOrders(CreateOrderViewModel createOrderViewModel, ProfileViewModel profileViewModel)
+        public async Task<OrderDto> AddOrders(CreateOrderViewModel createOrderViewModel, ProfileViewModel profileViewModel)
         {
             if (createOrderViewModel.CartViewModel.Count > 0)
             {
@@ -68,26 +68,26 @@ namespace BUS.Reponsitories.Implements
                 order.OrderTime = DateTime.UtcNow;
                 order.IsOrderEnabled = true;
                 order.StatusOrder = 1;
-                order.ProfileId = profile.ProfileId;
-                _orderRepository.AddDataCommand(order);
+                order.ProfileId =  profile.ProfileId;
+                _orderRepository.AddAsync(order);
                 foreach (var item in createOrderViewModel.CartViewModel)
                 {
                     var orderDetail = _mapper.Map<OrderDetails>(item);
                     orderDetail.OrderID = order.OrderID;
                     orderDetail.UnitPrice = item.Price;
                     orderDetail.IsOrderDetailEnabled = true;
-                    _orderDetailRepository.AddDataCommand(orderDetail);
-                    var productVariant = _productVariantRepository.GetAllDataQuery().FirstOrDefault(p=>p.VariantID==item.VariantId);
-                    productVariant.Quantity = productVariant.Quantity -item.Quantity;
-                    _productVariantRepository.UpdateDataCommand(productVariant);
+                    _orderDetailRepository.AddAsync(orderDetail);
+                    var productVariant = _productVariantRepository.GetAllDataQuery().FirstOrDefault(p => p.VariantID == item.VariantId);
+                    productVariant.Quantity = productVariant.Quantity - item.Quantity;
+                    await _productVariantRepository.AddAsync(productVariant);
                 }
                 var orderDto = _mapper.Map<OrderDto>(createOrderViewModel);
-               // var profile = AddProfile(createOrderViewModel.UserID, profileViewModel, order.OrderID);
+                // var profile = AddProfile(createOrderViewModel.UserID, profileViewModel, order.OrderID);
                 orderDto.ProfileDto = profile;
                 var cartItem = _cartItemRepository.GetAllDataQuery().Where(p => p.UserId.Equals(createOrderViewModel.UserID)).ToList();
                 foreach (var item in cartItem)
                 {
-                    _cartItemRepository.DeleteDataCommand(item);
+                    await _cartItemRepository.RemoveAsync(item);
                 }
                 return orderDto;
             }
@@ -96,7 +96,7 @@ namespace BUS.Reponsitories.Implements
                 return null;
             }
         }
-        public UpdateCartDto UpdateOrders(UpdateCartDtoViewModel updateCartViewModel)
+        public async Task<UpdateCartDto> UpdateOrders(UpdateCartDtoViewModel updateCartViewModel)
         {
             if (updateCartViewModel.OrderId.IsNullOrDefault()) return null;
             if (updateCartViewModel.ProductId.IsNullOrDefault()) return null;
@@ -107,13 +107,15 @@ namespace BUS.Reponsitories.Implements
             var order = _orderRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == updateCartViewModel.OrderId);
             if (order == null) return null;
             if (order.StatusOrder != 1) return null;
-            var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p=>p.OrderID== updateCartViewModel.OrderId && p.VariantID == updateCartViewModel.VariantId && p.IsOrderDetailEnabled ==true);
+            var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == updateCartViewModel.OrderId && p.VariantID == updateCartViewModel.VariantId && p.IsOrderDetailEnabled == true);
             orderDetail.Quantity = updateCartViewModel.Quantity;
-            var updateOrderDto =_mapper.Map<UpdateCartDto>(orderDetail);
+            var updateOrderDto = _mapper.Map<UpdateCartDto>(orderDetail);
+            var cart = _mapper.Map<CartItem>(updateOrderDto);
+            await _cartItemRepository.UpdateAsync(cart);
             return updateOrderDto;
 
         }
-        public UpdateProfileOrderDto UpdateProfile(UpdateProfileOrderViewModel updateProfileOrderViewModel)
+        public async Task<UpdateProfileOrderDto> UpdateProfile(UpdateProfileOrderViewModel updateProfileOrderViewModel)
         {
             if (updateProfileOrderViewModel.OrderId.IsNullOrDefault()) return null;
             if (updateProfileOrderViewModel.ProfileId.IsNullOrDefault()) return null;
@@ -138,26 +140,26 @@ namespace BUS.Reponsitories.Implements
             var indexProfile= lstProfileUser.FindIndex(p=>p.ProfileId==updateProfileOrderViewModel.ProfileId);
             lstProfileUser.Add(profileEntity);
             userOrder.Profile = lstProfileUser;
-            _userRepository.UpdateDataCommand(userOrder);
+            await _userRepository.UpdateAsync(userOrder);
             return profileDto;
         }
-        public bool DeleteOrder(Guid orderId)
+        public async Task<bool> DeleteOrder(Guid orderId)
         {
             if (orderId.IsNullOrDefault() || Guid.Equals(orderId,Guid.Empty)) return false;
             var order = _orderRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == orderId && p.IsOrderEnabled==false);
             if (order == null) return false;
             order.IsOrderEnabled = false;
             order.StatusOrder = 0;
-            _orderRepository.UpdateDataCommand(order);
+            await _orderRepository.UpdateAsync(order);
             return true;
         }
-        public bool DeleteOrderDetail(DeleteOrderDetailViewModel deleteOrder)
+        public async Task<bool> DeleteOrderDetail(DeleteOrderDetailViewModel deleteOrder)
         {
             if (deleteOrder == null) return false;
-            var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == deleteOrder.OrderId && p.VariantID ==deleteOrder.VariantId && p.IsOrderDetailEnabled ==true);
+            var orderDetail = _orderDetailRepository.GetAllDataQuery().FirstOrDefault(p => p.OrderID == deleteOrder.OrderId && p.VariantID == deleteOrder.VariantId && p.IsOrderDetailEnabled == true);
             if (orderDetail == null) return false;
             orderDetail.IsOrderDetailEnabled = false;
-            _orderDetailRepository.UpdateDataCommand(orderDetail);
+            await _orderDetailRepository.UpdateAsync(orderDetail);
             return true;
         }
 

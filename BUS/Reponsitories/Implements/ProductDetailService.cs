@@ -47,20 +47,20 @@ namespace BUS.Reponsitories.Implements
             GetVariantValues();
         }
 
-        public bool AddGetOptionValue(OptionValues optionValues)
+        public async Task<bool> AddGetOptionValue(OptionValues optionValues)
         {
             if (optionValues != null)
             {
                 if (_optionValueService.GetAllDataQuery().Where(p => p.OptionValue.Trim().ToLower() == optionValues.OptionValue.Trim().ToLower() && p.OptionID == optionValues.OptionID).FirstOrDefault() == null)
                 {
-                    _optionValueService.AddDataCommand(optionValues);
+                    await _optionValueService.AddAsync(optionValues);
                     return true;
                 }
             }
             return false;
         }
 
-        public bool AddOptin(Options options)
+        public async Task<bool> AddOptin(Options options)
         {
             if (options == null)
             {
@@ -68,14 +68,14 @@ namespace BUS.Reponsitories.Implements
             }
             if (_optionService.GetAllDataQuery().Where(p => p.OptionName == options.OptionName).FirstOrDefault() == null)
             {
-                _optionService.AddDataCommand(options);
+                await _optionService.AddAsync(options);
                 return true;
             }
             return false;
 
         }
 
-        public bool AddProduct(Products products)
+        public async Task<bool> AddProduct(Products products)
         {
             if (products == null)
             {
@@ -83,7 +83,7 @@ namespace BUS.Reponsitories.Implements
             }
             if (_productService.GetAllDataQuery().Where(p => p.ProductName == products.ProductName).FirstOrDefault() == null)
             {
-                _productService.AddDataCommand(products);
+                await _productService.AddAsync(products);
                 return true;
             }
 
@@ -91,7 +91,7 @@ namespace BUS.Reponsitories.Implements
         }
 
 
-        public bool AddProductOption(ProductOptions productOptions)
+        public async Task<bool> AddProductOption(ProductOptions productOptions)
         {
             if (productOptions == null)
             {
@@ -99,13 +99,13 @@ namespace BUS.Reponsitories.Implements
             }
             if (_productOptionService.GetAllDataQuery().Where(p => p.ProductID == productOptions.OptionID && p.OptionID == productOptions.OptionID && p.IsProductOptionEnabled == true).FirstOrDefault() == null)
             {
-                _productOptionService.AddDataCommand(productOptions);
+                await _productOptionService.AddAsync(productOptions);
                 return true;
             }
             return false;
         }
 
-        public bool AddProductVariant(ProductVariants products)
+        public async Task<bool> AddProductVariant(ProductVariants products)
         {
             if (products == null)
             {
@@ -113,13 +113,13 @@ namespace BUS.Reponsitories.Implements
             }
             if (_productVariantService.GetAllDataQuery().Where(p => p.VariantID == products.VariantID).FirstOrDefault() == null)
             {
-                _productVariantService.AddDataCommand(products);
+                await _productVariantService.AddAsync(products);
                 return true;
             }
             return false;
         }
 
-        public bool AddVariantValue(VariantValues variantValues)
+        public async Task<bool> AddVariantValue(VariantValues variantValues)
         {
             if (variantValues == null)
             {
@@ -127,12 +127,12 @@ namespace BUS.Reponsitories.Implements
             }
             if (_variantValueService.GetAllDataQuery().Where(p => p.VariantID == variantValues.VariantID && p.ProductID == variantValues.ProductID && p.VariantID == variantValues.VariantID && p.ValuesID == variantValues.ValuesID && p.IsVariantValueEnabled == true).FirstOrDefault() == null)
             {
-                _variantValueService.AddDataCommand(variantValues);
+                await _variantValueService.AddAsync(variantValues);
                 return true;
             }
             return false;
         }
-        public bool AddProductDetails(ProductDetailsDto productDetails)
+        public async Task<bool> AddProductDetails(ProductDetailsDto productDetails)
         {
             if (productDetails == null)
             {
@@ -144,7 +144,7 @@ namespace BUS.Reponsitories.Implements
                 product.ProductID = productDetails.ProductId;
                 product.ProductName = productDetails.ProductsName;
                 product.IsProductEnabled = true;
-                _productService.AddDataCommand(product);
+                await _productService.AddAsync(product);
                 _lstProduct.Add(product);
                 var productvariant = new ProductVariants();
                 productvariant.ProductID = product.ProductID;
@@ -160,7 +160,7 @@ namespace BUS.Reponsitories.Implements
                     productvariant.Images.Add(imageInProduct);
                 }
                 productvariant.IsProductVariantEnabled = true;
-                _productVariantService.AddDataCommand(productvariant);
+                await _productVariantService.AddAsync(productvariant);
                 _lstProductVariant.Add(productvariant);
 
                 var checkExistOPtion = _lstOption.Any(p => productDetails.Option.Select(entity => entity.OptionName).ToList().Contains(p.OptionName));
@@ -173,7 +173,7 @@ namespace BUS.Reponsitories.Implements
                         var optionId = _lstOption.Where(p => p.OptionName == newOption.OptionName).Select(p => p.OptionID).FirstOrDefault();
                         productOption.OptionID = optionId;
                         productOption.IsProductOptionEnabled = true;
-                        _productOptionService.AddDataCommand(productOption);
+                        await _productOptionService.AddAsync(productOption);
                         _lstProductOption.Add(productOption);
                         if (CheckExistOptionValue(newOption.OptionName, newOption.OptionValue))
                         {
@@ -184,7 +184,7 @@ namespace BUS.Reponsitories.Implements
                             var optionValueId = _lstOptionValue.Where(p => p.OptionValue == newOption.OptionValue).Select(p => p.ValuesID).FirstOrDefault();
                             variantValue.ValuesID = optionValueId;
                             variantValue.IsVariantValueEnabled = true;
-                            _variantValueService.AddDataCommand(variantValue);
+                            await _variantValueService.AddAsync(variantValue);
                             _lstVariantValue.Add(variantValue);
                         }
                         else
@@ -194,7 +194,7 @@ namespace BUS.Reponsitories.Implements
                             optionValue.OptionID = optionId;
                             optionValue.ValuesID = Guid.NewGuid();
                             optionValue.IsOptionValueEnabled = true;
-                            _optionValueService.AddDataCommand(optionValue);
+                            await _optionValueService.AddAsync(optionValue);
                             _lstOptionValue.Add(optionValue);
                             var variantValue = new VariantValues();///
                             variantValue.ProductID = product.ProductID;
@@ -202,7 +202,7 @@ namespace BUS.Reponsitories.Implements
                             variantValue.OptionID = optionId;
                             var optionValueId = _lstOptionValue.Where(p => p.OptionValue == newOption.OptionValue).Select(p => p.ValuesID).FirstOrDefault();
                             variantValue.ValuesID = optionValueId;
-                            _variantValueService.AddDataCommand(variantValue);
+                            await _variantValueService.AddAsync(variantValue);
                             _lstVariantValue.Add(variantValue);
                         }
                     }
@@ -213,27 +213,27 @@ namespace BUS.Reponsitories.Implements
                         option.OptionName = newOption.OptionName;
                         option.IsOptionEnabled = true;
                         _lstOption.Add(option);
-                        _optionService.AddDataCommand(option);
+                        await _optionService.AddAsync(option);
                         var optionValue = new OptionValues();
                         optionValue.OptionID = option.OptionID;
                         optionValue.ValuesID = Guid.NewGuid();
                         optionValue.OptionValue = newOption.OptionValue;
                         optionValue.IsOptionValueEnabled = true;
-                        _optionValueService.AddDataCommand(optionValue);
+                        await _optionValueService.AddAsync(optionValue);
                         _lstOptionValue.Add(optionValue);
                         var productOption = new ProductOptions();
                         productOption.ProductID = product.ProductID;
                         var optionId = option.OptionID;
                         productOption.OptionID = optionId;
                         productOption.IsProductOptionEnabled = true;
-                        _productOptionService.AddDataCommand(productOption);
+                        await _productOptionService.AddAsync(productOption);
                         _lstProductOption.Add(productOption);
                         var variantValue = new VariantValues();
                         variantValue.ProductID = product.ProductID;//
                         variantValue.VariantID = productvariant.VariantID;//
                         variantValue.OptionID = optionId;
                         variantValue.ValuesID = optionValue.ValuesID;
-                        _variantValueService.AddDataCommand(variantValue);
+                        await _variantValueService.AddAsync(variantValue);
                         _lstVariantValue.Add(variantValue);
                     }
                 }
@@ -275,38 +275,38 @@ namespace BUS.Reponsitories.Implements
             optionValueExist = GetOptionValue().Any(p => p.OptionID == optionId && p.OptionValue == optionValue);
             return optionValueExist;
         }
-        public bool DeleteGetOptionValue(OptionValues optionValues)
+        public async Task<bool> DeleteGetOptionValue(OptionValues optionValues)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteOption(Options options)
+        public async Task<bool> DeleteOption(Options options)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteProduct(Products products)
+        public async Task<bool> DeleteProduct(Products products)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteProductOption(ProductOptions productOptions)
+        public async Task<bool> DeleteProductOption(ProductOptions productOptions)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteProductVariant(ProductVariants products)
+        public async Task<bool> DeleteProductVariant(ProductVariants products)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteVariantValue(VariantValues variantValues)
+        public async Task<bool> DeleteVariantValue(VariantValues variantValues)
         {
             if (variantValues == null)
             {
                 return false;
             }
-            _variantValueService.DeleteDataCommand(variantValues);
+            _variantValueService.RemoveAsync(variantValues);
             return true;
         }
 
@@ -353,7 +353,7 @@ namespace BUS.Reponsitories.Implements
                  }).ToList();
             return getAllProductDetails;
         }
-        public bool UpdateProductDetails(ProductDetailsDto productDetails)
+        public async Task<bool> UpdateProductDetails(ProductDetailsDto productDetails)
         {
             if (productDetails == null || productDetails.ProductsName == null || productDetails.ProductId == null || productDetails.Option == null) return false;
             bool CheckStatus = false;
@@ -438,7 +438,7 @@ namespace BUS.Reponsitories.Implements
                                 optionValues.OptionValue = productDetails.Option[i].OptionValue;
                                 optionValues.OptionID = optionId;
                                 optionValues.IsOptionValueEnabled = true;
-                                AddGetOptionValue(optionValues);// add optionvalue
+                                await AddGetOptionValue(optionValues);// add optionvalue
                                 _lstOptionValue.Add(optionValues);
                                 var variantValues = _lstVariantValue.FirstOrDefault(p => p.OptionID == optionId && p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId && p.IsVariantValueEnabled == true);
                                 if (variantValues == null) return false;
@@ -446,7 +446,7 @@ namespace BUS.Reponsitories.Implements
                                 UpdateVariantValue(variantValues);
                                 variantValues.IsVariantValueEnabled = true;
                                 variantValues.ValuesID = optionValues.ValuesID;
-                                AddVariantValue(variantValues);// update variantvalue
+                                await AddVariantValue(variantValues);// update variantvalue
                                 int indexUpdate = _lstVariantValue.FindIndex(p => p.VariantID == variantValues.VariantID);
                                 _lstVariantValue.RemoveAt(indexUpdate);
                                 _lstVariantValue.Add(variantValues);
@@ -484,7 +484,7 @@ namespace BUS.Reponsitories.Implements
                                 }
                                 else
                                 {
-                                    AddVariantValue(variantValue);
+                                    await AddVariantValue(variantValue);
                                     _lstVariantValue.Add(variantValue);
                                 }
                             }
@@ -495,14 +495,14 @@ namespace BUS.Reponsitories.Implements
                                 optionValues.OptionValue = productDetails.Option[i].OptionValue;
                                 optionValues.OptionID = optionId;
                                 optionValues.IsOptionValueEnabled = true;
-                                AddGetOptionValue(optionValues);
+                                await AddGetOptionValue(optionValues);
                                 _lstOptionValue.Add(optionValues);
                                 var variantValue = new VariantValues();
                                 variantValue.ProductID = productDetails.ProductId;
                                 variantValue.VariantID = productDetails.VariantId;
                                 variantValue.OptionID = optionId;
                                 variantValue.ValuesID = optionValues.ValuesID;
-                                AddVariantValue(variantValue);
+                                await AddVariantValue(variantValue);
                                 _lstVariantValue.Add(variantValue);
                             }
                         }
@@ -512,20 +512,20 @@ namespace BUS.Reponsitories.Implements
                             option.OptionID = Guid.NewGuid();
                             option.OptionName = productDetails.Option[i].OptionName;
                             option.IsOptionEnabled = true;
-                            AddOptin(option);
+                            await AddOptin(option);
                             _lstOption.Add(option);
                             var optionValue = new OptionValues();
                             optionValue.ValuesID = Guid.NewGuid();
                             optionValue.OptionID = option.OptionID;
                             optionValue.OptionValue = productDetails.Option[i].OptionValue;
                             optionValue.IsOptionValueEnabled = true;
-                            AddGetOptionValue(optionValue);
+                            await AddGetOptionValue(optionValue);
                             _lstOptionValue.Add(optionValue);
                             var productOption = new ProductOptions();
                             productOption.ProductID = productDetails.ProductId;
                             productOption.OptionID = option.OptionID;
                             productOption.IsProductOptionEnabled = true;
-                            AddProductOption(productOption);
+                            await AddProductOption(productOption);
                             _lstProductOption.Add(productOption);
                             var variantValue = new VariantValues();
                             variantValue.ProductID = productDetails.ProductId;
@@ -533,7 +533,7 @@ namespace BUS.Reponsitories.Implements
                             variantValue.OptionID = option.OptionID;
                             variantValue.ValuesID = optionValue.ValuesID;
                             variantValue.IsVariantValueEnabled = true;
-                            AddVariantValue(variantValue);
+                            await AddVariantValue(variantValue);
                             _lstVariantValue.Add(variantValue);
                         }
                         break;
@@ -565,14 +565,14 @@ namespace BUS.Reponsitories.Implements
             return CheckStatus;
         }
 
-        public bool RemoveProductDetails(ProductDetailsDto productDetails)
+        public async Task<bool> RemoveProductDetails(ProductDetailsDto productDetails)
         {
             var variants = _lstVariantValue.Where(p => p.ProductID == productDetails.ProductId && p.VariantID == productDetails.VariantId).ToList();
             if (variants.Count == 0) return false;
             foreach (var variant in variants)
             {
                 variant.IsVariantValueEnabled = false;
-                _variantValueService.UpdateDataCommand(variant);
+                _variantValueService.UpdateAsync(variant);
             }
             return true;
         }
@@ -602,7 +602,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            _optionValueService.UpdateDataCommand(optionValues);
+            _optionValueService.UpdateAsync(optionValues);
             return true;
         }
 
@@ -612,7 +612,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            _optionService.UpdateDataCommand(options);
+            _optionService.UpdateAsync(options);
             return true;
         }
 
@@ -622,7 +622,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            _productService.UpdateDataCommand(products);
+            _productService.UpdateAsync(products);
             return true;
         }
 
@@ -632,7 +632,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            _productOptionService.UpdateDataCommand(productOptions);
+            _productOptionService.UpdateAsync(productOptions);
             return true;
         }
 
@@ -642,7 +642,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            _productVariantService.UpdateDataCommand(products);
+            _productVariantService.UpdateAsync(products);
             return true;
         }
 
@@ -652,7 +652,7 @@ namespace BUS.Reponsitories.Implements
             {
                 return false;
             }
-            _variantValueService.UpdateDataCommand(variantValues);
+            _variantValueService.UpdateAsync(variantValues);
             return true;
         }
     }

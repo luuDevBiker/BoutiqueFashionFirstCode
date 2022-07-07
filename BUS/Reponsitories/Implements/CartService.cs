@@ -29,7 +29,7 @@ namespace BUS.Reponsitories.Implements
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public bool AddCart(CreatCartViewModel cart)
+        public async Task<bool> AddCart(CreatCartViewModel cart)
         {
            
             if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) return false;
@@ -46,31 +46,31 @@ namespace BUS.Reponsitories.Implements
                 cartItem = _mapper.Map<CartItem>(cart);
                 cartItem.ProductId = product.ProductId;
                 cartItem.ProductName = product.ProductsName;
-                cartItem.Quantity = cart.Quantity;   
+                cartItem.Quantity = cart.Quantity;
                 cartItem.Images = product.Images;
                 cartItem.Price = product.Price;
                 cartItem.CartId = Guid.NewGuid();
-                _cartItemService.AddDataCommand(cartItem);
-               return true ;
+                await _cartItemService.AddAsync(cartItem);
+                return true;
             }
             else
             {
 
                 var cartDto = _mapper.Map<CartItem>(cartExist);
                 cartDto.Quantity += cart.Quantity;
-                if (cartDto.Quantity > product.Quantity ) return false;
-                _cartItemService.UpdateDataCommand(cartDto);
+                if (cartDto.Quantity > product.Quantity) return false;
+                await _cartItemService.UpdateAsync(cartDto);
                 return true;
             }
            
         }
 
-        public List<CartDto> GetProductInCart(Guid userId)
+        public  List<CartDto> GetProductInCart(Guid userId)
         {
             if (!userId.IsNullOrDefault() || !Guid.Equals(userId, Guid.Empty))
             {
              
-                var lstCartItem = _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
+                var lstCartItem =  _cartItemService.GetAllDataQuery().Where(p => p.UserId == userId).ToList();
                 var lstCartDto = _mapper.Map<List<CartDto>>(lstCartItem);
                
                 //var lstCartDtoNoImage = _mapper.Map<List<CartDto>>(lstCartItem);
@@ -87,14 +87,14 @@ namespace BUS.Reponsitories.Implements
             }
         }
 
-        public bool RevoteItemIncart(Guid cartId)
+        public async Task<bool> RevoteItemIncart(Guid cartId)
         {
             if (cartId.IsNullOrDefault() || Guid.Equals(cartId, Guid.Empty))
                 return false;
             var itemCart = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId == cartId);
             if (itemCart != null)
             {
-                _cartItemService.DeleteDataCommand(itemCart);
+              await  _cartItemService.RemoveAsync(itemCart);
                 return true;
             }
             else
@@ -103,18 +103,18 @@ namespace BUS.Reponsitories.Implements
             }
         }
 
-        public bool UpdateCart(UpdateCartViewModel cart)
+        public  async Task<bool> UpdateCart(UpdateCartViewModel cart)
         {
           
             if (cart.VariantId.IsNullOrDefault() || Guid.Equals(cart.VariantId, Guid.Empty)) return false;
             if (cart.UserId.IsNullOrDefault() || Guid.Equals(cart.UserId, Guid.Empty)) return false;
             if (cart.Quantity <0) return false;
-           
-          
+
+
             var itemInCartItem = _cartItemService.GetAllDataQuery().FirstOrDefault(p => p.CartId.Equals(cart.CartId));
             if (itemInCartItem.IsNullOrDefault()) return false;
             itemInCartItem.Quantity = cart.Quantity;
-            _cartItemService.UpdateDataCommand(itemInCartItem);
+            await _cartItemService.UpdateAsync(itemInCartItem);
             return true;
 
 

@@ -24,7 +24,7 @@ namespace BUS.Reponsitories.Implements
             _userRoleRepository = userRoleRepository ?? throw new ArgumentNullException(nameof(userRoleRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public bool AddUser(CreatUserViewModel creatUser)
+        public async Task<bool> AddUser(CreatUserViewModel creatUser)
         {
             var userDto = _mapper.Map<UserDto>(creatUser);
             userDto.Gender = creatUser.GenderStr.Trim().ToLower() == "nam" ? 1 : 0;
@@ -36,20 +36,20 @@ namespace BUS.Reponsitories.Implements
             var userEntity = _mapper.Map<user>(userDto);
             userEntity.Password = "123456";
             if (_userRepository.GetAllDataQuery().FirstOrDefault(p => p.Email == creatUser.Email) != null) return false;
-            _userRepository.AddDataCommand(userEntity);
+            await _userRepository.AddAsync(userEntity);
             return true;
         }
 
-        public bool DeleteUser(Guid userId)
+        public async Task<bool> DeleteUser(Guid userId)
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId && p.IsUserEnabled == true);
             if (user == null) return false;
             user.IsUserEnabled = false;
-            _userRepository.UpdateDataCommand(user);
+            await _userRepository.UpdateAsync(user);
             return true;
         }
 
-        public UserDto GetUserDtoDetail(Guid userId)
+        public async Task<UserDto> GetUserDtoDetail(Guid userId)
         {
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId && p.IsUserEnabled == true);
             if (user.IsNullOrDefault()) return null;
@@ -64,7 +64,7 @@ namespace BUS.Reponsitories.Implements
             return userDto;
         }
 
-        public List<UserDto> GetUsers(Guid userId)
+        public async Task<List<UserDto>> GetUsers(Guid userId)
         {
           
             var user = _userRepository.GetAllDataQuery().FirstOrDefault(p => p.UserID == userId);
@@ -89,7 +89,7 @@ namespace BUS.Reponsitories.Implements
 
         }
 
-        public bool UpdateUser(UpdateUserViewModel updateUserViewModel)
+        public async Task<bool> UpdateUser(UpdateUserViewModel updateUserViewModel)
         {
             var userDto = _mapper.Map<UserDto>(updateUserViewModel);
             userDto.Gender = updateUserViewModel.GenderStr.Trim().ToLower() == "nam" ? 1 : 0;
@@ -106,7 +106,7 @@ namespace BUS.Reponsitories.Implements
             userEntity.PhoneNumber = userDto.PhoneNumber;
             userEntity.Email = userDto.Email;
             userEntity.IsUserEnabled = userDto.IsUserEnabled;
-            _userRepository.UpdateDataCommand(userEntity);
+            await _userRepository.UpdateAsync(userEntity);
             return true;
         }
     }

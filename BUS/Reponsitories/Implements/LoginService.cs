@@ -12,6 +12,10 @@ using BUS.Dtos;
 using Iot.Core.Extensions;
 using AutoMapper;
 using BUS.Exceptions;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace BUS.Reponsitories.Implements
 {
@@ -22,9 +26,10 @@ namespace BUS.Reponsitories.Implements
         private readonly IGenericRepository<RolesUser> _rolesUserService;
         private readonly SendMailService _sendMailService;
         private readonly IMapper _imapper;
+        private readonly AppSetting _appSettings;
         List<user> _users;
         List<RolesUser> _rolesUsers;
-        public LoginService(IGenericRepository<user> userService, SendMailService sendMail, IGenericRepository<RolesUser> rolesUserService, IMapper imapper)
+        public LoginService(IGenericRepository<user> userService, SendMailService sendMail, IGenericRepository<RolesUser> rolesUserService, IMapper imapper, IOptionsMonitor<AppSetting> optionsMonitor )
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _rolesUserService = rolesUserService ?? throw new ArgumentNullException(nameof(rolesUserService));
@@ -34,10 +39,10 @@ namespace BUS.Reponsitories.Implements
             _rolesUsers = new List<RolesUser>();
             lstUser();
             lstRolesUser();
-
+            _appSettings = optionsMonitor.CurrentValue;
         }
 
-        public bool ForgotPassword(string email)
+        public async Task<bool> ForgotPassword(string email)
         {
 
             if (email != null)
@@ -55,8 +60,29 @@ namespace BUS.Reponsitories.Implements
             return false;
 
         }
+        private string GenerateToken(LoginDto  user)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
 
-        public LoginDto Login(ViewUserLoginViewModel viewUserAfterLogin)
+            var secretKeyBytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] {
+                   new Claim("UserName",user.UserName),
+                   
+                   new Claim(ClaimTypes.Role, user.RolesName),
+                   new Claim("Token", Guid.NewGuid().ToString()),
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha512Signature)
+            };
+
+            var token = jwtTokenHandler.CreateToken(tokenDescription);
+
+            return jwtTokenHandler.WriteToken(token);
+        }
+        public async Task<LoginDto> Login(ViewUserLoginViewModel viewUserAfterLogin)
         {
 
             if (!viewUserAfterLogin.UserName.IsNullOrDefault() && !viewUserAfterLogin.Password.IsNullOrDefault())
@@ -68,8 +94,10 @@ namespace BUS.Reponsitories.Implements
                     var roleName = _rolesUsers.Where(p => p.RolesID == userDtoHaventRole.RolesID).Select(p => p.RolesName).FirstOrDefault();
                     if (!roleName.IsNullOrDefault())
                     {
+
                         userDtoHaventRole.RolesName = roleName;
-                        return userDtoHaventRole;
+                        userDtoHaventRole.Token = GenerateToken(userDtoHaventRole);
+                        return  userDtoHaventRole;
                     }
                     else
                     {
@@ -99,17 +127,17 @@ namespace BUS.Reponsitories.Implements
 
         public List<user> lstUser()
         {
-            _users = _userService.GetAllDataQuery().Where(p=>p.IsUserEnabled==true).ToList();
+            _users = _userService.GetAllDataQuery().Where(p => p.IsUserEnabled == true).ToList();
             return _users;
         }
 
-        public RegisterDto Signup(user user)
+        public async Task<RegisterDto> Signup(user user)
         {
             if (user != null)
             {
                 if (_users.FirstOrDefault(p => p.Email == user.Email) != null) return null;
-                if (_users.FirstOrDefault(p => p.PhoneNumber == user.PhoneNumber ) != null) return null;
-                _userService.AddDataCommand(user);
+                if (_users.FirstOrDefault(p => p.PhoneNumber == user.PhoneNumber) != null) return null;
+                await _userService.AddAsync(user);
                 var userDto = _imapper.Map<RegisterDto>(user);
                 var roleName = _rolesUserService.GetAllDataQuery().Where(p=>p.RolesID==user.RolesID).Select(p=>p.RolesName).FirstOrDefault();
                 userDto.RoleName = roleName;

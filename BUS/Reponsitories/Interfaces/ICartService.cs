@@ -12,9 +12,11 @@ namespace BUS.Reponsitories.Interfaces
 {
     public interface ICartService
     {
-        public bool AddCart(CreatCartViewModel cart);
+        public Task<bool> AddCart(CreatCartViewModel cart);
+        public Task<bool> RevoteItemIncart(Guid cartId);
+        public Task<bool> UpdateCart(UpdateCartViewModel cart);
         public List<CartDto> GetProductInCart(Guid userId);
-        public bool RevoteItemIncart(Guid cartId);
-        public bool UpdateCart(UpdateCartViewModel cart);
+
+
     }
 }

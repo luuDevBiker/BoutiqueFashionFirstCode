@@ -10,11 +10,11 @@ namespace BUS.Reponsitories.Interfaces
 {
     public interface IManageService
     {
-        public UserDto GetUserDtoDetail(Guid userId);
-        public bool AddUser(CreatUserViewModel creatUser);
-        public bool UpdateUser(UpdateUserViewModel updateUserViewModel);
-        public bool DeleteUser(Guid userId);
-        public List<UserDto> GetUsers(Guid userId);
+        public Task<bool> AddUser(CreatUserViewModel creatUser);
+        public Task<bool> DeleteUser(Guid userId);
+        public Task<UserDto> GetUserDtoDetail(Guid userId);
+        public Task<List<UserDto>> GetUsers(Guid userId);
+        public Task<bool> UpdateUser(UpdateUserViewModel updateUserViewModel);
 
     }
 }

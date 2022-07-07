@@ -11,11 +11,11 @@ namespace BUS.Reponsitories.Interfaces
     public  interface IOrderService
     {
         public ProfileDto AddProfile(Guid userId, ProfileViewModel profileViewModel);
-        public OrderDto AddOrders(CreateOrderViewModel createOrderViewModel, ProfileViewModel profileViewModel);
-        public UpdateCartDto UpdateOrders(UpdateCartDtoViewModel updateCartViewModel);
-        public bool DeleteOrder(Guid orderId);
-        public bool DeleteOrderDetail(DeleteOrderDetailViewModel deleteOrder);
-        public UpdateProfileOrderDto UpdateProfile(UpdateProfileOrderViewModel updateProfileOrderViewModel);
+        public Task<OrderDto> AddOrders(CreateOrderViewModel createOrderViewModel, ProfileViewModel profileViewModel);
+        public Task<UpdateProfileOrderDto> UpdateProfile(UpdateProfileOrderViewModel updateProfileOrderViewModel);
+        public Task<bool> DeleteOrder(Guid orderId);
+        public Task<bool> DeleteOrderDetail(DeleteOrderDetailViewModel deleteOrder);
+        public Task<UpdateCartDto> UpdateOrders(UpdateCartDtoViewModel updateCartViewModel);
         public List<GetOrder> GetOrderClient(Guid userId);
         public List<GetOrder> GetOrderAdmin();
     }

@@ -12,46 +12,46 @@ namespace BUS.Reponsitories.Interfaces
     {
         #region product
         public List<Products> GetProducts();
-        public bool AddProduct(Products products);
+        public  Task<bool> AddProduct(Products products);
         public bool UpdateProduct(Products products);
-        public bool DeleteProduct(Products products);
+        public Task<bool> DeleteProduct(Products products);
         #endregion
         #region productVariant
         public List<ProductVariants> GetProductVariants();
-        public bool AddProductVariant(ProductVariants products);
+        public Task<bool> AddProductVariant(ProductVariants products);
         public bool UpdateProductVariant(ProductVariants products);
-        public bool DeleteProductVariant(ProductVariants products);
+        public Task<bool> DeleteProductVariant(ProductVariants products);
 
         #endregion
         #region option
         public List<Options> GetOption();
-        public bool AddOptin(Options options);
+        public Task<bool> AddOptin(Options options);
         public bool UpdateOption(Options options);
-        public bool DeleteOption(Options options);
+        public Task<bool> DeleteOption(Options options);
         #endregion
 
         #region optionValue
         public List<OptionValues> GetOptionValue();
-        public bool AddGetOptionValue(OptionValues optionValues);
+        public Task<bool> AddGetOptionValue(OptionValues optionValues);
         public bool UpdateGetOptionValue(OptionValues optionValues);
-        public bool DeleteGetOptionValue(OptionValues optionValues);
+        public Task<bool> DeleteGetOptionValue(OptionValues optionValues);
         #endregion
         #region productOption 
         public List<ProductOptions> GetProductOptions();
-        public bool AddProductOption(ProductOptions productOptions);
+        public Task<bool> AddProductOption(ProductOptions productOptions);
         public bool UpdateProductOption(ProductOptions productOptions);
-        public bool DeleteProductOption(ProductOptions productOptions);
+        public Task<bool> DeleteProductOption(ProductOptions productOptions);
         #endregion
         #region VariantValue
         public List<VariantValues> GetVariantValues();
-        public bool AddVariantValue(VariantValues variantValues);
+        public Task<bool> AddVariantValue(VariantValues variantValues);
         public bool UpdateVariantValue(VariantValues variantValues);
-        public bool DeleteVariantValue(VariantValues variantValues);
+        public Task<bool> DeleteVariantValue(VariantValues variantValues);
         #endregion
         public List<ProductDetailsDto> GetProductDetails();
-        public bool AddProductDetails(ProductDetailsDto productDetails);
+        public Task<bool> AddProductDetails(ProductDetailsDto productDetails);
         public Guid CheckExistProduct(string productName);
-        public bool UpdateProductDetails(ProductDetailsDto productDetails);
-        public bool RemoveProductDetails(ProductDetailsDto productDetails);
+        public Task<bool> UpdateProductDetails(ProductDetailsDto productDetails);
+        public Task<bool> RemoveProductDetails(ProductDetailsDto productDetails);
     }
 }

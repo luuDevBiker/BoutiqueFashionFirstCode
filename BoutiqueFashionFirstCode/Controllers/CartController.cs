@@ -4,6 +4,7 @@ using BUS.Reponsitories.Interfaces;
 using BUS.ViewModel;
 using DAL.Entities;
 using Iot.Core.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
@@ -21,22 +22,26 @@ namespace BoutiqueFashionFirstCode.Controllers
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
         }
         [HttpGet("GetProductInCart/{userId}")]
+        [Authorize]
         public List<CartDto> GetCart(Guid userId)
         {
             return _cartService.GetProductInCart(userId);
         }
         [HttpPost("AddProductInCart")]
-        public bool AddCart([FromBody] CreatCartViewModel cart)
+        [Authorize]
+        public Task<bool> AddCart([FromBody] CreatCartViewModel cart)
         {
             return _cartService.AddCart(cart);
         }
         [HttpPut("UpdateProductInCart")]
-        public bool UpdateProductInCart([FromBody] UpdateCartViewModel cart)
+        [Authorize]
+        public Task<bool> UpdateProductInCart([FromBody] UpdateCartViewModel cart)
         {
             return _cartService.UpdateCart(cart);
         }
         [HttpDelete("DeteleProductInCart/{key}")]
-        public bool DeteleProductInCart([FromODataUri] Guid key)
+        [Authorize]
+        public Task<bool> DeteleProductInCart([FromODataUri] Guid key)
         {
             return _cartService.RevoteItemIncart(key);
         }

@@ -36,7 +36,7 @@ namespace BUS.Reponsitories.Implements
             smtp.Credentials = new NetworkCredential("kienntp038@gmail.com", "kien2810");
             var a = _userService.GetAllDataQuery().FirstOrDefault(p => p.Email == mail);
             a.Password = pass;
-            _userService.UpdateDataCommand(a);
+            _userService.UpdateAsync(a);
             try
             {
                 smtp.Send(mess);

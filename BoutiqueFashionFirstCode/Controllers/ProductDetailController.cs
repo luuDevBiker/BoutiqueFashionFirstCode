@@ -5,6 +5,7 @@ using BUS.Reponsitories.Interfaces;
 using BoutiqueFashionFirstCode.ViewModel;
 using BUS.ViewModel;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BoutiqueFashionFirstCode.Controllers
 {
@@ -18,6 +19,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             _productDetailService = productDetailService ?? throw new ArgumentNullException(nameof(productDetailService));
         }
         [HttpGet("GetAllProductDetail")]
+        [Authorize]
         public List<ProductDetailsDto> GetAllProductDetail(ODataQueryOptions queryOptions)
         {
             var result= _productDetailService.GetProductDetails().AsQueryable();
@@ -26,7 +28,8 @@ namespace BoutiqueFashionFirstCode.Controllers
             return castedProductDetailColletion.ToList();
         }
         [HttpPost("PostProductDetail")]
-        public bool PostProductDetail([FromBody] ProductDetailViewModel productDetail)
+        [Authorize]
+        public Task<bool> PostProductDetail([FromBody] ProductDetailViewModel productDetail)
         {
             var productDetailToAdd = new ProductDetailsDto();
             productDetailToAdd.ProductId = Guid.NewGuid();
@@ -41,7 +44,8 @@ namespace BoutiqueFashionFirstCode.Controllers
             return _productDetailService.AddProductDetails(productDetailToAdd);
         }
         [HttpPut("Updateproduct")]
-        public bool UpdateProduct([FromBody] UpdateProductDetail productDetail)
+        [Authorize]
+        public Task<bool> UpdateProduct([FromBody] UpdateProductDetail productDetail)
         {
             var productDetailToUpdate = new ProductDetailsDto();
             productDetailToUpdate.ProductId = productDetail.productId;
@@ -56,7 +60,8 @@ namespace BoutiqueFashionFirstCode.Controllers
             return _productDetailService.UpdateProductDetails(productDetailToUpdate);
         }
         [HttpDelete("DeteteProduct")]
-        public bool DeteteProduct([FromBody] UpdateProductDetail productDetail)
+        [Authorize]
+        public Task<bool> DeteteProduct([FromBody] UpdateProductDetail productDetail)
         {
             var productDetails = new ProductDetailsDto();
             productDetails.ProductId = productDetail.productId;

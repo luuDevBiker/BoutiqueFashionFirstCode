@@ -8,16 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DAL.ValueObject;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DAL.DBcontext
 {
     public class Context : DbContext
     {
-        public Context(DbContextOptions<Context> options) : base(options)
+     
+        public Context([NotNullAttribute] DbContextOptions options) : base(options)
         {
-
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
-
         public DbSet<user> users { get; set; }
         public DbSet<RolesUser> rolesUsers { get; set; }
         public DbSet<Order> orders { get; set; }
@@ -50,21 +51,15 @@ namespace DAL.DBcontext
                 user.Property(p => p.Gender).HasDefaultValue(1);
                 user.Property(p => p.IsUserEnabled).HasDefaultValue(true);
                 user.HasOne<RolesUser>(p => p.RolesUsers).WithMany(p => p.Users).HasForeignKey(p => p.RolesID);
-                user.Property(p => p.Avatar).HasConversion(
-                  v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                  v => JsonConvert.DeserializeObject<ImageValueObject>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                  );
-                user.Property(p => p.Profile).HasConversion(
-                  v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                  v => JsonConvert.DeserializeObject<List<ProfilesUser>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                  );
+                user.Property(p => p.Avatar).HasColumnType<ImageValueObject>("jsonb");
+                user.Property(p => p.Profile).HasColumnType<List<ProfilesUser>>("jsonb");
             });
             modelBuilder.Entity<Order>(cart =>
             {
                 cart.ToTable("Orders");
                 cart.HasKey(p => p.OrderID);
                 cart.Property(p => p.UserID).IsRequired();
-                cart.Property(p => p.OrderTime).HasDefaultValue(DateTime.Now.ToString("HH:mm:ss tt"));
+                
                 cart.Property(p => p.PayingCustomer).IsRequired();
                 cart.Property(p => p.Payments).IsRequired();
                
@@ -79,10 +74,7 @@ namespace DAL.DBcontext
                 productVariants.Property(p => p.ImportPrice).IsRequired();
                 productVariants.Property(p => p.Price).IsRequired();
                 productVariants.Property(p => p.Quantity).IsRequired();
-                productVariants.Property(p => p.Images).HasConversion(
-                    v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    v => JsonConvert.DeserializeObject<ICollection<ImageValueObject>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                    );
+                productVariants.Property(p => p.Images).HasColumnType<ICollection<ImageValueObject>>("jsonb");
                 productVariants.Property(p => p.IsProductVariantEnabled).HasDefaultValue(true);
                 productVariants.HasOne<Products>(p => p.Product).WithMany(p => p.ProductVariants).HasForeignKey(p => p.ProductID);
 
@@ -142,10 +134,7 @@ namespace DAL.DBcontext
                 cartItems.ToTable("CartItem");
                 cartItems.HasKey(p => p.CartId);
                 cartItems.HasIndex(p => p.ProductId);
-                cartItems.Property(p => p.Images).HasConversion(
-                 v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                 v => JsonConvert.DeserializeObject<ICollection<ImageValueObject>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                 );
+                cartItems.Property(p => p.Images).HasColumnType<ICollection<ImageValueObject>>("jsonb");
             });
          
 

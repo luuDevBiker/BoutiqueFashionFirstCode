@@ -5,6 +5,7 @@ using DAL.Entities;
 using BoutiqueFashionFirstCode.ViewModel;
 using BUS.ViewModel;
 using BUS.Dtos;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BoutiqueFashionFirstCode.Controllers
@@ -21,14 +22,14 @@ namespace BoutiqueFashionFirstCode.Controllers
         }
         // GET api/<LoginController>/5
         [HttpPost("CheckLogin")]
-        public LoginDto CheckLogin([FromBody]ViewUserLoginViewModel viewUserLogin)
+        public Task<LoginDto> CheckLogin([FromBody] ViewUserLoginViewModel viewUserLogin)
         {
             return _loginService.Login(viewUserLogin);
         }
 
         // POST api/<LoginController>
         [HttpPost("Register")]
-        public RegisterDto Register(RegisterViewModel register)
+        public Task<RegisterDto> Register(RegisterViewModel register)
         {
             var rolesIDNhanVien = _loginService.lstRolesUser().Where(p => p.RolesName == "Nhân viên").Select(p => p.RolesID).FirstOrDefault();
             var userAccount = new user();
@@ -51,7 +52,7 @@ namespace BoutiqueFashionFirstCode.Controllers
             return a;
         }
         [HttpPost("ForgotPassword/{mail}")]
-        public bool ForgotPassword(string mail)
+        public Task<bool> ForgotPassword(string mail)
         {
             return _loginService.ForgotPassword(mail);
 
